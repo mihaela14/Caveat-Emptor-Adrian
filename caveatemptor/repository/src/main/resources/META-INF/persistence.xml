@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0"
+	xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence 
+ http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+
+	<persistence-unit name="caveatemptor_pu"
+		transaction-type="JTA">
+		<jta-data-source>java:jboss/datasources/caveatemptor</jta-data-source>
+		<exclude-unlisted-classes>false</exclude-unlisted-classes>
+		<shared-cache-mode>ENABLE_SELECTIVE</shared-cache-mode>
+		<properties>
+			<property name="openjpa.TransactionMode" value="managed" />
+			<property name="openjpa.ConnectionFactoryMode" value="managed" />
+			<property name="openjpa.jdbc.DBDictionary" value="db2" />
+			<property name="openjpa.DataCache" value="true" />
+			<property name="openjpa.Log"
+				value="DefaultLevel=WARN, Runtime=INFO, Tool=INFO, SQL=TRACE" />
+		</properties>
+	</persistence-unit>
+</persistence>
