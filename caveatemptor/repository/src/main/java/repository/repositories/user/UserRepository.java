@@ -34,9 +34,7 @@ public class UserRepository implements IUserRepository {
 	@Override
 	public void remove(User user, EntityManager entityManager) {
 		initializeEntityManagerIfNull(entityManager);
-		entityManager.getTransaction().begin();
-		entityManager.remove(user);
-		entityManager.getTransaction().commit();
+		this.entityManager.remove(user);
 	}
 
 	@Override
@@ -64,7 +62,7 @@ public class UserRepository implements IUserRepository {
 	@Override
 	public User getSingleEntityById(int id, EntityManager entityManager) {
 		initializeEntityManagerIfNull(entityManager);
-		return entityManager.find(User.class, id);
+		return this.entityManager.find(User.class, id);
 	}
 
 	@Override
@@ -73,15 +71,11 @@ public class UserRepository implements IUserRepository {
 	}
 
 	private void create(User user) {
-		entityManager.getTransaction().begin();
 		entityManager.persist(user);
-		entityManager.getTransaction().commit();
 	}
 
 	private void update(User user) {
-		entityManager.getTransaction().begin();
 		entityManager.merge(user);
-		entityManager.getTransaction().commit();
 	}
 
 	public Query buildNamedQuery(final INamedQueryData namedQueryData) {
