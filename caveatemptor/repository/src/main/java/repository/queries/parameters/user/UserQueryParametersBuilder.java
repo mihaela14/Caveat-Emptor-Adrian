@@ -8,13 +8,15 @@ public class UserQueryParametersBuilder {
 	}
 
 	public static Map<String, String> buildWithAccountName(String accountName) {
-		UserParametersBuilder userParameters = new UserParametersBuilder.Builder().withAccountName(accountName).build();
-		return userParameters.getParameters();
+		UserParameters builder = new UserParameters.Builder().withAccountName(
+				accountName).build();
+		return builder.getParameters();
 	}
 
 	public static Map<String, String> buildWithRole(String role) {
-		UserParametersBuilder userParameters = new UserParametersBuilder.Builder().withRole(role).build();
+		UserParameters userParameters = new UserParameters.Builder().withRole(
+				role).build();
 		return userParameters.getParameters();
 	}
-	
+
 }

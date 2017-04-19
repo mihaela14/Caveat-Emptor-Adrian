@@ -8,10 +8,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@NamedQuery(name = "findUserWithAccountName", query = "SELECT u FROM User u where u.accountName = :accountName")
+@NamedQuery(name = "findUserWithAccountName", query = "SELECT usr FROM User usr where usr.accountName = :accountName")
 @Table(name = "users")
 public class User implements Serializable {
 
@@ -27,40 +28,43 @@ public class User implements Serializable {
 	@Column(name = "id", unique = true)
 	private int id;
 
-	public static final String ID = "id";
+	@OneToOne(mappedBy = "user")
+	private Registration registration;
 
 	@Column(name = "first_name", nullable = false)
 	private String firstName;
 
-	public static final String FIRST_NAME = "firstName";
-
 	@Column(name = "last_name", nullable = false)
 	private String lastName;
-
-	public static final String LAST_NAME = "lastName";
 
 	@Column(name = "email_address", unique = true, nullable = false)
 	private String emailAddress;
 
-	public static final String EMAIL_ADDRESS = "emailAddress";
-
 	@Column(name = "account_name", unique = true, nullable = false)
 	private String accountName;
-
-	public static final String ACCOUNT_NAME = "accountName";
 
 	@Column(name = "password", nullable = false)
 	private String password;
 
-	public static final String PASSWORD = "password";
-
 	@Column(name = "role", nullable = false)
 	private String role;
 
-	public static final String ROLE = "role";
-
 	@Column(name = "is_activated", nullable = false)
 	private boolean isActivated;
+
+	public static final String ID = "id";
+
+	public static final String FIRST_NAME = "firstName";
+
+	public static final String LAST_NAME = "lastName";
+
+	public static final String EMAIL_ADDRESS = "emailAddress";
+
+	public static final String ACCOUNT_NAME = "accountName";
+
+	public static final String PASSWORD = "password";
+
+	public static final String ROLE = "role";
 
 	public static final String IS_ACTIVATED = "isActivated";
 
@@ -125,12 +129,6 @@ public class User implements Serializable {
 
 	public void setRole(String role) {
 		this.role = role;
-	}
-
-	@Override
-	public String toString() {
-		return "User [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", emailAddress="
-				+ emailAddress + ", accountName=" + accountName + ", password=" + password + ", role=" + role + "]";
 	}
 
 }

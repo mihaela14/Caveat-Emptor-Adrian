@@ -1,4 +1,4 @@
-package repository.repositories;
+package repository.repositories.user;
 
 import java.util.Collection;
 

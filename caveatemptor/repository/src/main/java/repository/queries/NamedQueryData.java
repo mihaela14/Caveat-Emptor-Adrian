@@ -18,21 +18,6 @@ public class NamedQueryData implements INamedQueryData, Serializable {
 	}
 
 	@Override
-	public void addParameter(String key, String value) {
-		parameters.put(key, value);
-	}
-
-	@Override
-	public void addParameters(Map<String, String> parameters) {
-		parameters.putAll(parameters);
-	}
-
-	@Override
-	public void removeParameter(String key) {
-		parameters.remove(key);
-	}
-
-	@Override
 	public Map<String, String> getParameters() {
 		return Collections.unmodifiableMap(parameters);
 	}

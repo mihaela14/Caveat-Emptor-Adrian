@@ -5,7 +5,7 @@ import java.util.Map;
 
 import repository.entities.User;
 
-public class UserParametersBuilder {
+public class UserParameters {
 
 	private Map<String, String> parameters;
 
@@ -60,12 +60,12 @@ public class UserParametersBuilder {
 			return this;
 		}
 
-		public UserParametersBuilder build() {
-			return new UserParametersBuilder(this);
+		public UserParameters build() {
+			return new UserParameters(this);
 		}
 	}
 
-	public UserParametersBuilder(Builder builder) {
+	public UserParameters(Builder builder) {
 		this.parameters = new HashMap<>();
 		addParameter(parameters, User.ID, builder.id);
 		addParameter(parameters, User.FIRST_NAME, builder.firstName);
@@ -77,7 +77,8 @@ public class UserParametersBuilder {
 		addParameter(parameters, User.IS_ACTIVATED, builder.isActivated);
 	}
 
-	private void addParameter(Map<String, String> parameters, String parameterName, String parameterValue) {
+	private void addParameter(Map<String, String> parameters,
+			String parameterName, String parameterValue) {
 		if (parameterValue != null) {
 			parameters.put(parameterName, parameterValue);
 		}

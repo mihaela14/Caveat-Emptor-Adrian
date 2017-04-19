@@ -23,6 +23,8 @@ public class UserDTO implements Serializable {
 
 	private String role;
 
+	private boolean isActivated;
+
 	public UserDTO() {
 	}
 
@@ -86,12 +88,12 @@ public class UserDTO implements Serializable {
 		this.role = role;
 	}
 
-	@Override
-	public String toString() {
-		return "UserDTO [id=" + id + ", firstName=" + firstName + ", lastName="
-				+ lastName + ", emailAddress=" + emailAddress
-				+ ", accountName=" + accountName + ", password=" + password
-				+ ", role=" + role + "]";
+	public boolean isActivated() {
+		return isActivated;
+	}
+
+	public void setActivated(boolean isActivated) {
+		this.isActivated = isActivated;
 	}
 
 }

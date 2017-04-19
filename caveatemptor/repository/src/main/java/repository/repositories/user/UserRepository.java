@@ -1,4 +1,4 @@
-package repository.repositories;
+package repository.repositories.user;
 
 import java.util.Collection;
 import java.util.Map.Entry;
@@ -23,7 +23,7 @@ public class UserRepository implements IUserRepository {
 
 	@Override
 	public void add(User user, EntityManager entityManager) {
-		setEntityManager(entityManager);
+		initializeEntityManagerIfNull(entityManager);
 		if (user.getId() <= 0) {
 			create(user);
 		} else {
@@ -33,7 +33,7 @@ public class UserRepository implements IUserRepository {
 
 	@Override
 	public void remove(User user, EntityManager entityManager) {
-		setEntityManager(entityManager);
+		initializeEntityManagerIfNull(entityManager);
 		entityManager.getTransaction().begin();
 		entityManager.remove(user);
 		entityManager.getTransaction().commit();
@@ -42,7 +42,7 @@ public class UserRepository implements IUserRepository {
 	@Override
 	public Collection<User> getCollection(INamedQueryData namedQueryData,
 			EntityManager entityManager) {
-		setEntityManager(entityManager);
+		initializeEntityManagerIfNull(entityManager);
 		try {
 			return buildNamedQuery(namedQueryData).getResultList();
 		} catch (NoResultException e) {
@@ -53,7 +53,7 @@ public class UserRepository implements IUserRepository {
 	@Override
 	public User getSingleEntityByQueryData(INamedQueryData namedQueryData,
 			EntityManager entityManager) {
-		setEntityManager(entityManager);
+		initializeEntityManagerIfNull(entityManager);
 		try {
 			return (User) buildNamedQuery(namedQueryData).getSingleResult();
 		} catch (NoResultException e) {
@@ -63,7 +63,7 @@ public class UserRepository implements IUserRepository {
 
 	@Override
 	public User getSingleEntityById(int id, EntityManager entityManager) {
-		setEntityManager(entityManager);
+		initializeEntityManagerIfNull(entityManager);
 		return entityManager.find(User.class, id);
 	}
 
@@ -94,6 +94,12 @@ public class UserRepository implements IUserRepository {
 		}
 
 		return query;
+	}
+
+	private void initializeEntityManagerIfNull(EntityManager entityManager) {
+		if (this.entityManager == null) {
+			setEntityManager(entityManager);
+		}
 	}
 
 }

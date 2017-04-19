@@ -1,4 +1,7 @@
-package user;
+package user.login;
+
+import static exceptions.login.InvalidPasswordException.INVALID_PASSWORD_MESSAGE;
+import static exceptions.login.UserNotFoundException.USER_NOT_FOUND_MESSAGE;
 
 import java.util.Map;
 
@@ -14,7 +17,7 @@ import repository.entities.User;
 import repository.queries.INamedQueryData;
 import repository.queries.NamedQueryData;
 import repository.queries.parameters.user.UserQueryParametersBuilder;
-import repository.repositories.IUserRepository;
+import repository.repositories.user.IUserRepository;
 import dto.UserDTO;
 import exceptions.login.InvalidPasswordException;
 import exceptions.login.UserNotFoundException;
@@ -29,50 +32,51 @@ public class LoginService implements ILoginService {
 	@EJB
 	private IUserRepository iUserRepository;
 
-	private final String USER_NOT_FOUND_EXCEPTION_MESSAGE = "User not found: invalid account name.";
-
-	private final String INVALID_PASSWORD_EXCEPTION_MESSAGE = "Received invalid password.";
-
 	public LoginService() {
-	}
-
-	@Override
-	public UserDTO findUser(String accountName) throws UserNotFoundException {
-
-		INamedQueryData queryData = getAccountNameQueryData(accountName);
-
-		User user = iUserRepository.getSingleEntityByQueryData(queryData, entityManager);
-
-		if (user == null) {
-			throw new UserNotFoundException(USER_NOT_FOUND_EXCEPTION_MESSAGE);
-		} else {
-			return new ModelMapper().map(user, UserDTO.class);
-		}
-	}
-
-	private NamedQueryData getAccountNameQueryData(String accountName) {
-
-		Map<String, String> parameters = UserQueryParametersBuilder.buildWithAccountName(accountName);
-
-		return new NamedQueryData(User.QUERY_FIND_USER_WITH_ACCOUNT_NAME, parameters);
-	}
-
-	@Override
-	public boolean hasValidPassword(UserDTO userDTO, String password) throws InvalidPasswordException {
-		boolean isValidPassword = userDTO.getPassword().equals(password);
-
-		if (isValidPassword) {
-			return true;
-		} else {
-			throw new InvalidPasswordException(INVALID_PASSWORD_EXCEPTION_MESSAGE);
-		}
 	}
 
 	@Override
 	public boolean hasValidCredentials(String accountName, String password)
 			throws UserNotFoundException, InvalidPasswordException {
+
 		UserDTO userDTO = findUser(accountName);
+
 		return hasValidPassword(userDTO, password);
+	}
+
+	public UserDTO findUser(String accountName) throws UserNotFoundException {
+
+		INamedQueryData queryData = getAccountNameQueryData(accountName);
+
+		User user = iUserRepository.getSingleEntityByQueryData(queryData,
+				entityManager);
+
+		if (user == null) {
+			throw new UserNotFoundException(USER_NOT_FOUND_MESSAGE);
+		} else {
+			return new ModelMapper().map(user, UserDTO.class);
+		}
+	}
+
+	public boolean hasValidPassword(UserDTO userDTO, String password)
+			throws InvalidPasswordException {
+
+		boolean isValidPassword = userDTO.getPassword().equals(password);
+
+		if (isValidPassword) {
+			return true;
+		} else {
+			throw new InvalidPasswordException(INVALID_PASSWORD_MESSAGE);
+		}
+	}
+
+	private NamedQueryData getAccountNameQueryData(String accountName) {
+
+		Map<String, String> parameters = UserQueryParametersBuilder
+				.buildWithAccountName(accountName);
+
+		return new NamedQueryData(User.QUERY_FIND_USER_WITH_ACCOUNT_NAME,
+				parameters);
 	}
 
 	public EntityManager getEntityManager() {

@@ -1,4 +1,4 @@
-package beans;
+package beans.user.login;
 
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -6,7 +6,7 @@ import javax.faces.bean.SessionScoped;
 
 import exceptions.login.InvalidPasswordException;
 import exceptions.login.UserNotFoundException;
-import user.ILoginService;
+import user.login.ILoginService;
 
 @ManagedBean(name = "login")
 @SessionScoped
@@ -16,15 +16,11 @@ public class LoginBean {
 	private ILoginService iLoginService;
 
 	private String accountName;
-
 	private String password;
-
 	private String status;
 
 	public static final String INVALID_PASSWORD = "Invalid password.";
-
 	public static final String VALID_CREDENTIALS = "Valid credentials.";
-
 	public static final String USER_NOT_FOUND = "User not found.";
 
 	public LoginBean() {
