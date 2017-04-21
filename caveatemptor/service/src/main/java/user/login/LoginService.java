@@ -1,8 +1,5 @@
 package user.login;
 
-import static exceptions.login.InvalidPasswordException.INVALID_PASSWORD_MESSAGE;
-import static exceptions.login.UserNotFoundException.USER_NOT_FOUND_MESSAGE;
-
 import java.util.Map;
 
 import javax.ejb.EJB;
@@ -11,16 +8,15 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.modelmapper.ModelMapper;
-
+import mapping.UserMapper;
 import repository.entities.User;
 import repository.queries.INamedQueryData;
 import repository.queries.NamedQueryData;
-import repository.queries.parameters.user.UserQueryParametersBuilder;
+import repository.queries.parameters.user.UserParameters;
 import repository.repositories.user.IUserRepository;
+import constants.ErrorMessages;
 import dto.UserDTO;
-import exceptions.login.InvalidPasswordException;
-import exceptions.login.UserNotFoundException;
+import exceptions.user.UserException;
 
 @Stateless
 @Remote(ILoginService.class)
@@ -36,63 +32,42 @@ public class LoginService implements ILoginService {
 	}
 
 	@Override
-	public boolean hasValidCredentials(String accountName, String password)
-			throws UserNotFoundException, InvalidPasswordException {
+	public boolean isValidUserLoginData(String accountName, String password)
+			throws UserException {
 
 		UserDTO userDTO = findUser(accountName);
 
 		return hasValidPassword(userDTO, password);
 	}
 
-	public UserDTO findUser(String accountName) throws UserNotFoundException {
+	public UserDTO findUser(String accountName) throws UserException {
 
-		INamedQueryData queryData = getAccountNameQueryData(accountName);
+		INamedQueryData queryData = getQueryData(accountName);
 
 		User user = iUserRepository.getSingleEntityByQueryData(queryData,
 				entityManager);
 
 		if (user == null) {
-			throw new UserNotFoundException(USER_NOT_FOUND_MESSAGE);
+			throw new UserException(ErrorMessages.USER_NOT_FOUND.getDetails());
 		} else {
-			return new ModelMapper().map(user, UserDTO.class);
+			return UserMapper.getUserDTO(user);
 		}
 	}
 
-	public boolean hasValidPassword(UserDTO userDTO, String password)
-			throws InvalidPasswordException {
+	public boolean hasValidPassword(UserDTO userDTO, String password) {
 
-		boolean isValidPassword = userDTO.getPassword().equals(password);
-
-		if (isValidPassword) {
-			return true;
-		} else {
-			throw new InvalidPasswordException(INVALID_PASSWORD_MESSAGE);
-		}
+		return userDTO.getPassword().equals(password);
 	}
 
-	private NamedQueryData getAccountNameQueryData(String accountName) {
+	private NamedQueryData getQueryData(String accountName) {
 
-		Map<String, String> parameters = UserQueryParametersBuilder
-				.buildWithAccountName(accountName);
+		UserParameters userParameters = new UserParameters.Builder()
+				.withAccountName(accountName).build();
+
+		Map<String, Object> parameters = userParameters.getParameters();
 
 		return new NamedQueryData(User.QUERY_FIND_USER_WITH_ACCOUNT_NAME,
 				parameters);
-	}
-
-	public EntityManager getEntityManager() {
-		return entityManager;
-	}
-
-	public void setEntityManager(EntityManager entityManager) {
-		this.entityManager = entityManager;
-	}
-
-	public IUserRepository getUserRepository() {
-		return iUserRepository;
-	}
-
-	public void setUserRepository(IUserRepository iRepository) {
-		this.iUserRepository = iRepository;
 	}
 
 }

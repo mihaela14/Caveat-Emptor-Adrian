@@ -2,56 +2,50 @@ package beans.user.login;
 
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.RequestScoped;
+import javax.faces.context.FacesContext;
 
-import exceptions.login.InvalidPasswordException;
-import exceptions.login.UserNotFoundException;
 import user.login.ILoginService;
+import beans.utils.FacesContextMessage;
+import constants.ErrorMessages;
+import constants.Forms;
+import constants.Routes;
+import exceptions.user.UserException;
 
 @ManagedBean(name = "login")
-@SessionScoped
+@RequestScoped
 public class LoginBean {
 
 	@EJB
 	private ILoginService iLoginService;
 
 	private String accountName;
-
 	private String password;
-
-	private String status;
-
-	public static final String INVALID_PASSWORD = "Invalid password.";
-
-	public static final String VALID_CREDENTIALS = "Valid credentials.";
-
-	public static final String USER_NOT_FOUND = "User not found.";
 
 	public LoginBean() {
 	}
 
-	public String hasValidCredentials() {
+	public String login() {
+
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+
 		try {
-			boolean hasValidCredentials = iLoginService.hasValidCredentials(
+			boolean isValidUserLoginData = iLoginService.isValidUserLoginData(
 					accountName, password);
-			if (hasValidCredentials) {
-				status = VALID_CREDENTIALS;
+
+			if (isValidUserLoginData) {
+				return Routes.INDEX_REDIRECT.getUrl();
+			} else {
+				FacesContextMessage.addMessage(facesContext,
+						Forms.LOGIN.getName(),
+						ErrorMessages.INVALID_PASSWORD.getDetails());
 			}
-		} catch (UserNotFoundException e) {
-			status = USER_NOT_FOUND;
-		} catch (InvalidPasswordException e) {
-			status = INVALID_PASSWORD;
+		} catch (UserException e) {
+			FacesContextMessage.addMessage(facesContext, Forms.LOGIN.getName(),
+					ErrorMessages.USER_NOT_FOUND.getDetails());
 		}
 
-		return status;
-	}
-
-	public ILoginService getiLoginService() {
-		return iLoginService;
-	}
-
-	public void setiLoginService(ILoginService iLoginService) {
-		this.iLoginService = iLoginService;
+		return null;
 	}
 
 	public String getAccountName() {
@@ -68,14 +62,6 @@ public class LoginBean {
 
 	public void setPassword(String password) {
 		this.password = password;
-	}
-
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
 	}
 
 }

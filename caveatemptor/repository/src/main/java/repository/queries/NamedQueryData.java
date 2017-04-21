@@ -10,15 +10,15 @@ public class NamedQueryData implements INamedQueryData, Serializable {
 
 	private final String namedQuery;
 
-	private final Map<String, String> parameters;
+	private final Map<String, Object> parameters;
 
-	public NamedQueryData(String namedQuery, Map<String, String> parameters) {
+	public NamedQueryData(String namedQuery, Map<String, Object> parameters) {
 		this.namedQuery = namedQuery;
 		this.parameters = parameters;
 	}
 
 	@Override
-	public Map<String, String> getParameters() {
+	public Map<String, Object> getParameters() {
 		return Collections.unmodifiableMap(parameters);
 	}
 

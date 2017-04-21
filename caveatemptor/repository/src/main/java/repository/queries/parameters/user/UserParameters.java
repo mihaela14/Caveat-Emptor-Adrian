@@ -7,56 +7,53 @@ import repository.entities.User;
 
 public class UserParameters {
 
-	private Map<String, String> parameters;
+	private Map<String, Object> parameters;
 
-	static class Builder {
+	public static class Builder {
 
-		private String id;
-		private String firstName;
-		private String lastName;
-		private String emailAddress;
-		private String accountName;
-		private String password;
-		private String role;
-		private String isActivated;
+		private Map<String, Object> parameters;
 
-		public Builder withId(String id) {
-			this.id = id;
+		public Builder() {
+			this.parameters = new HashMap<>();
+		}
+
+		public Builder withId(long id) {
+			parameters.put(User.ID_FIELD, id);
 			return this;
 		}
 
 		public Builder withFirstName(String firstName) {
-			this.firstName = firstName;
+			parameters.put(User.FIRST_NAME_FIELD, firstName);
 			return this;
 		}
 
 		public Builder withLastName(String lastName) {
-			this.lastName = lastName;
+			parameters.put(User.LAST_NAME_FIELD, lastName);
 			return this;
 		}
 
 		public Builder withEmailAddress(String emailAddress) {
-			this.emailAddress = emailAddress;
+			parameters.put(User.EMAIL_ADDRESS_FIELD, emailAddress);
 			return this;
 		}
 
 		public Builder withAccountName(String accountName) {
-			this.accountName = accountName;
+			parameters.put(User.ACCOUNT_NAME_FIELD, accountName);
 			return this;
 		}
 
 		public Builder withPassword(String password) {
-			this.password = password;
+			parameters.put(User.PASSWORD_FIELD, password);
 			return this;
 		}
 
 		public Builder withRole(String role) {
-			this.role = role;
+			parameters.put(User.ROLE_FIELD, role);
 			return this;
 		}
 
-		public Builder withIsActivated(String isActivated) {
-			this.isActivated = isActivated;
+		public Builder withIsActivated(boolean isActivated) {
+			parameters.put(User.IS_ACTIVATED_FIELD, isActivated);
 			return this;
 		}
 
@@ -66,25 +63,10 @@ public class UserParameters {
 	}
 
 	public UserParameters(Builder builder) {
-		this.parameters = new HashMap<>();
-		addParameter(parameters, User.ID, builder.id);
-		addParameter(parameters, User.FIRST_NAME, builder.firstName);
-		addParameter(parameters, User.LAST_NAME, builder.lastName);
-		addParameter(parameters, User.EMAIL_ADDRESS, builder.emailAddress);
-		addParameter(parameters, User.ACCOUNT_NAME, builder.accountName);
-		addParameter(parameters, User.PASSWORD, builder.password);
-		addParameter(parameters, User.ROLE, builder.role);
-		addParameter(parameters, User.IS_ACTIVATED, builder.isActivated);
+		this.parameters = builder.parameters;
 	}
 
-	private void addParameter(Map<String, String> parameters,
-			String parameterName, String parameterValue) {
-		if (parameterValue != null) {
-			parameters.put(parameterName, parameterValue);
-		}
-	}
-
-	public Map<String, String> getParameters() {
+	public Map<String, Object> getParameters() {
 		return parameters;
 	}
 

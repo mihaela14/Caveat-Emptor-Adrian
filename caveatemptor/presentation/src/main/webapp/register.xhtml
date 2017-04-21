@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+
+<h:head>
+	<title>Caveat Emptor</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta http-equiv="X-UA-Compatible" content="IE-edge" />
+	<h:outputStylesheet library="css" name="bootstrap.min.css"></h:outputStylesheet>
+</h:head>
+<h:body>
+	<div class="container">
+		<div class="navbar navbar-inverse">
+			<div class="navbar-brand">Caveat Emptor Register Page</div>
+		</div>
+
+		<div class="row">
+			<div class="col-xs-12">
+				<h:form styleClass="form-horizontal">
+					<div class="form-group">
+						<h:outputText value="First name"
+							styleClass="control-label col-sm-2" />
+						<div class="col-sm-6">
+							<h:inputText id="firstName" value="#{register.firstName}"
+								class="form-control" size="20"
+								validatorMessage="Expecting first name with length between 1 and 20 characters.">
+								<f:validateLength minimum="1" maximum="20" />
+							</h:inputText>
+
+						</div>
+					</div>
+
+					<div class="form-group">
+						<h:outputText value="Last name"
+							styleClass="control-label col-sm-2" />
+						<div class="col-sm-6">
+							<h:inputText id="lastName" value="#{register.lastName}"
+								class="form-control" size="20"
+								validatorMessage="Expecting last name with length between 1 and 20 characters.">
+								<f:validateLength minimum="1" maximum="20" />
+							</h:inputText>
+
+						</div>
+					</div>
+
+					<div class="form-group">
+						<h:outputText value="Email address"
+							styleClass="control-label col-sm-2" />
+						<div class="col-sm-6">
+							<h:inputText id="emailAddress" value="#{register.emailAddress}"
+								class="form-control" size="40"
+								validatorMessage="Expecting email address with length between 1 and 20 characters.">
+								<f:validateLength minimum="1" maximum="40" />
+							</h:inputText>
+
+						</div>
+					</div>
+
+					<div class="form-group">
+						<h:outputText value="Account name"
+							styleClass="control-label col-sm-2" />
+						<div class="col-sm-6">
+							<h:inputText id="accountName" value="#{register.accountName}"
+								class="form-control" size="20"
+								validatorMessage="Expecting account name with length between 1 and 20 characters.">
+								<f:validateLength minimum="1" maximum="20" />
+							</h:inputText>
+
+						</div>
+					</div>
+
+					<div class="form-group">
+						<h:outputText value="Password" styleClass="control-label col-sm-2" />
+						<div class="col-sm-6">
+							<h:inputSecret id="password" value="#{register.password}"
+								class="form-control" size="20"
+								validatorMessage="Expecting password with length between 1 and 20 characters.">
+								<f:validateLength minimum="1" maximum="20" />
+							</h:inputSecret>
+
+						</div>
+					</div>
+
+					<div class="form-group">
+						<div class="col-sm-offset-2 col-sm-10">
+							<h:commandButton id="submitButton" action="#{register.register}"
+								value="Register" styleClass="btn btn-default">
+							</h:commandButton>
+						</div>
+					</div>
+
+				</h:form>
+			</div>
+		</div>
+		<h:messages style="color:red;margin:8px" />
+	</div>
+
+</h:body>
+</html>

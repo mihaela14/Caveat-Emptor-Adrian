@@ -1,10 +1,9 @@
 package user.login;
 
-import exceptions.login.InvalidPasswordException;
-import exceptions.login.UserNotFoundException;
+import exceptions.user.UserException;
 
 public interface ILoginService {
 
-	boolean hasValidCredentials(String accountName, String password)
-			throws UserNotFoundException, InvalidPasswordException;
+	boolean isValidUserLoginData(String accountName, String password)
+			throws UserException;
 }

@@ -4,23 +4,15 @@ import java.io.Serializable;
 
 public class UserDTO implements Serializable {
 
-	/**
-	 * default serial version ID
-	 */
 	private static final long serialVersionUID = 1L;
 
 	private int id;
 
 	private String firstName;
-
 	private String lastName;
-
 	private String emailAddress;
-
 	private String accountName;
-
 	private String password;
-
 	private String role;
 
 	private boolean isActivated;

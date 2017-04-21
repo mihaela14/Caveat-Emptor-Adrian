@@ -4,7 +4,7 @@ import java.util.Map;
 
 public interface INamedQueryData {
 
-	Map<String, String> getParameters();
+	Map<String, Object> getParameters();
 
 	String getNamedQuery();
 }

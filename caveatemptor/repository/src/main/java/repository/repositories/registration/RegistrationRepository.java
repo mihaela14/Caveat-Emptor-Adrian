@@ -1,4 +1,4 @@
-package repository.repositories.user;
+package repository.repositories.registration;
 
 import java.util.Collection;
 import java.util.Map.Entry;
@@ -9,39 +9,45 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
-import repository.entities.User;
+import repository.entities.Registration;
 import repository.queries.INamedQueryData;
 
 @Stateless
-@Remote(IUserRepository.class)
-public class UserRepository implements IUserRepository {
+@Remote(IRegistrationRepository.class)
+public class RegistrationRepository implements IRegistrationRepository {
 
 	private EntityManager entityManager;
 
-	public UserRepository() {
+	public RegistrationRepository() {
+	}
+
+	public RegistrationRepository(EntityManager entityManager) {
+		this.entityManager = entityManager;
 	}
 
 	@Override
-	public void add(User user, EntityManager entityManager) {
+	public void add(Registration registration, EntityManager entityManager) {
 		initializeEntityManagerIfNull(entityManager);
-		if (user.getId() <= 0) {
-			create(user);
+		if (registration.getId() <= 0) {
+			create(registration);
 		} else {
-			update(user);
+			update(registration);
 		}
 	}
 
 	@Override
-	public void remove(User user, EntityManager entityManager) {
+	public void remove(Registration registration, EntityManager entityManager) {
 		initializeEntityManagerIfNull(entityManager);
-		this.entityManager.remove(entityManager.contains(user) ? user
-				: entityManager.merge(user));
+		this.entityManager
+				.remove(entityManager.contains(registration) ? registration
+						: entityManager.merge(registration));
 	}
 
 	@Override
-	public Collection<User> getCollection(INamedQueryData namedQueryData,
-			EntityManager entityManager) {
+	public Collection<Registration> getCollection(
+			INamedQueryData namedQueryData, EntityManager entityManager) {
 		initializeEntityManagerIfNull(entityManager);
+
 		try {
 			return buildNamedQuery(namedQueryData).getResultList();
 		} catch (NoResultException e) {
@@ -50,33 +56,26 @@ public class UserRepository implements IUserRepository {
 	}
 
 	@Override
-	public User getSingleEntityByQueryData(INamedQueryData namedQueryData,
-			EntityManager entityManager) {
+	public Registration getSingleEntityByQueryData(
+			INamedQueryData namedQueryData, EntityManager entityManager) {
 		initializeEntityManagerIfNull(entityManager);
 		try {
-			return (User) buildNamedQuery(namedQueryData).getSingleResult();
+			return (Registration) buildNamedQuery(namedQueryData)
+					.getSingleResult();
 		} catch (NoResultException e) {
 			return null;
 		}
 	}
 
 	@Override
-	public User getSingleEntityById(int id, EntityManager entityManager) {
+	public Registration getSingleEntityById(int id, EntityManager entityManager) {
 		initializeEntityManagerIfNull(entityManager);
-		return this.entityManager.find(User.class, id);
+		return this.entityManager.find(Registration.class, id);
 	}
 
 	@Override
 	public void setEntityManager(EntityManager entityManager) {
 		this.entityManager = entityManager;
-	}
-
-	private void create(User user) {
-		entityManager.persist(user);
-	}
-
-	private void update(User user) {
-		entityManager.merge(user);
 	}
 
 	public Query buildNamedQuery(final INamedQueryData namedQueryData) {
@@ -89,6 +88,14 @@ public class UserRepository implements IUserRepository {
 		}
 
 		return query;
+	}
+
+	private void create(Registration registration) {
+		entityManager.persist(registration);
+	}
+
+	private void update(Registration registration) {
+		entityManager.merge(registration);
 	}
 
 	private void initializeEntityManagerIfNull(EntityManager entityManager) {
