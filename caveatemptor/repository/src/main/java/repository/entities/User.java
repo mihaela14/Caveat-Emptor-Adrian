@@ -36,10 +36,10 @@ public class User implements Serializable {
 	@Column(name = "account_name", unique = true, nullable = false)
 	private String accountName;
 
-	@Column(name = "password", nullable = false)
+	@Column(nullable = false)
 	private String password;
 
-	@Column(name = "role", nullable = false)
+	@Column(nullable = false)
 	private String role;
 
 	@Column(name = "is_activated", nullable = false)
