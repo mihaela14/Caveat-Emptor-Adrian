@@ -21,10 +21,6 @@ public class RegistrationRepository implements IRegistrationRepository {
 	public RegistrationRepository() {
 	}
 
-	public RegistrationRepository(EntityManager entityManager) {
-		this.entityManager = entityManager;
-	}
-
 	@Override
 	public void add(Registration registration, EntityManager entityManager) {
 		initializeEntityManagerIfNull(entityManager);
@@ -78,7 +74,7 @@ public class RegistrationRepository implements IRegistrationRepository {
 		this.entityManager = entityManager;
 	}
 
-	public Query buildNamedQuery(final INamedQueryData namedQueryData) {
+	private Query buildNamedQuery(final INamedQueryData namedQueryData) {
 		final Query query = entityManager.createNamedQuery(namedQueryData
 				.getNamedQuery());
 

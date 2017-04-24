@@ -25,7 +25,7 @@ public class Registration implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(unique = true)
-	private int id;
+	private Long id;
 
 	@OneToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "user_id", referencedColumnName = "id")
@@ -48,12 +48,8 @@ public class Registration implements Serializable {
 	public Registration() {
 	}
 
-	public int getId() {
+	public Long getId() {
 		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
 	}
 
 	public User getUser() {

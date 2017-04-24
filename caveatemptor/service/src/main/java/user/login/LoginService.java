@@ -40,7 +40,7 @@ public class LoginService implements ILoginService {
 		return hasValidPassword(userDTO, password);
 	}
 
-	public UserDTO findUser(String accountName) throws UserException {
+	private UserDTO findUser(String accountName) throws UserException {
 
 		INamedQueryData queryData = getQueryData(accountName);
 
@@ -49,12 +49,15 @@ public class LoginService implements ILoginService {
 
 		if (user == null) {
 			throw new UserException(ErrorMessages.USER_NOT_FOUND.getDetails());
+		} else if (!user.isActivated()) {
+			throw new UserException(
+					ErrorMessages.USER_NOT_ACTIVATED.getDetails());
 		} else {
 			return UserMapper.getUserDTO(user);
 		}
 	}
 
-	public boolean hasValidPassword(UserDTO userDTO, String password) {
+	private boolean hasValidPassword(UserDTO userDTO, String password) {
 
 		return userDTO.getPassword().equals(password);
 	}

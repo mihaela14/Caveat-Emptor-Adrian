@@ -22,7 +22,7 @@ public class User implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(unique = true)
-	private int id;
+	private Long id;
 
 	@Column(name = "first_name", nullable = false)
 	private String firstName;
@@ -64,16 +64,8 @@ public class User implements Serializable {
 	public User() {
 	}
 
-	public User(int id) {
-		this.id = id;
-	}
-
-	public int getId() {
+	public Long getId() {
 		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
 	}
 
 	public String getFirstName() {

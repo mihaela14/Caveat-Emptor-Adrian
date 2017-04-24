@@ -79,7 +79,7 @@ public class UserRepository implements IUserRepository {
 		entityManager.merge(user);
 	}
 
-	public Query buildNamedQuery(final INamedQueryData namedQueryData) {
+	private Query buildNamedQuery(final INamedQueryData namedQueryData) {
 		final Query query = entityManager.createNamedQuery(namedQueryData
 				.getNamedQuery());
 
