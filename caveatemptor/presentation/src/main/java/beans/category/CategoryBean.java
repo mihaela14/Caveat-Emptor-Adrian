@@ -29,15 +29,14 @@ public class CategoryBean {
 
 	public String getInitializedTree() {
 
-		try {
-			Category root = iCategoryBuilderService.getRoot(1L);
+		Gson gson = new Gson();
 
-			CategoryDTO rootDTO = CategoryMapper.getCategoryDTO(root);
+		try {
+			CategoryDTO rootDTO = iCategoryBuilderService.getRootDTO(1L);
 			Tree tree = TreeMapper.getTree(rootDTO);
 
-			Gson gson = new Gson();
-
 			return gson.toJson(tree);
+
 		} catch (CategoryException e) {
 			return null;
 		}

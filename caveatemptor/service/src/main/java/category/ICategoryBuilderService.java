@@ -1,9 +1,9 @@
 package category;
 
-import repository.entities.Category;
+import dto.CategoryDTO;
 import exceptions.CategoryException;
 
 public interface ICategoryBuilderService {
 
-	Category getRoot(Long id) throws CategoryException;
+	CategoryDTO getRootDTO(Long id) throws CategoryException;
 }

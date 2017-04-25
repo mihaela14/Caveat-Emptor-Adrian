@@ -6,8 +6,10 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import mapping.CategoryMapper;
 import repository.entities.Category;
 import repository.repositories.category.ICategoryRepository;
+import dto.CategoryDTO;
 import exceptions.CategoryException;
 
 @Stateless
@@ -21,12 +23,12 @@ public class CategoryBuilderService implements ICategoryBuilderService {
 	private ICategoryRepository iCategoryRepository;
 
 	@Override
-	public Category getRoot(Long id) throws CategoryException {
+	public CategoryDTO getRootDTO(Long id) throws CategoryException {
 
 		Category root = iCategoryRepository.getSingleEntityById(id,
 				entityManager);
 
-		return root;
+		return CategoryMapper.getCategoryDTO(root);
 	}
 
 }
