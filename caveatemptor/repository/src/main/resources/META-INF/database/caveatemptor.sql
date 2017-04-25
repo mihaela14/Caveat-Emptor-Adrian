@@ -16,12 +16,33 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Current Database: `caveatemptor`
+-- Table structure for table `categories`
 --
 
-CREATE DATABASE /*!32312 IF NOT EXISTS*/ `caveatemptor` /*!40100 DEFAULT CHARACTER SET utf8 */;
+DROP TABLE IF EXISTS `categories`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `categories` (
+  `id` bigint(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `description` varchar(100) DEFAULT NULL,
+  `parent_id` bigint(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  KEY `parent_id_idx` (`parent_id`),
+  CONSTRAINT `fk_categories_categories_parent_id` FOREIGN KEY (`parent_id`) REFERENCES `categories` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
-USE `caveatemptor`;
+--
+-- Dumping data for table `categories`
+--
+
+LOCK TABLES `categories` WRITE;
+/*!40000 ALTER TABLE `categories` DISABLE KEYS */;
+INSERT INTO `categories` VALUES (1,'root',NULL,NULL),(2,'Desktop PC',NULL,1),(3,'PC components',NULL,1),(4,'Laptops',NULL,1),(5,'Laptop accessories',NULL,1),(7,'CPUs',NULL,3),(8,'Storage',NULL,3),(9,'RAM',NULL,3),(10,'AMD RYZEN',NULL,7),(11,'INTEL',NULL,7);
+/*!40000 ALTER TABLE `categories` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `registrations`
@@ -31,15 +52,15 @@ DROP TABLE IF EXISTS `registrations`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `registrations` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) NOT NULL,
+  `id` bigint(11) NOT NULL,
+  `user_id` bigint(11) NOT NULL,
   `authorization_key` varchar(100) NOT NULL,
   `authorization_key_expiration` bigint(20) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   KEY `user_id_idx` (`user_id`),
-  CONSTRAINT `user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+  CONSTRAINT `fk_registrations_users_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -48,7 +69,6 @@ CREATE TABLE `registrations` (
 
 LOCK TABLES `registrations` WRITE;
 /*!40000 ALTER TABLE `registrations` DISABLE KEYS */;
-INSERT INTO `registrations` VALUES (1,2,'khfdakh324324',20170418),(2,18,'vbjd39lrsfl8jggiln9b',1492695406341);
 /*!40000 ALTER TABLE `registrations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -60,7 +80,7 @@ DROP TABLE IF EXISTS `users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `users` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` bigint(11) NOT NULL,
   `first_name` varchar(100) NOT NULL,
   `last_name` varchar(100) NOT NULL,
   `email_address` varchar(100) NOT NULL,
@@ -72,7 +92,7 @@ CREATE TABLE `users` (
   UNIQUE KEY `id_UNIQUE` (`id`),
   UNIQUE KEY `email_address_UNIQUE` (`email_address`),
   UNIQUE KEY `account_name_UNIQUE` (`account_name`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -81,7 +101,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'a','a','a','a','a','a',0),(2,'adrian','butnaru','adrian.butnaru4@gmail.com','adrianbutnaru4','hackthisone123','admin',0),(3,'testian','testnaru','testnaru@test.com','testiantestnaru4','124wrtgwe43','REGULAR_USER',0),(4,'sdad','dffd','afdsf','fdasfas','fdasfdasfdsa','REGULAR_USER',0),(5,'adriann','butnaruuu','adrian@gmail.com','adrianbutnaru444','unhackable2014','REGULAR_USER',0),(6,'paul alex','alex paul','alexpaul','alexpaul','alexpaul','REGULAR_USER',0),(18,'fdafdadfdas','fdafdafdaf','dafdafda','fdafafda','fdafdsaf','REGULAR_USER',0);
+INSERT INTO `users` VALUES (1,'a','a','a','a','a','a',0),(3,'testian','testnaru','testnaru@test.com','testiantestnaru4','124wrtgwe43','REGULAR_USER',0),(4,'sdad','dffd','afdsf','fdasfas','fdasfdasfdsa','REGULAR_USER',0),(5,'adriann','butnaruuu','adrian@gmail.com','adrianbutnaru444','unhackable2014','REGULAR_USER',0),(6,'paul alex','alex paul','alexpaul','alexpaul','alexpaul','REGULAR_USER',0),(18,'fdafdadfdas','fdafdafdaf','dafdafda','fdafafda','fdafdsaf','REGULAR_USER',0),(28,'a','fda','adrian.butnaru4@gmail.com','adfafdsa','fdafda','REGULAR_USER',1);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -94,4 +114,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-04-20  9:32:11
+-- Dump completed on 2017-04-25 16:04:40
