@@ -16,6 +16,9 @@ import dto.UserDTO;
 
 public class EmailSender {
 
+	private EmailSender() {
+	}
+	
 	public static void send(UserDTO user, String authenticationKey,
 			String path, String url) {
 
