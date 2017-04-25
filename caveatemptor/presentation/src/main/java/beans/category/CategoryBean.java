@@ -5,10 +5,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 
-import mapping.CategoryMapper;
 import mapping.Tree;
 import mapping.TreeMapper;
-import repository.entities.Category;
 import category.ICategoryBuilderService;
 
 import com.google.gson.Gson;
