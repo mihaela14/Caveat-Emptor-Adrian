@@ -17,6 +17,9 @@ public class CategoryDTO implements Serializable {
 
 	private String description;
 
+	public CategoryDTO() {
+	}
+
 	public Long getId() {
 		return id;
 	}
