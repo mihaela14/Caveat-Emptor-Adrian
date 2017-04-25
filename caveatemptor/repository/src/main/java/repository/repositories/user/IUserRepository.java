@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import javax.persistence.EntityManager;
 
+import exceptions.UserException;
 import repository.entities.User;
 import repository.queries.INamedQueryData;
 
@@ -14,12 +15,13 @@ public interface IUserRepository {
 	void remove(User user, EntityManager entityManager);
 
 	Collection<User> getCollection(INamedQueryData namedQueryData,
-			EntityManager entityManager);
+			EntityManager entityManager) throws UserException;
 
 	User getSingleEntityByQueryData(INamedQueryData namedQueryData,
-			EntityManager entityManager);
+			EntityManager entityManager) throws UserException;
 
-	User getSingleEntityById(int id, EntityManager entityManager);
+	User getSingleEntityById(Long id, EntityManager entityManager)
+			throws UserException;
 
 	void setEntityManager(EntityManager entityManager);
 }

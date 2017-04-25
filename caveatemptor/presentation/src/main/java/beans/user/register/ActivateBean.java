@@ -5,7 +5,8 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
 import user.activation.IActivationService;
-import exceptions.registration.RegistrationException;
+import exceptions.RegistrationException;
+import exceptions.UserException;
 
 @ManagedBean(name = "activation")
 @RequestScoped
@@ -21,8 +22,8 @@ public class ActivateBean {
 
 		try {
 			iActivationService.activate(activationKey);
-		} catch (RegistrationException e) {
-
+		} catch (UserException | RegistrationException e) {
+				
 		}
 	}
 

@@ -1,8 +1,10 @@
 package user.activation;
 
-import exceptions.registration.RegistrationException;
+import exceptions.RegistrationException;
+import exceptions.UserException;
 
 public interface IActivationService {
 
-	void activate(String activationKey) throws RegistrationException;
+	void activate(String activationKey) throws UserException,
+			RegistrationException;
 }

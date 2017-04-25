@@ -10,6 +10,7 @@
 	<packaging>ejb</packaging>
 
 	<dependencies>
+
 		<dependency>
 			<groupId>org.apache.openjpa</groupId>
 			<artifactId>openjpa-persistence-jdbc</artifactId>
@@ -26,12 +27,6 @@
 			<groupId>org.apache.openjpa</groupId>
 			<artifactId>openjpa-all</artifactId>
 			<version>2.4.2</version>
-		</dependency>
-
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>6.0.6</version>
 		</dependency>
 
 		<dependency>

@@ -1,4 +1,4 @@
-package repository.repositories.user;
+package repository.repositories.category;
 
 import java.util.Collection;
 import java.util.Map.Entry;
@@ -9,87 +9,83 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 
-import repository.entities.User;
+import repository.entities.Category;
 import repository.queries.INamedQueryData;
-import exceptions.UserException;
-import exceptions.messages.ExceptionMessages;
+import exceptions.CategoryException;
 
 @Stateless
-@Remote(IUserRepository.class)
-public class UserRepository implements IUserRepository {
+@Remote(ICategoryRepository.class)
+public class CategoryRepository implements ICategoryRepository {
 
 	private EntityManager entityManager;
 
-	public UserRepository() {
+	public CategoryRepository() {
 	}
 
 	@Override
-	public void add(User user, EntityManager entityManager) {
+	public void add(Category category, EntityManager entityManager) {
 
 		initializeEntityManagerIfNull(entityManager);
 
-		if (user.getId() <= 0) {
-			create(user);
+		if (category.getId() <= 0) {
+			create(category);
 		} else {
-			update(user);
+			update(category);
 		}
 	}
 
-	private void create(User user) {
-		entityManager.persist(user);
+	private void create(Category category) {
+		entityManager.persist(category);
 	}
 
-	private void update(User user) {
-		entityManager.merge(user);
+	private void update(Category category) {
+		entityManager.merge(category);
 	}
 
 	@Override
-	public void remove(User user, EntityManager entityManager) {
+	public void remove(Category category, EntityManager entityManager) {
 
 		initializeEntityManagerIfNull(entityManager);
-		this.entityManager.remove(entityManager.contains(user) ? user
-				: entityManager.merge(user));
+		this.entityManager.remove(entityManager.contains(category) ? category
+				: entityManager.merge(category));
 	}
 
-	// TODO: add message to exception
 	@Override
-	public Collection<User> getCollection(INamedQueryData namedQueryData,
-			EntityManager entityManager) throws UserException {
+	public Collection<Category> getCollection(INamedQueryData namedQueryData,
+			EntityManager entityManager) throws CategoryException {
 
 		initializeEntityManagerIfNull(entityManager);
 
 		try {
 			return buildNamedQuery(namedQueryData).getResultList();
 		} catch (PersistenceException e) {
-			throw new UserException();
+			throw new CategoryException();
 		}
 	}
 
 	@Override
-	public User getSingleEntityByQueryData(INamedQueryData namedQueryData,
-			EntityManager entityManager) throws UserException {
+	public Category getSingleEntityByQueryData(INamedQueryData namedQueryData,
+			EntityManager entityManager) throws CategoryException {
 
 		initializeEntityManagerIfNull(entityManager);
 
 		try {
-			return (User) buildNamedQuery(namedQueryData).getSingleResult();
+			return (Category) buildNamedQuery(namedQueryData).getSingleResult();
 		} catch (PersistenceException e) {
-			throw new UserException(
-					ExceptionMessages.USER_NOT_FOUND.getDetails());
+			throw new CategoryException();
 		}
 	}
 
 	@Override
-	public User getSingleEntityById(Long id, EntityManager entityManager)
-			throws UserException {
+	public Category getSingleEntityById(Long id, EntityManager entityManager)
+			throws CategoryException {
 
 		initializeEntityManagerIfNull(entityManager);
 
 		try {
-			return this.entityManager.find(User.class, id);
+			return this.entityManager.find(Category.class, id);
 		} catch (PersistenceException e) {
-			throw new UserException(
-					ExceptionMessages.USER_NOT_FOUND.getDetails());
+			throw new CategoryException();
 		}
 	}
 
@@ -116,5 +112,4 @@ public class UserRepository implements IUserRepository {
 			setEntityManager(entityManager);
 		}
 	}
-
 }

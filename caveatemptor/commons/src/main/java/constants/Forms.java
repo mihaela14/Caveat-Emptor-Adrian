@@ -2,7 +2,8 @@ package constants;
 
 public enum Forms {
 
-	LOGIN("loginForm");
+	LOGIN("loginForm"),
+	REGISTER("registerForm");
 
 	private final String name;
 

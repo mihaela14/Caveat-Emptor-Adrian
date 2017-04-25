@@ -10,7 +10,6 @@
 	<packaging>ejb</packaging>
 
 	<dependencies>
-
 		<dependency>
 			<groupId>com.fortech</groupId>
 			<artifactId>repository</artifactId>
@@ -21,12 +20,6 @@
 			<groupId>com.fortech</groupId>
 			<artifactId>commons</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.modelmapper</groupId>
-			<artifactId>modelmapper</artifactId>
-			<version>0.7.5</version>
 		</dependency>
 
 		<dependency>

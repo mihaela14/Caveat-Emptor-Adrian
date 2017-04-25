@@ -15,7 +15,7 @@ import javax.persistence.Table;
 @Table(name = "users")
 public class User implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -6828711065892247573L;
 
 	public static final String QUERY_FIND_USER_WITH_ACCOUNT_NAME = "findUserWithAccountName";
 
@@ -43,7 +43,7 @@ public class User implements Serializable {
 	private String role;
 
 	@Column(name = "is_activated", nullable = false)
-	private boolean isActivated;
+	private Boolean isActivated;
 
 	public static final String ID_FIELD = "id";
 
@@ -66,6 +66,10 @@ public class User implements Serializable {
 
 	public Long getId() {
 		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getFirstName() {
@@ -116,11 +120,11 @@ public class User implements Serializable {
 		this.role = role;
 	}
 
-	public boolean isActivated() {
+	public Boolean isActivated() {
 		return isActivated;
 	}
 
-	public void setActivated(boolean isActivated) {
+	public void setActivated(Boolean isActivated) {
 		this.isActivated = isActivated;
 	}
 

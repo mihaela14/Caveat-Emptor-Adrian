@@ -20,6 +20,7 @@ import constants.Roles;
 import constants.Routes;
 import dto.RegistrationDTO;
 import dto.UserDTO;
+import exceptions.RegistrationException;
 
 //TODO: general refactoring
 @Stateless
@@ -36,7 +37,7 @@ public class RegistrationService implements IRegistrationService {
 	private IRegistrationRepository iRegistrationRepository;
 
 	@Override
-	public void registerUser(UserDTO userDTO) {
+	public void registerUser(UserDTO userDTO) throws RegistrationException {
 
 		User user = createUser(userDTO);
 		RegistrationDTO registration = generateRegistration(user);

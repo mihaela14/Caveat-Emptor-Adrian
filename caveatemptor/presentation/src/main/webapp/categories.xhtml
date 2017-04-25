@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+
+<h:head>
+	<title>Caveat Emptor</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta http-equiv="X-UA-Compatible" content="IE-edge" />
+	<h:outputStylesheet library="css" name="bootstrap.min.css"></h:outputStylesheet>
+
+	<script src="https://code.jquery.com/jquery-3.2.1.js" />
+	<script src="resources/js/bootstrap-treeview.min.js" />
+</h:head>
+<h:body>
+	<div class="container">
+		<div class="navbar navbar-inverse">
+			<div class="navbar-brand">Caveat Emptor Categories Page</div>
+		</div>
+
+		<div id="tree" />
+	</div>
+
+	<script>function getTree() {
+		 var tree = [${category.tree}];
+		 return tree;
+		}
+	
+	jQuery(document).ready(function ($) {
+		$('#tree').treeview({data: getTree()});
+	});
+	</script>
+
+</h:body>
+</html>

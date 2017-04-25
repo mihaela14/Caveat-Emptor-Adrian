@@ -1,6 +1,6 @@
-package constants;
+package exceptions.messages;
 
-public enum ErrorMessages {
+public enum ExceptionMessages {
 
 	INVALID_PASSWORD("Received invalid password for supplied account name."),
 	USER_NOT_ACTIVATED("Received account name does not correspond to an activated user account."),
@@ -9,7 +9,7 @@ public enum ErrorMessages {
 
 	private final String details;
 
-	ErrorMessages(String details) {
+	ExceptionMessages(String details) {
 		this.details = details;
 	}
 

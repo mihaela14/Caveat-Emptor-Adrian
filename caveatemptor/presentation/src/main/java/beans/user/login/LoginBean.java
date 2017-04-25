@@ -6,11 +6,11 @@ import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 
 import user.login.ILoginService;
-import beans.utils.FacesContextMessage;
-import constants.ErrorMessages;
+import utils.FacesContextMessage;
 import constants.Forms;
 import constants.Routes;
-import exceptions.user.UserException;
+import exceptions.UserException;
+import exceptions.messages.ExceptionMessages;
 
 @ManagedBean(name = "login")
 @RequestScoped
@@ -38,11 +38,11 @@ public class LoginBean {
 			} else {
 				FacesContextMessage.addMessage(facesContext,
 						Forms.LOGIN.getName(),
-						ErrorMessages.INVALID_PASSWORD.getDetails());
+						ExceptionMessages.INVALID_PASSWORD.getDetails());
 			}
 		} catch (UserException e) {
 			FacesContextMessage.addMessage(facesContext, Forms.LOGIN.getName(),
-					ErrorMessages.USER_NOT_FOUND.getDetails());
+					e.getMessage());
 		}
 
 		return null;

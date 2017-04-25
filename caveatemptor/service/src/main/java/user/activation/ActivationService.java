@@ -16,9 +16,9 @@ import repository.queries.NamedQueryData;
 import repository.queries.parameters.registration.RegistrationParameters;
 import repository.repositories.registration.IRegistrationRepository;
 import repository.repositories.user.IUserRepository;
-import constants.ErrorMessages;
 import dto.RegistrationDTO;
-import exceptions.registration.RegistrationException;
+import exceptions.RegistrationException;
+import exceptions.UserException;
 
 //TODO: general refactoring
 @Stateless
@@ -35,7 +35,8 @@ public class ActivationService implements IActivationService {
 	private IRegistrationRepository iRegistrationRepository;
 
 	@Override
-	public void activate(String authorizationKey) throws RegistrationException {
+	public void activate(String authorizationKey) throws UserException,
+			RegistrationException {
 
 		Registration registration = getRegistration(authorizationKey);
 		RegistrationDTO registrationDTO = RegistrationMapper
@@ -45,15 +46,16 @@ public class ActivationService implements IActivationService {
 		iRegistrationRepository.remove(registration, entityManager);
 	}
 
-	private void updateUser(RegistrationDTO registrationDTO) {
+	private void updateUser(RegistrationDTO registrationDTO)
+			throws UserException {
 
 		User user = getUser(registrationDTO);
 		activateUser(user);
 	}
 
-	private User getUser(RegistrationDTO registrationDTO) {
+	private User getUser(RegistrationDTO registrationDTO) throws UserException {
 
-		int userId = registrationDTO.getUser().getId();
+		Long userId = registrationDTO.getUser().getId();
 		return iUserRepository.getSingleEntityById(userId, entityManager);
 	}
 
@@ -72,13 +74,7 @@ public class ActivationService implements IActivationService {
 		Registration registration = iRegistrationRepository
 				.getSingleEntityByQueryData(queryData, entityManager);
 
-		if (registration == null) {
-			throw new RegistrationException(
-					ErrorMessages.REGISTRATION_NOT_FOUND.getDetails());
-		} else {
-			return registration;
-		}
-
+		return registration;
 	}
 
 	private NamedQueryData getQueryData(String authorizationKey) {

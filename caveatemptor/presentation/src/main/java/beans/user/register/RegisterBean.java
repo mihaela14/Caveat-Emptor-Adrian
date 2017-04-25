@@ -6,10 +6,10 @@ import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 
 import user.registration.IRegistrationService;
-import beans.utils.FacesContextMessage;
-import constants.ErrorMessages;
+import utils.FacesContextMessage;
 import constants.Forms;
 import dto.UserDTO;
+import exceptions.RegistrationException;
 
 @ManagedBean(name = "register")
 @RequestScoped
@@ -32,10 +32,14 @@ public class RegisterBean {
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 
 		UserDTO userDTO = getUserDTO();
-		iRegistrationService.registerUser(userDTO);
 
-		FacesContextMessage.addMessage(facesContext, Forms.LOGIN.getName(),
-				ErrorMessages.USER_NOT_FOUND.getDetails());
+		try {
+			iRegistrationService.registerUser(userDTO);
+		} catch (RegistrationException e) {
+			FacesContextMessage.addMessage(facesContext,
+					Forms.REGISTER.getName(), e.getMessage());
+		}
+
 	}
 
 	private UserDTO getUserDTO() {

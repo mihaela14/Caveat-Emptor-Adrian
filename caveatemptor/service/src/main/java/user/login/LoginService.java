@@ -14,9 +14,9 @@ import repository.queries.INamedQueryData;
 import repository.queries.NamedQueryData;
 import repository.queries.parameters.user.UserParameters;
 import repository.repositories.user.IUserRepository;
-import constants.ErrorMessages;
 import dto.UserDTO;
-import exceptions.user.UserException;
+import exceptions.UserException;
+import exceptions.messages.ExceptionMessages;
 
 @Stateless
 @Remote(ILoginService.class)
@@ -27,9 +27,6 @@ public class LoginService implements ILoginService {
 
 	@EJB
 	private IUserRepository iUserRepository;
-
-	public LoginService() {
-	}
 
 	@Override
 	public boolean isValidUserLoginData(String accountName, String password)
@@ -47,14 +44,12 @@ public class LoginService implements ILoginService {
 		User user = iUserRepository.getSingleEntityByQueryData(queryData,
 				entityManager);
 
-		if (user == null) {
-			throw new UserException(ErrorMessages.USER_NOT_FOUND.getDetails());
-		} else if (!user.isActivated()) {
+		if (!user.isActivated()) {
 			throw new UserException(
-					ErrorMessages.USER_NOT_ACTIVATED.getDetails());
-		} else {
-			return UserMapper.getUserDTO(user);
+					ExceptionMessages.USER_NOT_ACTIVATED.getDetails());
 		}
+
+		return UserMapper.getUserDTO(user);
 	}
 
 	private boolean hasValidPassword(UserDTO userDTO, String password) {

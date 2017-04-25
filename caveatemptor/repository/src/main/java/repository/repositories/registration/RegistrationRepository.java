@@ -6,11 +6,13 @@ import java.util.Map.Entry;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
+import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 
 import repository.entities.Registration;
 import repository.queries.INamedQueryData;
+import exceptions.RegistrationException;
+import exceptions.messages.ExceptionMessages;
 
 @Stateless
 @Remote(IRegistrationRepository.class)
@@ -23,7 +25,9 @@ public class RegistrationRepository implements IRegistrationRepository {
 
 	@Override
 	public void add(Registration registration, EntityManager entityManager) {
+
 		initializeEntityManagerIfNull(entityManager);
+
 		if (registration.getId() <= 0) {
 			create(registration);
 		} else {
@@ -31,42 +35,66 @@ public class RegistrationRepository implements IRegistrationRepository {
 		}
 	}
 
+	private void create(Registration registration) {
+		entityManager.persist(registration);
+	}
+
+	private void update(Registration registration) {
+		entityManager.merge(registration);
+	}
+
 	@Override
 	public void remove(Registration registration, EntityManager entityManager) {
+
 		initializeEntityManagerIfNull(entityManager);
 		this.entityManager
 				.remove(entityManager.contains(registration) ? registration
 						: entityManager.merge(registration));
 	}
 
+	// TODO: add message to exception
 	@Override
 	public Collection<Registration> getCollection(
-			INamedQueryData namedQueryData, EntityManager entityManager) {
+			INamedQueryData namedQueryData, EntityManager entityManager)
+			throws RegistrationException {
+
 		initializeEntityManagerIfNull(entityManager);
 
 		try {
 			return buildNamedQuery(namedQueryData).getResultList();
-		} catch (NoResultException e) {
-			return null;
+		} catch (PersistenceException e) {
+			throw new RegistrationException();
 		}
 	}
 
 	@Override
 	public Registration getSingleEntityByQueryData(
-			INamedQueryData namedQueryData, EntityManager entityManager) {
+			INamedQueryData namedQueryData, EntityManager entityManager)
+			throws RegistrationException {
+
 		initializeEntityManagerIfNull(entityManager);
+
 		try {
 			return (Registration) buildNamedQuery(namedQueryData)
 					.getSingleResult();
-		} catch (NoResultException e) {
-			return null;
+		} catch (PersistenceException e) {
+			throw new RegistrationException(
+					ExceptionMessages.REGISTRATION_NOT_FOUND.getDetails());
 		}
 	}
 
 	@Override
-	public Registration getSingleEntityById(int id, EntityManager entityManager) {
+	public Registration getSingleEntityById(Long id, EntityManager entityManager)
+			throws RegistrationException {
+
 		initializeEntityManagerIfNull(entityManager);
-		return this.entityManager.find(Registration.class, id);
+
+		try {
+			return this.entityManager.find(Registration.class, id);
+		} catch (PersistenceException e) {
+			throw new RegistrationException(
+					ExceptionMessages.REGISTRATION_NOT_FOUND.getDetails());
+		}
 	}
 
 	@Override
@@ -75,6 +103,7 @@ public class RegistrationRepository implements IRegistrationRepository {
 	}
 
 	private Query buildNamedQuery(final INamedQueryData namedQueryData) {
+
 		final Query query = entityManager.createNamedQuery(namedQueryData
 				.getNamedQuery());
 
@@ -84,14 +113,6 @@ public class RegistrationRepository implements IRegistrationRepository {
 		}
 
 		return query;
-	}
-
-	private void create(Registration registration) {
-		entityManager.persist(registration);
-	}
-
-	private void update(Registration registration) {
-		entityManager.merge(registration);
 	}
 
 	private void initializeEntityManagerIfNull(EntityManager entityManager) {

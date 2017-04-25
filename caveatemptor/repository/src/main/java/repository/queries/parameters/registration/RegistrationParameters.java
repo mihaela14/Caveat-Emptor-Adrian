@@ -16,13 +16,13 @@ public class RegistrationParameters {
 		public Builder() {
 			this.parameters = new HashMap<>();
 		}
-		
-		public Builder withId(long id) {
+
+		public Builder withId(Long id) {
 			parameters.put(Registration.ID_FIELD, id);
 			return this;
 		}
 
-		public Builder withUserId(long userId) {
+		public Builder withUserId(Long userId) {
 			parameters.put(Registration.USER_ID_FIELD, userId);
 			return this;
 		}

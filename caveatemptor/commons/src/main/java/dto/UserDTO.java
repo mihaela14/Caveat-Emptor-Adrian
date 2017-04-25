@@ -4,31 +4,32 @@ import java.io.Serializable;
 
 public class UserDTO implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -2886676111463445945L;
 
-	private int id;
+	private Long id;
 
 	private String firstName;
+
 	private String lastName;
+
 	private String emailAddress;
+
 	private String accountName;
+
 	private String password;
+
 	private String role;
 
-	private boolean isActivated;
+	private Boolean isActivated;
 
 	public UserDTO() {
 	}
 
-	public UserDTO(int id) {
-		this.id = id;
-	}
-
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -80,11 +81,11 @@ public class UserDTO implements Serializable {
 		this.role = role;
 	}
 
-	public boolean isActivated() {
+	public Boolean isActivated() {
 		return isActivated;
 	}
 
-	public void setActivated(boolean isActivated) {
+	public void setActivated(Boolean isActivated) {
 		this.isActivated = isActivated;
 	}
 

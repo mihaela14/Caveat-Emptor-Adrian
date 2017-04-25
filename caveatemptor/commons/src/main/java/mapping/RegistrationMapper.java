@@ -1,9 +1,7 @@
 package mapping;
 
-import org.modelmapper.ModelMapper;
-
-import repository.entities.Registration;
 import dto.RegistrationDTO;
+import repository.entities.Registration;
 
 public class RegistrationMapper {
 
@@ -11,11 +9,27 @@ public class RegistrationMapper {
 	}
 
 	public static Registration getRegistration(RegistrationDTO registrationDTO) {
-		return new ModelMapper().map(registrationDTO, Registration.class);
+
+		Registration registration = new Registration();
+
+		registration.setId(registrationDTO.getId());
+		registration.setUser(UserMapper.getUser(registrationDTO.getUser()));
+		registration.setAuthorizationKey(registration.getAuthorizationKey());
+		registration.setAuthorizationKeyExpiration(registrationDTO.getAuthorizationKeyExpiration());
+
+		return registration;
 	}
 
 	public static RegistrationDTO getRegistrationDTO(Registration registration) {
-		return new ModelMapper().map(registration, RegistrationDTO.class);
+
+		RegistrationDTO registrationDTO = new RegistrationDTO();
+
+		registrationDTO.setId(registration.getId());
+		registrationDTO.setUser(UserMapper.getUserDTO(registration.getUser()));
+		registrationDTO.setAuthorizationKey(registration.getAuthorizationKey());
+		registrationDTO.setAuthorizationKeyExpiration(registration.getAuthorizationKeyExpiration());
+
+		return registrationDTO;
 	}
 
 }

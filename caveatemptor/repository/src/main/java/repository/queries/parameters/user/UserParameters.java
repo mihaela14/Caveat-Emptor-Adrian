@@ -17,7 +17,7 @@ public class UserParameters {
 			this.parameters = new HashMap<>();
 		}
 
-		public Builder withId(long id) {
+		public Builder withId(Long id) {
 			parameters.put(User.ID_FIELD, id);
 			return this;
 		}
@@ -52,7 +52,7 @@ public class UserParameters {
 			return this;
 		}
 
-		public Builder withIsActivated(boolean isActivated) {
+		public Builder withIsActivated(Boolean isActivated) {
 			parameters.put(User.IS_ACTIVATED_FIELD, isActivated);
 			return this;
 		}

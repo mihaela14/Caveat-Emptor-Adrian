@@ -18,7 +18,7 @@ import javax.persistence.Table;
 @Table(name = "registrations")
 public class Registration implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 6802068321550951165L;
 
 	public static final String QUERY_FIND_REGISTRATION_WITH_ACTIVATION_KEY = "findRegistrationWithActivationKey";
 
@@ -35,7 +35,7 @@ public class Registration implements Serializable {
 	private String authorizationKey;
 
 	@Column(name = "authorization_key_expiration", nullable = false)
-	private long authorizationKeyExpiration;
+	private Long authorizationKeyExpiration;
 
 	public static final String ID_FIELD = "id";
 
@@ -50,6 +50,10 @@ public class Registration implements Serializable {
 
 	public Long getId() {
 		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public User getUser() {
@@ -68,11 +72,11 @@ public class Registration implements Serializable {
 		this.authorizationKey = authorizationKey;
 	}
 
-	public long getAuthorizationKeyExpiration() {
+	public Long getAuthorizationKeyExpiration() {
 		return authorizationKeyExpiration;
 	}
 
-	public void setAuthorizationKeyExpiration(long authorizationKeyExpiration) {
+	public void setAuthorizationKeyExpiration(Long authorizationKeyExpiration) {
 		this.authorizationKeyExpiration = authorizationKeyExpiration;
 	}
 
