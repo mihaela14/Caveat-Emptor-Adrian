@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+	<ui:insert name="header">
+		<ui:include src="/header.xhtml" />
+	</ui:insert>
+</h:head>
+
+<h:body>
+	<div class="container">
+		<div class="navbar navbar-inverse">
+			<div class="navbar-brand">Caveat Emptor Categories Page</div>
+		</div>
+
+		<ul class="nav nav-tabs">
+			<li><a href="#">Home</a></li>
+			<li><a href="#">Bidding</a></li>
+			<li><a href="#">Items</a></li>
+			<li class="active"><a href="#">Categories</a></li>
+			<li><a href="#">Users</a></li>
+			<li><a href="#">Account</a></li>
+		</ul>
+
+		<div class="row">
+			<div class="col-md-4">
+				<ui:insert name="category_tree">
+					<ui:include src="/category_tree.xhtml" />
+				</ui:insert>
+			</div>
+			<div class="col-md-8">
+				<ui:insert name="category_operations">
+					<ui:include src="/category_operations.xhtml" />
+				</ui:insert>
+			</div>
+		</div>
+		<h:messages style="color:red;margin:8px" />
+	</div>
+
+</h:body>
+</html>

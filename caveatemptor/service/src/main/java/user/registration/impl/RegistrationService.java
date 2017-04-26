@@ -1,4 +1,4 @@
-package user.registration;
+package user.registration.impl;
 
 import javax.ejb.EJB;
 import javax.ejb.Remote;
@@ -12,6 +12,7 @@ import repository.entities.Registration;
 import repository.entities.User;
 import repository.repositories.registration.IRegistrationRepository;
 import repository.repositories.user.IUserRepository;
+import user.registration.IRegistrationService;
 import user.registration.utils.AuthorizationData;
 import user.registration.utils.EmailSender;
 import constants.Authorization;

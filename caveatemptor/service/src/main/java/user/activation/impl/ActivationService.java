@@ -1,4 +1,4 @@
-package user.activation;
+package user.activation.impl;
 
 import java.util.Map;
 
@@ -12,10 +12,11 @@ import mapping.RegistrationMapper;
 import repository.entities.Registration;
 import repository.entities.User;
 import repository.queries.INamedQueryData;
-import repository.queries.NamedQueryData;
+import repository.queries.impl.NamedQueryData;
 import repository.queries.parameters.registration.RegistrationParameters;
 import repository.repositories.registration.IRegistrationRepository;
 import repository.repositories.user.IUserRepository;
+import user.activation.IActivationService;
 import dto.RegistrationDTO;
 import exceptions.RegistrationException;
 import exceptions.UserException;

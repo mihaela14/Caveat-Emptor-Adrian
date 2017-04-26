@@ -2,7 +2,6 @@ package beans.category;
 
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 
 import mapping.Tree;
@@ -22,7 +21,6 @@ public class CategoryBean {
 	private ICategoryBuilderService iCategoryBuilderService;
 
 	// TODO: inject the category JSON
-	@ManagedProperty(value = "tree")
 	private String tree;
 
 	public String getInitializedTree() {
@@ -34,7 +32,6 @@ public class CategoryBean {
 			Tree tree = TreeMapper.getTree(rootDTO);
 
 			return gson.toJson(tree);
-
 		} catch (CategoryException e) {
 			return null;
 		}

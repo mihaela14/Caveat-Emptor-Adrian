@@ -1,4 +1,4 @@
-package repository.repositories.category;
+package repository.repositories.category.impl;
 
 import java.util.Collection;
 import java.util.Map.Entry;
@@ -11,6 +11,7 @@ import javax.persistence.Query;
 
 import repository.entities.Category;
 import repository.queries.INamedQueryData;
+import repository.repositories.category.ICategoryRepository;
 import exceptions.CategoryException;
 
 @Stateless
@@ -25,7 +26,7 @@ public class CategoryRepository implements ICategoryRepository {
 	@Override
 	public void add(Category category, EntityManager entityManager) {
 
-		initializeEntityManagerIfNull(entityManager);
+		setEntityManager(entityManager);
 
 		if (category.getId() <= 0) {
 			create(category);
@@ -45,7 +46,7 @@ public class CategoryRepository implements ICategoryRepository {
 	@Override
 	public void remove(Category category, EntityManager entityManager) {
 
-		initializeEntityManagerIfNull(entityManager);
+		setEntityManager(entityManager);
 		this.entityManager.remove(entityManager.contains(category) ? category
 				: entityManager.merge(category));
 	}
@@ -54,7 +55,7 @@ public class CategoryRepository implements ICategoryRepository {
 	public Collection<Category> getCollection(INamedQueryData namedQueryData,
 			EntityManager entityManager) throws CategoryException {
 
-		initializeEntityManagerIfNull(entityManager);
+		setEntityManager(entityManager);
 
 		try {
 			return buildNamedQuery(namedQueryData).getResultList();
@@ -67,7 +68,7 @@ public class CategoryRepository implements ICategoryRepository {
 	public Category getSingleEntityByQueryData(INamedQueryData namedQueryData,
 			EntityManager entityManager) throws CategoryException {
 
-		initializeEntityManagerIfNull(entityManager);
+		setEntityManager(entityManager);
 
 		try {
 			return (Category) buildNamedQuery(namedQueryData).getSingleResult();
@@ -80,7 +81,7 @@ public class CategoryRepository implements ICategoryRepository {
 	public Category getSingleEntityById(Long id, EntityManager entityManager)
 			throws CategoryException {
 
-		initializeEntityManagerIfNull(entityManager);
+		setEntityManager(entityManager);
 
 		try {
 			return this.entityManager.find(Category.class, id);
@@ -107,9 +108,4 @@ public class CategoryRepository implements ICategoryRepository {
 		return query;
 	}
 
-	private void initializeEntityManagerIfNull(EntityManager entityManager) {
-		if (this.entityManager == null) {
-			setEntityManager(entityManager);
-		}
-	}
 }

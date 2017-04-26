@@ -1,8 +1,10 @@
-package repository.queries;
+package repository.queries.impl;
 
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.Map;
+
+import repository.queries.INamedQueryData;
 
 public class NamedQueryData implements INamedQueryData, Serializable {
 

@@ -1,4 +1,4 @@
-package user.login;
+package user.login.impl;
 
 import java.util.Map;
 
@@ -11,9 +11,10 @@ import javax.persistence.PersistenceContext;
 import mapping.UserMapper;
 import repository.entities.User;
 import repository.queries.INamedQueryData;
-import repository.queries.NamedQueryData;
+import repository.queries.impl.NamedQueryData;
 import repository.queries.parameters.user.UserParameters;
 import repository.repositories.user.IUserRepository;
+import user.login.ILoginService;
 import dto.UserDTO;
 import exceptions.UserException;
 import exceptions.messages.ExceptionMessages;

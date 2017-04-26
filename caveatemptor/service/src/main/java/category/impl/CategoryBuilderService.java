@@ -1,4 +1,4 @@
-package category;
+package category.impl;
 
 import javax.ejb.EJB;
 import javax.ejb.Remote;
@@ -6,6 +6,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import category.ICategoryBuilderService;
 import mapping.CategoryMapper;
 import repository.entities.Category;
 import repository.repositories.category.ICategoryRepository;

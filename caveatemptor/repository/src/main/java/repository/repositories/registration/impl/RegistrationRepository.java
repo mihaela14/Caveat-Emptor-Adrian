@@ -1,4 +1,4 @@
-package repository.repositories.registration;
+package repository.repositories.registration.impl;
 
 import java.util.Collection;
 import java.util.Map.Entry;
@@ -11,6 +11,7 @@ import javax.persistence.Query;
 
 import repository.entities.Registration;
 import repository.queries.INamedQueryData;
+import repository.repositories.registration.IRegistrationRepository;
 import exceptions.RegistrationException;
 import exceptions.messages.ExceptionMessages;
 
@@ -26,7 +27,7 @@ public class RegistrationRepository implements IRegistrationRepository {
 	@Override
 	public void add(Registration registration, EntityManager entityManager) {
 
-		initializeEntityManagerIfNull(entityManager);
+		setEntityManager(entityManager);
 
 		if (registration.getId() <= 0) {
 			create(registration);
@@ -46,7 +47,7 @@ public class RegistrationRepository implements IRegistrationRepository {
 	@Override
 	public void remove(Registration registration, EntityManager entityManager) {
 
-		initializeEntityManagerIfNull(entityManager);
+		setEntityManager(entityManager);
 		this.entityManager
 				.remove(entityManager.contains(registration) ? registration
 						: entityManager.merge(registration));
@@ -57,8 +58,8 @@ public class RegistrationRepository implements IRegistrationRepository {
 	public Collection<Registration> getCollection(
 			INamedQueryData namedQueryData, EntityManager entityManager)
 			throws RegistrationException {
-
-		initializeEntityManagerIfNull(entityManager);
+		
+		setEntityManager(entityManager);
 
 		try {
 			return buildNamedQuery(namedQueryData).getResultList();
@@ -72,7 +73,7 @@ public class RegistrationRepository implements IRegistrationRepository {
 			INamedQueryData namedQueryData, EntityManager entityManager)
 			throws RegistrationException {
 
-		initializeEntityManagerIfNull(entityManager);
+		setEntityManager(entityManager);
 
 		try {
 			return (Registration) buildNamedQuery(namedQueryData)
@@ -87,7 +88,7 @@ public class RegistrationRepository implements IRegistrationRepository {
 	public Registration getSingleEntityById(Long id, EntityManager entityManager)
 			throws RegistrationException {
 
-		initializeEntityManagerIfNull(entityManager);
+		setEntityManager(entityManager);
 
 		try {
 			return this.entityManager.find(Registration.class, id);
@@ -113,12 +114,6 @@ public class RegistrationRepository implements IRegistrationRepository {
 		}
 
 		return query;
-	}
-
-	private void initializeEntityManagerIfNull(EntityManager entityManager) {
-		if (this.entityManager == null) {
-			setEntityManager(entityManager);
-		}
 	}
 
 }

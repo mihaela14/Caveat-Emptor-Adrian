@@ -1,4 +1,4 @@
-package repository.repositories.user;
+package repository.repositories.user.impl;
 
 import java.util.Collection;
 import java.util.Map.Entry;
@@ -11,6 +11,7 @@ import javax.persistence.Query;
 
 import repository.entities.User;
 import repository.queries.INamedQueryData;
+import repository.repositories.user.IUserRepository;
 import exceptions.UserException;
 import exceptions.messages.ExceptionMessages;
 
@@ -26,7 +27,7 @@ public class UserRepository implements IUserRepository {
 	@Override
 	public void add(User user, EntityManager entityManager) {
 
-		initializeEntityManagerIfNull(entityManager);
+		setEntityManager(entityManager);
 
 		if (user.getId() <= 0) {
 			create(user);
@@ -46,7 +47,7 @@ public class UserRepository implements IUserRepository {
 	@Override
 	public void remove(User user, EntityManager entityManager) {
 
-		initializeEntityManagerIfNull(entityManager);
+		setEntityManager(entityManager);
 		this.entityManager.remove(entityManager.contains(user) ? user
 				: entityManager.merge(user));
 	}
@@ -56,7 +57,7 @@ public class UserRepository implements IUserRepository {
 	public Collection<User> getCollection(INamedQueryData namedQueryData,
 			EntityManager entityManager) throws UserException {
 
-		initializeEntityManagerIfNull(entityManager);
+		setEntityManager(entityManager);
 
 		try {
 			return buildNamedQuery(namedQueryData).getResultList();
@@ -69,7 +70,7 @@ public class UserRepository implements IUserRepository {
 	public User getSingleEntityByQueryData(INamedQueryData namedQueryData,
 			EntityManager entityManager) throws UserException {
 
-		initializeEntityManagerIfNull(entityManager);
+		setEntityManager(entityManager);
 
 		try {
 			return (User) buildNamedQuery(namedQueryData).getSingleResult();
@@ -83,7 +84,7 @@ public class UserRepository implements IUserRepository {
 	public User getSingleEntityById(Long id, EntityManager entityManager)
 			throws UserException {
 
-		initializeEntityManagerIfNull(entityManager);
+		setEntityManager(entityManager);
 
 		try {
 			return this.entityManager.find(User.class, id);
@@ -109,12 +110,6 @@ public class UserRepository implements IUserRepository {
 		}
 
 		return query;
-	}
-
-	private void initializeEntityManagerIfNull(EntityManager entityManager) {
-		if (this.entityManager == null) {
-			setEntityManager(entityManager);
-		}
 	}
 
 }

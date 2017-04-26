@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:body>
+	<ui:composition>
+
+		<div id="tree" />
+
+		<script>function getTree(rootIndex, children) {
+		 var tree = [${category.tree}][rootIndex][children];
+		 removeEmptyNodes(tree, children);
+		 return tree;
+		}
+
+		function removeEmptyNodes(tree, property) {
+		    for (i in tree) {
+		        if (tree[i][property] !== undefined) {
+		            var children = tree[i][property];
+		            if (children.length == 0) {
+		                delete tree[i][property];
+		            }
+		            removeEmptyNodes(tree[i][property], property);
+		        }
+		    }
+		}
+		
+		jQuery(document).ready(function ($) {
+			$('#tree').treeview({data: getTree(0, "nodes"), onNodeSelected: function(event, data) {
+				document.getElementById("childCategoryName").innerHTML = data["text"];
+			  }});
+		});
+
+		</script>
+	</ui:composition>
+</h:body>
+
+</html>
