@@ -1,5 +1,6 @@
 package beans.user.register;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
@@ -24,9 +25,6 @@ public class RegisterBean {
 	private String accountName;
 	private String password;
 
-	public RegisterBean() {
-	}
-
 	public void register() {
 
 		FacesContext facesContext = FacesContext.getCurrentInstance();
@@ -39,7 +37,6 @@ public class RegisterBean {
 			FacesContextMessage.addMessage(facesContext,
 					Forms.REGISTER.getName(), e.getMessage());
 		}
-
 	}
 
 	private UserDTO getUserDTO() {

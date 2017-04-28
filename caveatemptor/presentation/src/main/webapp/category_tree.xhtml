@@ -11,32 +11,143 @@
 
 		<div id="tree" />
 
-		<script>function getTree(rootIndex, children) {
-		 var tree = [${category.tree}][rootIndex][children];
-		 removeEmptyNodes(tree, children);
-		 return tree;
-		}
+		<script>
+			function getMinimalTree(rootIndex, children) {
+				
+				var minimalTree = [${category.minimalTree}][rootIndex][children];
+				removeEmptyNodes(minimalTree, children);
+				
+				return minimalTree;
+			}
+	
+			function getFullTree() {
+				
+				var fullTree = [${category.fullTree}];
+				
+				return fullTree;
+			}
+	
+			function removeEmptyNodes(tree, property) {
+				
+			    for (i in tree) {
+			        if (tree[i][property] !== undefined) {
+			            var children = tree[i][property];
+			            if (children.length == 0) {
+			                delete tree[i][property];
+			            }
+			            removeEmptyNodes(tree[i][property], property);
+			        }
+			    }
+			}
+	
+			function getParent(child) {
+				
+				if(child !== undefined) {
+					return $('#tree').treeview('getParent', child);
+				}
+			}
+	
+			function selectNode(nodeId) {
+				
+				var node = $('#tree').treeview('getNode', nodeId);
+				$('#tree').treeview('selectNode', [ node, { silent: true } ]);
+	
+				createBreadcrumb(node);
+				updateForms(node['text'], node['description']);
+			}
+	
+			function getBreadcrumb(node) {
+				
+				var parent;
+				var breadcrumb = [];
+				
+				breadcrumb.push(node);
+	
+				do {
+					parent = getParent(node);
+					node = jQuery.extend(true, {}, parent);
+					breadcrumb.push(node);
+				} while(node['nodeId'] !== undefined);
+	
+				breadcrumb.pop();
+				return breadcrumb;
+			}
+	
+			function createBreadcrumb(data) {
+	
+				var breadcrumb = getBreadcrumb(data);
+				$('#breadcrumb').empty();
+				
+				for(var i = breadcrumb.length - 1; i >= 0; --i) {
+					
+					var li = document.createElement('li');
+					li.setAttribute('class', 'breadcrumb-item');
+					
+					var id = breadcrumb[i]['nodeId'];
+					li.setAttribute('id', id);
+	
+					li.setAttribute('onclick', 'selectNode(id)');
 
-		function removeEmptyNodes(tree, property) {
-		    for (i in tree) {
-		        if (tree[i][property] !== undefined) {
-		            var children = tree[i][property];
-		            if (children.length == 0) {
-		                delete tree[i][property];
-		            }
-		            removeEmptyNodes(tree[i][property], property);
-		        }
-		    }
-		}
-		
-		jQuery(document).ready(function ($) {
-			$('#tree').treeview({data: getTree(0, "nodes"), onNodeSelected: function(event, data) {
-				document.getElementById("childCategoryName").innerHTML = data["text"];
-			  }});
-		});
+					var a = document.createElement('a');
+					a.setAttribute('href', '#');
+					a.setAttribute('id', 'id' + i);
+					li.appendChild(a);
+					
+					document.getElementById('breadcrumb').appendChild(li);
+					document.getElementById('id' + i).innerHTML = breadcrumb[i]['text'];
+				}
 
+				var selectedId = breadcrumb[0]['nodeId'];
+				
+				var list = document.getElementById(selectedId);
+				list.setAttribute('class', 'breadcrumb-item active');
+				list.removeChild(list.childNodes[0]);
+
+				document.getElementById(data["nodeId"]).innerHTML = breadcrumb[0]['text'];
+			}
+	
+			function updateForms(name, description) {
+				
+				document.getElementById('name').value = name;
+				document.getElementById('description').value = description;
+			}
+	
+			function selectOnSearch() {
+	
+				var categoryName = document.getElementById('searchCategoryName').value;
+				
+				var nodes = $('#tree')
+						.treeview('search', [ categoryName, {
+							ignoreCase: true,
+							exactMatch: false
+						}]);
+	
+				if(nodes.length !== 0) {
+					selectNode(nodes[0]['nodeId']);
+				}
+			}
+	
+			function createNewCategory() {
+	
+				var selectedCategory = $('#tree').treeview('getSelected', null);
+				$('#tree').treeview('unselectNode', [ selectedCategory, { silent: true } ]);
+	
+				$('#breadcrumb').empty();
+				updateForms(null, null);
+			}
+			
+			jQuery(document).ready(function ($) {
+				
+				var minimalTreeData = getMinimalTree(0, 'nodes');
+				var fullTreeData = getFullTree();
+	
+				$('#tree').treeview({data: minimalTreeData, onNodeSelected: function(event, data) {
+					
+					createBreadcrumb(data);
+					updateForms(data['text'], data['description']);
+				}});
+			});
 		</script>
 	</ui:composition>
 </h:body>
-
 </html>

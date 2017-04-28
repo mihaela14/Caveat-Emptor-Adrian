@@ -22,7 +22,7 @@ public class CategoryMapper {
 
 			if (categoryDTO.getCategories() != null) {
 				List<Category> children = new ArrayList<>();
-				
+
 				for (CategoryDTO childDTO : categoryDTO.getCategories()) {
 					Category child = CategoryMapper.getCategory(childDTO);
 					children.add(child);
@@ -44,9 +44,13 @@ public class CategoryMapper {
 			categoryDTO.setName(category.getName());
 			categoryDTO.setDescription(category.getDescription());
 
+			if (category.getParent() != null) {
+				categoryDTO.setParentId(category.getParent().getId());
+			}
+
 			if (category.getCategories() != null) {
 				List<CategoryDTO> childrenDTO = new ArrayList<>();
-				
+
 				for (Category child : category.getCategories()) {
 					CategoryDTO childDTO = CategoryMapper.getCategoryDTO(child);
 					childrenDTO.add(childDTO);

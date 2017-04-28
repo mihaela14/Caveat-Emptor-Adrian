@@ -50,8 +50,9 @@
 						<h:outputText value="Email address"
 							styleClass="control-label col-sm-2" />
 						<div class="col-sm-6">
-							<h:inputText id="emailAddress" value="#{register.emailAddress}"
-								class="form-control" size="40"
+							<h:inputText id="emailAddress"
+								value="#{register.emailAddress}" class="form-control"
+								size="40"
 								validatorMessage="Expecting email address with length between 1 and 20 characters.">
 								<f:validateLength minimum="1" maximum="40" />
 							</h:inputText>
@@ -63,8 +64,9 @@
 						<h:outputText value="Account name"
 							styleClass="control-label col-sm-2" />
 						<div class="col-sm-6">
-							<h:inputText id="accountName" value="#{register.accountName}"
-								class="form-control" size="20"
+							<h:inputText id="accountName"
+								value="#{register.accountName}" class="form-control"
+								size="20"
 								validatorMessage="Expecting account name with length between 1 and 20 characters.">
 								<f:validateLength minimum="1" maximum="20" />
 							</h:inputText>

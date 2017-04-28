@@ -7,6 +7,8 @@ public class Tree {
 	private String text;
 
 	private List<Tree> nodes;
+	
+	private String description;
 
 	public Tree() {
 	}
@@ -25,6 +27,14 @@ public class Tree {
 
 	public void setNodes(List<Tree> nodes) {
 		this.nodes = nodes;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 }

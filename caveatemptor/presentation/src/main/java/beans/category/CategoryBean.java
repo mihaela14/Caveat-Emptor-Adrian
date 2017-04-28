@@ -21,9 +21,11 @@ public class CategoryBean {
 	private ICategoryBuilderService iCategoryBuilderService;
 
 	// TODO: inject the category JSON
-	private String tree;
+	private String minimalTree;
 
-	public String getInitializedTree() {
+	private String fullTree;
+
+	public String getInitializedTree(String type) {
 
 		Gson gson = new Gson();
 
@@ -31,19 +33,36 @@ public class CategoryBean {
 			CategoryDTO rootDTO = iCategoryBuilderService.getRootDTO(1L);
 			Tree tree = TreeMapper.getTree(rootDTO);
 
-			return gson.toJson(tree);
+			switch (type) {
+			case "minimal":
+				return gson.toJson(tree);
+			case "full":
+				return gson.toJson(rootDTO);
+			default:
+				return null;
+			}
+
 		} catch (CategoryException e) {
 			return null;
 		}
 	}
 
-	public String getTree() {
-		setTree(getInitializedTree());
-		return tree;
+	public String getMinimalTree() {
+		setMinimalTree(getInitializedTree("minimal"));
+		return minimalTree;
 	}
 
-	public void setTree(String tree) {
-		this.tree = tree;
+	public void setMinimalTree(String minimalTree) {
+		this.minimalTree = minimalTree;
+	}
+
+	public String getFullTree() {
+		setFullTree(getInitializedTree("full"));
+		return fullTree;
+	}
+
+	public void setFullTree(String fullTree) {
+		this.fullTree = fullTree;
 	}
 
 }
