@@ -40,7 +40,7 @@ CREATE TABLE `categories` (
 
 LOCK TABLES `categories` WRITE;
 /*!40000 ALTER TABLE `categories` DISABLE KEYS */;
-INSERT INTO `categories` VALUES (1,'root',NULL,NULL),(2,'Desktop PC',NULL,1),(3,'PC components',NULL,1),(4,'Laptops',NULL,1),(5,'Laptop accessories',NULL,1),(7,'CPUs',NULL,3),(8,'Storage',NULL,3),(9,'RAM',NULL,3),(10,'AMD RYZEN',NULL,7),(11,'INTEL',NULL,7);
+INSERT INTO `categories` VALUES (1,'root',NULL,NULL),(2,'Desktop PC','descriere desktop pc',1),(3,'PC components','descriere pc components',1),(4,'Laptops','descriere laptops',1),(5,'Laptop accessories','descriere laptop accessories',1),(7,'CPUs','descriere CPUs',3),(8,'Storage','descriere storage',3),(9,'RAM','descriere RAM',3),(10,'AMD RYZEN','descriere amd ryzen',7),(11,'INTEL','descriere intel',7);
 /*!40000 ALTER TABLE `categories` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -114,4 +114,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-04-25 16:04:40
+-- Dump completed on 2017-04-28 17:56:57
