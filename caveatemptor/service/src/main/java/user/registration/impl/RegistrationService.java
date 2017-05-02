@@ -57,7 +57,8 @@ public class RegistrationService implements IRegistrationService {
 
 	private boolean isUserAlreadyRegistered(UserDTO userDTO) {
 
-		INamedQueryData queryData = getQueryData(userDTO.getAccountName());
+		INamedQueryData queryData = getQueryData(userDTO.getAccountName(),
+				userDTO.getEmailAddress());
 
 		try {
 			iUserRepository
@@ -69,14 +70,16 @@ public class RegistrationService implements IRegistrationService {
 		return true;
 	}
 
-	private NamedQueryData getQueryData(String accountName) {
+	private NamedQueryData getQueryData(String accountName, String emailAddress) {
 
 		UserParameters userParameters = new UserParameters.Builder()
-				.withAccountName(accountName).build();
+				.withAccountName(accountName).withEmailAddress(emailAddress)
+				.build();
 
 		Map<String, Object> parameters = userParameters.getParameters();
 
-		return new NamedQueryData(User.QUERY_FIND_USER_WITH_ACCOUNT_NAME,
+		return new NamedQueryData(
+				User.QUERY_FIND_USER_WITH_ACCOUNT_NAME_OR_EMAIL_ADDRESS,
 				parameters);
 	}
 
@@ -84,6 +87,7 @@ public class RegistrationService implements IRegistrationService {
 
 		userDTO.setRole(Roles.REGULAR_USER.toString());
 		userDTO.setActivated(false);
+
 		User user = UserMapper.getUser(userDTO);
 
 		return user;

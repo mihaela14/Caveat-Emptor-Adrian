@@ -7,17 +7,21 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
-@NamedQuery(name = "findUserWithAccountName", query = "SELECT usr FROM User usr WHERE usr.accountName = :accountName")
+@NamedQueries(value = {
+		@NamedQuery(name = "findUserWithAccountNameOrEmailAddress", query = "SELECT usr FROM User usr WHERE usr.accountName = :accountName or usr.emailAddress = :emailAddress"),
+		@NamedQuery(name = "findUserWithAccountName", query = "SELECT usr FROM User usr WHERE usr.accountName = :accountName") })
 @Table(name = "users")
 public class User implements Serializable {
 
 	private static final long serialVersionUID = -6828711065892247573L;
 
 	public static final String QUERY_FIND_USER_WITH_ACCOUNT_NAME = "findUserWithAccountName";
+	public static final String QUERY_FIND_USER_WITH_ACCOUNT_NAME_OR_EMAIL_ADDRESS = "findUserWithAccountNameOrEmailAddress";
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

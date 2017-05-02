@@ -9,6 +9,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 
+import com.mysql.cj.jdbc.exceptions.MysqlDataTruncation;
+
 import repository.entities.Category;
 import repository.queries.INamedQueryData;
 import repository.repositories.category.ICategoryRepository;

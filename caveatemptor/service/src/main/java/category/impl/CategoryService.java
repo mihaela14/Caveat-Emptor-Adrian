@@ -5,13 +5,12 @@ import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.PreRemove;
 
-import constants.CategoryEntity;
-import category.ICategoryService;
 import mapping.CategoryMapper;
 import repository.entities.Category;
 import repository.repositories.category.ICategoryRepository;
+import category.ICategoryService;
+import constants.CategoryEntity;
 import dto.CategoryDTO;
 import exceptions.CategoryException;
 
