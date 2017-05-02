@@ -74,9 +74,9 @@
 			}
 	
 			function createBreadcrumb(data) {
-	
-				var breadcrumb = getBreadcrumb(data);
+
 				$('#breadcrumb').empty();
+				var breadcrumb = getBreadcrumb(data);
 				
 				for(var i = breadcrumb.length - 1; i >= 0; --i) {
 					
@@ -108,8 +108,8 @@
 	
 			function updateForms(name, description) {
 				
-				document.getElementById('name').value = name;
-				document.getElementById('description').value = description;
+				document.getElementById('categoryForm:name').value = name;
+				document.getElementById('categoryForm:description').value = description;
 			}
 	
 			function selectOnSearch() {
@@ -122,8 +122,10 @@
 							exactMatch: false
 						}]);
 	
+				// selecting the first node found after searching
 				if(nodes.length !== 0) {
 					selectNode(nodes[0]['nodeId']);
+					document.getElementById("categoryForm:categoryId").value = nodes[0]['id'];
 				}
 			}
 	
@@ -142,10 +144,13 @@
 				var fullTreeData = getFullTree();
 	
 				$('#tree').treeview({data: minimalTreeData, onNodeSelected: function(event, data) {
-					
 					createBreadcrumb(data);
 					updateForms(data['text'], data['description']);
+
+					document.getElementById("categoryForm:categoryId").value = data['id'];
 				}});
+				
+				$('#tree').treeview('expandAll', { silent: true });
 			});
 		</script>
 	</ui:composition>

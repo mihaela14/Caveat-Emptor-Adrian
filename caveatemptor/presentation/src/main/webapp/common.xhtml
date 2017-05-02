@@ -8,26 +8,17 @@
 
 <h:head>
 	<ui:insert name="header">
-		<ui:include src="/header.xhtml" />
+		<ui:include src="/head.xhtml" />
 	</ui:insert>
 </h:head>
 
 <h:body>
 	<div class="container">
-		<div class="navbar navbar-inverse">
-			<div class="navbar-brand">Caveat Emptor Categories Page</div>
-		</div>
+		<ui:insert name="header">
+			<ui:include src="/header.xhtml" />
+		</ui:insert>
 
-		<ul class="nav nav-tabs">
-			<li><a href="#">Home</a></li>
-			<li><a href="#">Bidding</a></li>
-			<li><a href="#">Items</a></li>
-			<li class="active"><a href="#">Categories</a></li>
-			<li><a href="#">Users</a></li>
-			<li><a href="#">Account</a></li>
-		</ul>
-
-		<div class="row">
+		<div class="row pt-5">
 			<div class="col-md-4">
 				<ui:insert name="category_tree">
 					<ui:include src="/category_tree.xhtml" />
@@ -39,7 +30,6 @@
 				</ui:insert>
 			</div>
 		</div>
-		<h:messages style="color:red;margin:8px" />
 	</div>
 
 </h:body>

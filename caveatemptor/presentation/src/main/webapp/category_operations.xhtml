@@ -8,58 +8,77 @@
 
 <h:body>
 	<ui:composition>
-		<div class="form-group">
-			<h:commandButton id="searchButton" value="Search for category"
-				styleClass="btn btn-default" onclick="selectOnSearch()">
-			</h:commandButton>
-			<h:inputText id="searchCategoryName" class="form-control" size="20"
-				validatorMessage="Expecting name with length between 1 and 20 characters.">
-				<f:validateLength minimum="1" maximum="20" />
-			</h:inputText>
-		</div>
-
-		<div class="form-group">
-			<h:commandButton id="createNewButton" value="Create new"
-				styleClass="btn btn-default" onclick="createNewCategory()">
-			</h:commandButton>
-		</div>
-
-		<ol id="breadcrumb" class="breadcrumb" />
-
-		<div class="form-group">
-			<h:outputText value="Name" styleClass="control-label col-md-2" />
+		<div class="row pt-2">
 			<div class="col-md-10">
-				<h:inputText id="name" class="form-control" size="20"
-					validatorMessage="Expecting name with length between 1 and 20 characters.">
-					<f:validateLength minimum="1" maximum="20" />
-				</h:inputText>
+				<h:inputText id="searchCategoryName" class="form-control"
+					placeholder="Search categories by name" />
 			</div>
-		</div>
-
-		<div class="form-group">
-			<h:outputText value="Description" styleClass="control-label col-md-2" />
-			<div class="col-md-10">
-				<h:inputTextarea id="description" class="form-control" size="200"
-					validatorMessage="Expecting name with length between 1 and 200 characters."
-					rows="10">
-					<f:validateLength minimum="1" maximum="200" />
-				</h:inputTextarea>
-			</div>
-		</div>
-
-		<div class="row">
-			<div class="col-md-1">
-				<h:commandButton id="saveButton" value="Save"
-					styleClass="btn btn-primary">
-				</h:commandButton>
-			</div>
-
-			<div class="col-md-1">
-				<h:commandButton id="removeButton" value="Remove"
-					styleClass="btn btn-primary">
+			<div class="col-md-2">
+				<h:commandButton id="searchButton" value="Search"
+					styleClass="btn btn-default" onclick="selectOnSearch()">
 				</h:commandButton>
 			</div>
 		</div>
+
+		<div class="row pt-2">
+			<div class="col-md-2">
+				<h:commandButton id="createNewButton" value="Create new"
+					styleClass="btn btn-default" onclick="createNewCategory()">
+				</h:commandButton>
+			</div>
+		</div>
+
+		<div class="row pt-2">
+			<div class="col-md-12">
+				<ol id="breadcrumb" class="breadcrumb" />
+			</div>
+		</div>
+
+		<h:form id="categoryForm" styleClass="form-horizontal">
+
+			<h:inputHidden id="categoryId"
+				value="#{category_operations.categoryId}" />
+
+			<div class="row pt-2 justify-content-end">
+				<div class="btn-toolbar">
+					<div class="btn-group mr-2">
+						<h:commandButton id="saveButton" value="Save"
+							action="#{category_operations.save}" styleClass="btn btn-primary">
+						</h:commandButton>
+					</div>
+
+					<div class="btn-group mr-2">
+						<h:commandButton id="removeButton" value="Remove"
+							action="#{category_operations.remove}"
+							styleClass="btn btn-primary">
+						</h:commandButton>
+					</div>
+				</div>
+			</div>
+
+			<div class="row pt-2">
+				<div class="col-md-2">
+					<h:outputText value="Name" styleClass="control-label col-md-2" />
+				</div>
+				<div class="col-md-10">
+					<h:inputText id="name" class="form-control"
+						value="#{category_operations.name}" placeholder="Category name" />
+				</div>
+			</div>
+
+			<div class="row pt-2">
+				<div class="col-md-2">
+					<h:outputText value="Description"
+						styleClass="control-label col-md-2" />
+				</div>
+				<div class="col-md-10">
+					<h:inputTextarea id="description" class="form-control"
+						value="#{category_operations.description}"
+						placeholder="Category description" rows="10" />
+				</div>
+			</div>
+
+		</h:form>
 	</ui:composition>
 </h:body>
 

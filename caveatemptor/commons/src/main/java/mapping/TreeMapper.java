@@ -17,6 +17,7 @@ public class TreeMapper {
 		if (categoryDTO != null) {
 			tree.setText(categoryDTO.getName());
 			tree.setDescription(categoryDTO.getDescription());
+			tree.setId(categoryDTO.getId());
 
 			if (categoryDTO.getCategories() != null) {
 				List<Tree> nodes = new ArrayList<>();

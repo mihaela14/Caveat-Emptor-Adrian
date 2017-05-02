@@ -29,7 +29,7 @@ public class UserRepository implements IUserRepository {
 
 		setEntityManager(entityManager);
 
-		if (user.getId() <= 0) {
+		if (user.getId() == null) {
 			create(user);
 		} else {
 			update(user);

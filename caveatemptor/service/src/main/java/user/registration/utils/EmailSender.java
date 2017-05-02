@@ -11,30 +11,53 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import constants.Config;
 import constants.Email;
+import constants.Routes;
 import dto.UserDTO;
 
 public class EmailSender {
 
 	private EmailSender() {
 	}
-	
-	public static void send(UserDTO user, String authenticationKey,
-			String path, String url) {
+
+	public static class CaveatEmail {
+
+		private Properties properties;
+
+		private Session session;
+
+		public CaveatEmail(Properties properties, Session session) {
+			this.properties = properties;
+			this.session = session;
+		}
+
+		public Properties getProperties() {
+			return properties;
+		}
+
+		public Session getSession() {
+			return session;
+		}
+
+	}
+
+	public static void send(UserDTO user, String authenticationKey) {
 
 		Properties properties = PropertiesLoader.getProperties(
-				EmailSender.class.getClassLoader(), path);
-
-		String to = user.getEmailAddress();
+				EmailSender.class.getClassLoader(), Config.EMAIL.getFileName());
 
 		Session session = getSession(properties);
 
+		CaveatEmail wrapper = new CaveatEmail(properties, session);
+
 		try {
-			url += Email.SCOPE.getValue() + Email.KEY.getValue()
+			String activationUrl = Routes.ACTIVATE_ABSOLUTE.getUrl()
+					+ Email.SCOPE.getValue() + Email.KEY.getValue()
 					+ authenticationKey;
 
-			Message message = getMessage(session, properties, to, url);
-
+			Message message = getMessage(wrapper, user.getEmailAddress(),
+					activationUrl);
 			Transport.send(message);
 		} catch (Exception e) {
 			System.err.println(e.getMessage());
@@ -52,20 +75,21 @@ public class EmailSender {
 		});
 	}
 
-	private static Message getMessage(Session session, Properties properties,
-			String to, String url) throws AddressException, MessagingException {
+	private static Message getMessage(CaveatEmail caveatEmail,
+			String emailAddress, String activationUrl) throws AddressException,
+			MessagingException {
 
-		Message message = new MimeMessage(session);
+		Message message = new MimeMessage(caveatEmail.getSession());
 
-		message.setFrom(new InternetAddress(properties
+		message.setFrom(new InternetAddress(caveatEmail.getProperties()
 				.getProperty(Email.USERNAME.getValue())));
 
 		message.setRecipients(Message.RecipientType.TO,
-				InternetAddress.parse(to));
+				InternetAddress.parse(emailAddress));
 
 		message.setSubject(Email.SUBJECT.getValue());
 
-		message.setText(String.format(Email.TEXT.getValue(), url));
+		message.setText(String.format(Email.TEXT.getValue(), activationUrl));
 
 		return message;
 	}

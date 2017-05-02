@@ -6,7 +6,7 @@ import javax.faces.bean.RequestScoped;
 
 import mapping.Tree;
 import mapping.TreeMapper;
-import category.ICategoryBuilderService;
+import category.ICategoryService;
 
 import com.google.gson.Gson;
 
@@ -18,9 +18,8 @@ import exceptions.CategoryException;
 public class CategoryBean {
 
 	@EJB
-	private ICategoryBuilderService iCategoryBuilderService;
+	private ICategoryService iCategoryBuilderService;
 
-	// TODO: inject the category JSON
 	private String minimalTree;
 
 	private String fullTree;
@@ -30,7 +29,7 @@ public class CategoryBean {
 		Gson gson = new Gson();
 
 		try {
-			CategoryDTO rootDTO = iCategoryBuilderService.getRootDTO(1L);
+			CategoryDTO rootDTO = iCategoryBuilderService.getRootDTO();
 			Tree tree = TreeMapper.getTree(rootDTO);
 
 			switch (type) {

@@ -21,7 +21,6 @@ import dto.RegistrationDTO;
 import exceptions.RegistrationException;
 import exceptions.UserException;
 
-//TODO: general refactoring
 @Stateless
 @Remote(IActivationService.class)
 public class ActivationService implements IActivationService {
@@ -44,6 +43,7 @@ public class ActivationService implements IActivationService {
 				.getRegistrationDTO(registration);
 
 		updateUser(registrationDTO);
+		
 		iRegistrationRepository.remove(registration, entityManager);
 	}
 

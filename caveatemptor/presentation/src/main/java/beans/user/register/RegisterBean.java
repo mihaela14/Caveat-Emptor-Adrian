@@ -1,16 +1,16 @@
 package beans.user.register;
 
-import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 
-import user.registration.IRegistrationService;
-import utils.FacesContextMessage;
+import constants.Email;
 import constants.Forms;
 import dto.UserDTO;
 import exceptions.RegistrationException;
+import user.registration.IRegistrationService;
+import utils.FacesContextMessage;
 
 @ManagedBean(name = "register")
 @RequestScoped
@@ -25,7 +25,7 @@ public class RegisterBean {
 	private String accountName;
 	private String password;
 
-	public void register() {
+	public String register() {
 
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 
@@ -33,10 +33,13 @@ public class RegisterBean {
 
 		try {
 			iRegistrationService.registerUser(userDTO);
+			FacesContextMessage.addMessage(facesContext, Forms.REGISTER.getName(),
+					Email.ACTIVATE_ACCOUNT_MESSAGE.getValue());
 		} catch (RegistrationException e) {
-			FacesContextMessage.addMessage(facesContext,
-					Forms.REGISTER.getName(), e.getMessage());
+			FacesContextMessage.addMessage(facesContext, Forms.REGISTER.getName(), e.getMessage());
 		}
+
+		return null;
 	}
 
 	private UserDTO getUserDTO() {

@@ -28,7 +28,7 @@ public class CategoryRepository implements ICategoryRepository {
 
 		setEntityManager(entityManager);
 
-		if (category.getId() <= 0) {
+		if (category.getId() == null) {
 			create(category);
 		} else {
 			update(category);

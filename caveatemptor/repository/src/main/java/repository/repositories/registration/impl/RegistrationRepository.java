@@ -9,11 +9,11 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 
+import exceptions.RegistrationException;
+import exceptions.messages.ExceptionMessages;
 import repository.entities.Registration;
 import repository.queries.INamedQueryData;
 import repository.repositories.registration.IRegistrationRepository;
-import exceptions.RegistrationException;
-import exceptions.messages.ExceptionMessages;
 
 @Stateless
 @Remote(IRegistrationRepository.class)
@@ -29,7 +29,7 @@ public class RegistrationRepository implements IRegistrationRepository {
 
 		setEntityManager(entityManager);
 
-		if (registration.getId() <= 0) {
+		if (registration.getId() == null) {
 			create(registration);
 		} else {
 			update(registration);
@@ -58,7 +58,7 @@ public class RegistrationRepository implements IRegistrationRepository {
 	public Collection<Registration> getCollection(
 			INamedQueryData namedQueryData, EntityManager entityManager)
 			throws RegistrationException {
-		
+
 		setEntityManager(entityManager);
 
 		try {

@@ -3,60 +3,66 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:h="http://java.sun.com/jsf/html">
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
 
 <h:head>
-	<title>Caveat Emptor</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	<meta http-equiv="X-UA-Compatible" content="IE-edge" />
-	<h:outputStylesheet library="css" name="bootstrap.min.css"></h:outputStylesheet>
+	<ui:insert name="header">
+		<ui:include src="/head.xhtml" />
+	</ui:insert>
 </h:head>
 <h:body>
 	<div class="container">
-		<div class="navbar navbar-inverse">
-			<div class="navbar-brand">Caveat Emptor Login Page</div>
-		</div>
+		<ui:insert name="header">
+			<ui:include src="/header.xhtml" />
+		</ui:insert>
 
-		<div class="row">
-			<div class="col-xs-12">
-				<h:form id="loginForm" styleClass="form-horizontal">
-					<div class="form-group">
-						<h:outputText value="Account name"
-							styleClass="control-label col-sm-2" />
-						<div class="col-sm-6">
-							<h:inputText id="accountName" value="#{login.accountName}"
-								class="form-control"
-								validatorMessage="Expecting account name with length between 1 and 20 characters.">
-								<f:validateLength minimum="1" maximum="20" />
-							</h:inputText>
+		<h:form id="loginForm" styleClass="form-horizontal">
+			<div class="row pt-5 justify-content-center">
 
-						</div>
+				<div class="form-group">
+					<h:outputText value="Account name"
+						styleClass="control-label col-md-2" />
+					<div class="col-md-12">
+						<h:inputText id="accountName" value="#{login.accountName}"
+							class="form-control"
+							validatorMessage="Expecting account name with length between 1 and 20 characters.">
+							<f:validateLength minimum="1" maximum="20" />
+						</h:inputText>
+
 					</div>
-
-					<div class="form-group">
-						<h:outputText value="Password" styleClass="control-label col-sm-2" />
-						<div class="col-sm-6">
-							<h:inputSecret id="password" value="#{login.password}"
-								class="form-control"
-								validatorMessage="Expecting password with length between 1 and 20 characters.">
-								<f:validateLength minimum="1" maximum="20" />
-							</h:inputSecret>
-
-						</div>
-					</div>
-
-					<div class="form-group">
-						<div class="col-sm-offset-2 col-sm-10">
-							<h:commandButton id="submitButton" action="#{login.login}"
-								value="Login" styleClass="btn btn-default">
-							</h:commandButton>
-						</div>
-					</div>
-				</h:form>
+				</div>
 			</div>
+
+			<div class="row pt-2 justify-content-center">
+				<div class="form-group">
+					<h:outputText value="Password" styleClass="control-label col-md-2" />
+					<div class="col-md-12">
+						<h:inputSecret id="password" value="#{login.password}"
+							class="form-control"
+							validatorMessage="Expecting password with length between 1 and 20 characters.">
+							<f:validateLength minimum="1" maximum="20" />
+						</h:inputSecret>
+					</div>
+				</div>
+			</div>
+
+			<div class="row pt-2 justify-content-center">
+				<h:commandButton id="submitButton" action="#{login.login}"
+					value="Login" styleClass="btn btn-primary">
+				</h:commandButton>
+			</div>
+		</h:form>
+
+		<div class="row pt-3 justify-content-center">
+			<a href="register.xhtml"
+				style="text-decoration: none; display: block;"> No account yet?
+				Click here to register </a>
 		</div>
-		<h:messages style="color:red;margin:8px" />
 	</div>
+
+
+	<h:messages style="color:red;margin:8px" />
 
 </h:body>
 </html>

@@ -1,29 +1,33 @@
 package user.registration.impl;
 
+import java.util.Map;
+
 import javax.ejb.EJB;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import constants.Authorization;
+import constants.Roles;
+import dto.RegistrationDTO;
+import dto.UserDTO;
+import exceptions.RegistrationException;
+import exceptions.UserException;
+import exceptions.messages.ExceptionMessages;
 import mapping.RegistrationMapper;
 import mapping.UserMapper;
 import repository.entities.Registration;
 import repository.entities.User;
+import repository.queries.INamedQueryData;
+import repository.queries.impl.NamedQueryData;
+import repository.queries.parameters.user.UserParameters;
 import repository.repositories.registration.IRegistrationRepository;
 import repository.repositories.user.IUserRepository;
 import user.registration.IRegistrationService;
 import user.registration.utils.AuthorizationData;
 import user.registration.utils.EmailSender;
-import constants.Authorization;
-import constants.Config;
-import constants.Roles;
-import constants.Routes;
-import dto.RegistrationDTO;
-import dto.UserDTO;
-import exceptions.RegistrationException;
 
-//TODO: general refactoring
 @Stateless
 @Remote(IRegistrationService.class)
 public class RegistrationService implements IRegistrationService {
@@ -40,20 +44,46 @@ public class RegistrationService implements IRegistrationService {
 	@Override
 	public void registerUser(UserDTO userDTO) throws RegistrationException {
 
-		User user = createUser(userDTO);
-		RegistrationDTO registration = generateRegistration(user);
+		if (isUserAlreadyRegistered(userDTO)) {
+			throw new RegistrationException(
+					ExceptionMessages.USER_ALREADY_REGISTERED.getDetails());
+		} else {
+			User user = createUser(userDTO);
+			RegistrationDTO registration = generateRegistration(user);
 
-		String url = Routes.ACTIVATE_ABSOLUTE.getUrl();
-		String emailConfig = Config.EMAIL.getFileName();
-
-		EmailSender.send(userDTO, registration.getAuthorizationKey(),
-				emailConfig, url);
+			EmailSender.send(userDTO, registration.getAuthorizationKey());
+		}
 	}
 
-	// TODO: user already registered exception
+	private boolean isUserAlreadyRegistered(UserDTO userDTO) {
+
+		INamedQueryData queryData = getQueryData(userDTO.getAccountName());
+
+		try {
+			iUserRepository
+					.getSingleEntityByQueryData(queryData, entityManager);
+		} catch (UserException e) {
+			return false;
+		}
+
+		return true;
+	}
+
+	private NamedQueryData getQueryData(String accountName) {
+
+		UserParameters userParameters = new UserParameters.Builder()
+				.withAccountName(accountName).build();
+
+		Map<String, Object> parameters = userParameters.getParameters();
+
+		return new NamedQueryData(User.QUERY_FIND_USER_WITH_ACCOUNT_NAME,
+				parameters);
+	}
+
 	private User createUser(UserDTO userDTO) {
 
 		userDTO.setRole(Roles.REGULAR_USER.toString());
+		userDTO.setActivated(false);
 		User user = UserMapper.getUser(userDTO);
 
 		return user;

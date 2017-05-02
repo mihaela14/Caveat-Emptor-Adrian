@@ -7,7 +7,9 @@ public class Tree {
 	private String text;
 
 	private List<Tree> nodes;
-	
+
+	private Long id;
+
 	private String description;
 
 	public Tree() {
@@ -27,6 +29,14 @@ public class Tree {
 
 	public void setNodes(List<Tree> nodes) {
 		this.nodes = nodes;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getDescription() {

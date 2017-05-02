@@ -44,10 +44,6 @@ public class CategoryMapper {
 			categoryDTO.setName(category.getName());
 			categoryDTO.setDescription(category.getDescription());
 
-			if (category.getParent() != null) {
-				categoryDTO.setParentId(category.getParent().getId());
-			}
-
 			if (category.getCategories() != null) {
 				List<CategoryDTO> childrenDTO = new ArrayList<>();
 

@@ -1,44 +1,77 @@
 package beans.category;
 
-import java.util.List;
-
+import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
+import constants.Routes;
+import category.ICategoryService;
 import dto.CategoryDTO;
+import exceptions.CategoryException;
 
 @ManagedBean(name = "category_operations")
 @RequestScoped
 public class CategoryOperationsBean {
 
-	private String childName;
+	private String name;
 
-	private String parentName;
+	private String description;
 
-	private List<CategoryDTO> categories;
+	private Long categoryId;
 
-	public String getChildName() {
-		return childName;
+	@EJB
+	ICategoryService iCategoryService;
+
+	public String save() {
+
+		CategoryDTO categoryDTO = new CategoryDTO();
+
+		categoryDTO.setName(name);
+		categoryDTO.setDescription(description);
+
+		try {
+			iCategoryService.addCategory(categoryDTO, categoryId);
+			return Routes.CATEGORY_REDIRECT.getUrl();
+		} catch (CategoryException e) {
+		}
+
+		return null;
 	}
 
-	public void setChildName(String childName) {
-		this.childName = childName;
+	public String remove() {
+
+		try {
+			iCategoryService.removeCategory(categoryId);
+			return Routes.CATEGORY_REDIRECT.getUrl();
+		} catch (CategoryException e) {
+
+		}
+
+		return null;
 	}
 
-	public String getParentName() {
-		return parentName;
+	public String getName() {
+		return name;
 	}
 
-	public void setParentName(String parentName) {
-		this.parentName = parentName;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public List<CategoryDTO> getCategories() {
-		return categories;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setCategories(List<CategoryDTO> categories) {
-		this.categories = categories;
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public Long getCategoryId() {
+		return categoryId;
+	}
+
+	public void setCategoryId(Long categoryId) {
+		this.categoryId = categoryId;
 	}
 
 }

@@ -3,7 +3,8 @@ package constants;
 public enum Forms {
 
 	LOGIN("loginForm"),
-	REGISTER("registerForm");
+	REGISTER("registerForm"),
+	ACTIVATION_CONTAINER("activationContainer");
 
 	private final String name;
 
