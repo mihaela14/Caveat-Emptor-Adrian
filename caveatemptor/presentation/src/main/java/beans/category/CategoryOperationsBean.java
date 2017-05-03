@@ -20,7 +20,7 @@ public class CategoryOperationsBean {
 	private Long categoryId;
 
 	@EJB
-	ICategoryService iCategoryService;
+	private ICategoryService iCategoryService;
 
 	public String save() {
 
@@ -44,7 +44,6 @@ public class CategoryOperationsBean {
 			iCategoryService.removeCategory(categoryId);
 			return Routes.CATEGORY_REDIRECT.getUrl();
 		} catch (CategoryException e) {
-
 		}
 
 		return null;
