@@ -6,7 +6,7 @@ import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 
 import constants.Forms;
-import user.activation.IActivationService;
+import user.activation.ActivationService;
 import utils.FacesContextMessage;
 import exceptions.RegistrationException;
 import exceptions.UserException;
@@ -16,7 +16,7 @@ import exceptions.UserException;
 public class ActivateBean {
 
 	@EJB
-	private IActivationService iActivationService;
+	private ActivationService activationService;
 
 	private String activationKey;
 
@@ -25,7 +25,7 @@ public class ActivateBean {
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 
 		try {
-			iActivationService.activate(activationKey);
+			activationService.activate(activationKey);
 		} catch (UserException | RegistrationException e) {
 			FacesContextMessage.addMessage(facesContext, Forms.ACTIVATION_CONTAINER.getName(), e.getMessage());
 		}

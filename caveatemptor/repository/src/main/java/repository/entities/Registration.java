@@ -37,14 +37,6 @@ public class Registration implements Serializable {
 	@Column(name = "authorization_key_expiration", nullable = false)
 	private Long authorizationKeyExpiration;
 
-	public static final String ID_FIELD = "id";
-
-	public static final String USER_ID_FIELD = "userId";
-
-	public static final String AUTHORIZATION_KEY_FIELD = "authorizationKey";
-
-	public static final String AUTHORIZATION_KEY_EXPIRATION_FIELD = "authorizationKeyExpiration";
-
 	public Registration() {
 	}
 

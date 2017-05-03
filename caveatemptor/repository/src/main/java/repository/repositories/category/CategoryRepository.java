@@ -6,18 +6,18 @@ import javax.persistence.EntityManager;
 
 import exceptions.CategoryException;
 import repository.entities.Category;
-import repository.queries.INamedQueryData;
+import repository.queries.NamedQueryData;
 
-public interface ICategoryRepository {
+public interface CategoryRepository {
 
 	void add(Category category, EntityManager entityManager);
 
 	void remove(Category category, EntityManager entityManager);
 
-	Collection<Category> getCollection(INamedQueryData namedQueryData,
+	Collection<Category> getCollection(NamedQueryData namedQueryData,
 			EntityManager entityManager) throws CategoryException;
 
-	Category getSingleEntityByQueryData(INamedQueryData namedQueryData,
+	Category getSingleEntityByQueryData(NamedQueryData namedQueryData,
 			EntityManager entityManager) throws CategoryException;
 
 	Category getSingleEntityById(Long id, EntityManager entityManager)

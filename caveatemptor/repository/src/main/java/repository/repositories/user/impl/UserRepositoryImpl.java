@@ -10,18 +10,18 @@ import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 
 import repository.entities.User;
-import repository.queries.INamedQueryData;
-import repository.repositories.user.IUserRepository;
+import repository.queries.NamedQueryData;
+import repository.repositories.user.UserRepository;
 import exceptions.UserException;
 import exceptions.messages.ExceptionMessages;
 
 @Stateless
-@Remote(IUserRepository.class)
-public class UserRepository implements IUserRepository {
+@Remote(UserRepository.class)
+public class UserRepositoryImpl implements UserRepository {
 
 	private EntityManager entityManager;
 
-	public UserRepository() {
+	public UserRepositoryImpl() {
 	}
 
 	@Override
@@ -54,7 +54,7 @@ public class UserRepository implements IUserRepository {
 
 	// TODO: add message to exception
 	@Override
-	public Collection<User> getCollection(INamedQueryData namedQueryData,
+	public Collection<User> getCollection(NamedQueryData namedQueryData,
 			EntityManager entityManager) throws UserException {
 
 		setEntityManager(entityManager);
@@ -67,7 +67,7 @@ public class UserRepository implements IUserRepository {
 	}
 
 	@Override
-	public User getSingleEntityByQueryData(INamedQueryData namedQueryData,
+	public User getSingleEntityByQueryData(NamedQueryData namedQueryData,
 			EntityManager entityManager) throws UserException {
 
 		setEntityManager(entityManager);
@@ -99,7 +99,7 @@ public class UserRepository implements IUserRepository {
 		this.entityManager = entityManager;
 	}
 
-	private Query buildNamedQuery(final INamedQueryData namedQueryData) {
+	private Query buildNamedQuery(final NamedQueryData namedQueryData) {
 
 		final Query query = entityManager.createNamedQuery(namedQueryData
 				.getNamedQuery());

@@ -9,7 +9,7 @@ import constants.Email;
 import constants.Forms;
 import dto.UserDTO;
 import exceptions.RegistrationException;
-import user.registration.IRegistrationService;
+import user.registration.RegistrationService;
 import utils.FacesContextMessage;
 
 @ManagedBean(name = "register")
@@ -17,12 +17,16 @@ import utils.FacesContextMessage;
 public class RegisterBean {
 
 	@EJB
-	private IRegistrationService iRegistrationService;
+	private RegistrationService registrationService;
 
 	private String firstName;
+
 	private String lastName;
+
 	private String emailAddress;
+
 	private String accountName;
+
 	private String password;
 
 	public String register() {
@@ -32,11 +36,13 @@ public class RegisterBean {
 		UserDTO userDTO = getUserDTO();
 
 		try {
-			iRegistrationService.registerUser(userDTO);
-			FacesContextMessage.addMessage(facesContext, Forms.REGISTER.getName(),
+			registrationService.registerUser(userDTO);
+			FacesContextMessage.addMessage(facesContext,
+					Forms.REGISTER.getName(),
 					Email.ACTIVATE_ACCOUNT_MESSAGE.getValue());
 		} catch (RegistrationException e) {
-			FacesContextMessage.addMessage(facesContext, Forms.REGISTER.getName(), e.getMessage());
+			FacesContextMessage.addMessage(facesContext,
+					Forms.REGISTER.getName(), e.getMessage());
 		}
 
 		return null;

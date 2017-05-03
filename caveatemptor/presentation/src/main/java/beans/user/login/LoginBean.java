@@ -5,7 +5,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 
-import user.login.ILoginService;
+import user.login.LoginService;
 import utils.FacesContextMessage;
 import constants.Forms;
 import constants.Routes;
@@ -17,9 +17,10 @@ import exceptions.messages.ExceptionMessages;
 public class LoginBean {
 
 	@EJB
-	private ILoginService iLoginService;
+	private LoginService loginService;
 
 	private String accountName;
+	
 	private String password;
 
 	public LoginBean() {
@@ -30,7 +31,7 @@ public class LoginBean {
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 
 		try {
-			boolean isValidUserLoginData = iLoginService.isValidUserLoginData(
+			boolean isValidUserLoginData = loginService.isValidUserLoginData(
 					accountName, password);
 
 			if (isValidUserLoginData) {

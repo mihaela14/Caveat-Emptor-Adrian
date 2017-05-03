@@ -11,28 +11,28 @@ import javax.persistence.PersistenceContext;
 import mapping.RegistrationMapper;
 import repository.entities.Registration;
 import repository.entities.User;
-import repository.queries.INamedQueryData;
-import repository.queries.impl.NamedQueryData;
+import repository.queries.NamedQueryData;
+import repository.queries.impl.NamedQueryDataImpl;
 import repository.queries.parameters.registration.RegistrationParameters;
-import repository.repositories.registration.IRegistrationRepository;
-import repository.repositories.user.IUserRepository;
-import user.activation.IActivationService;
+import repository.repositories.registration.RegistrationRepository;
+import repository.repositories.user.UserRepository;
+import user.activation.ActivationService;
 import dto.RegistrationDTO;
 import exceptions.RegistrationException;
 import exceptions.UserException;
 
 @Stateless
-@Remote(IActivationService.class)
-public class ActivationService implements IActivationService {
+@Remote(ActivationService.class)
+public class ActivationServiceImpl implements ActivationService {
 
 	@PersistenceContext(unitName = "caveatemptor_pu")
 	private EntityManager entityManager;
 
 	@EJB
-	private IUserRepository iUserRepository;
+	private UserRepository userRepository;
 
 	@EJB
-	private IRegistrationRepository iRegistrationRepository;
+	private RegistrationRepository registrationRepository;
 
 	@Override
 	public void activate(String authorizationKey) throws UserException,
@@ -44,7 +44,7 @@ public class ActivationService implements IActivationService {
 
 		updateUser(registrationDTO);
 		
-		iRegistrationRepository.remove(registration, entityManager);
+		registrationRepository.remove(registration, entityManager);
 	}
 
 	private void updateUser(RegistrationDTO registrationDTO)
@@ -57,35 +57,35 @@ public class ActivationService implements IActivationService {
 	private User getUser(RegistrationDTO registrationDTO) throws UserException {
 
 		Long userId = registrationDTO.getUser().getId();
-		return iUserRepository.getSingleEntityById(userId, entityManager);
+		return userRepository.getSingleEntityById(userId, entityManager);
 	}
 
 	// TODO: check if user is already activated
 	private void activateUser(User user) {
 
 		user.setActivated(true);
-		iUserRepository.add(user, entityManager);
+		userRepository.add(user, entityManager);
 	}
 
 	private Registration getRegistration(String activationKey)
 			throws RegistrationException {
 
-		INamedQueryData queryData = getQueryData(activationKey);
+		NamedQueryData queryData = getQueryData(activationKey);
 
-		Registration registration = iRegistrationRepository
+		Registration registration = registrationRepository
 				.getSingleEntityByQueryData(queryData, entityManager);
 
 		return registration;
 	}
 
-	private NamedQueryData getQueryData(String authorizationKey) {
+	private NamedQueryDataImpl getQueryData(String authorizationKey) {
 
 		RegistrationParameters registrationParameters = new RegistrationParameters.Builder()
 				.withAuthorizationKey(authorizationKey).build();
 
 		Map<String, Object> parameters = registrationParameters.getParameters();
 
-		return new NamedQueryData(
+		return new NamedQueryDataImpl(
 				Registration.QUERY_FIND_REGISTRATION_WITH_ACTIVATION_KEY,
 				parameters);
 	}

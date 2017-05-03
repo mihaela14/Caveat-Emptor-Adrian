@@ -2,7 +2,7 @@ package repository.queries;
 
 import java.util.Map;
 
-public interface INamedQueryData {
+public interface NamedQueryData {
 
 	Map<String, Object> getParameters();
 

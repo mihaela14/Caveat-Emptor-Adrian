@@ -9,20 +9,18 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 
-import com.mysql.cj.jdbc.exceptions.MysqlDataTruncation;
-
 import repository.entities.Category;
-import repository.queries.INamedQueryData;
-import repository.repositories.category.ICategoryRepository;
+import repository.queries.NamedQueryData;
+import repository.repositories.category.CategoryRepository;
 import exceptions.CategoryException;
 
 @Stateless
-@Remote(ICategoryRepository.class)
-public class CategoryRepository implements ICategoryRepository {
+@Remote(CategoryRepository.class)
+public class CategoryRepositoryImpl implements CategoryRepository {
 
 	private EntityManager entityManager;
 
-	public CategoryRepository() {
+	public CategoryRepositoryImpl() {
 	}
 
 	@Override
@@ -54,7 +52,7 @@ public class CategoryRepository implements ICategoryRepository {
 	}
 
 	@Override
-	public Collection<Category> getCollection(INamedQueryData namedQueryData,
+	public Collection<Category> getCollection(NamedQueryData namedQueryData,
 			EntityManager entityManager) throws CategoryException {
 
 		setEntityManager(entityManager);
@@ -67,7 +65,7 @@ public class CategoryRepository implements ICategoryRepository {
 	}
 
 	@Override
-	public Category getSingleEntityByQueryData(INamedQueryData namedQueryData,
+	public Category getSingleEntityByQueryData(NamedQueryData namedQueryData,
 			EntityManager entityManager) throws CategoryException {
 
 		setEntityManager(entityManager);
@@ -97,7 +95,7 @@ public class CategoryRepository implements ICategoryRepository {
 		this.entityManager = entityManager;
 	}
 
-	private Query buildNamedQuery(final INamedQueryData namedQueryData) {
+	private Query buildNamedQuery(final NamedQueryData namedQueryData) {
 
 		final Query query = entityManager.createNamedQuery(namedQueryData
 				.getNamedQuery());

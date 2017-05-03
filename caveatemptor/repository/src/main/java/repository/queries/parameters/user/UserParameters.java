@@ -3,7 +3,7 @@ package repository.queries.parameters.user;
 import java.util.HashMap;
 import java.util.Map;
 
-import repository.entities.User;
+import fields.UserFields;
 
 public class UserParameters {
 
@@ -18,42 +18,42 @@ public class UserParameters {
 		}
 
 		public Builder withId(Long id) {
-			parameters.put(User.ID_FIELD, id);
+			parameters.put(UserFields.ID.getValue(), id);
 			return this;
 		}
 
 		public Builder withFirstName(String firstName) {
-			parameters.put(User.FIRST_NAME_FIELD, firstName);
+			parameters.put(UserFields.FIRST_NAME.getValue(), firstName);
 			return this;
 		}
 
 		public Builder withLastName(String lastName) {
-			parameters.put(User.LAST_NAME_FIELD, lastName);
+			parameters.put(UserFields.LAST_NAME.getValue(), lastName);
 			return this;
 		}
 
 		public Builder withEmailAddress(String emailAddress) {
-			parameters.put(User.EMAIL_ADDRESS_FIELD, emailAddress);
+			parameters.put(UserFields.EMAIL_ADDRESS.getValue(), emailAddress);
 			return this;
 		}
 
 		public Builder withAccountName(String accountName) {
-			parameters.put(User.ACCOUNT_NAME_FIELD, accountName);
+			parameters.put(UserFields.ACCOUNT_NAME.getValue(), accountName);
 			return this;
 		}
 
 		public Builder withPassword(String password) {
-			parameters.put(User.PASSWORD_FIELD, password);
+			parameters.put(UserFields.PASSWORD.getValue(), password);
 			return this;
 		}
 
 		public Builder withRole(String role) {
-			parameters.put(User.ROLE_FIELD, role);
+			parameters.put(UserFields.ROLE.getValue(), role);
 			return this;
 		}
 
 		public Builder withIsActivated(Boolean isActivated) {
-			parameters.put(User.IS_ACTIVATED_FIELD, isActivated);
+			parameters.put(UserFields.IS_ACTIVATED.getValue(), isActivated);
 			return this;
 		}
 

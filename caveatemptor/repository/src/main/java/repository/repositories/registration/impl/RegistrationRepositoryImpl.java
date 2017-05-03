@@ -12,16 +12,16 @@ import javax.persistence.Query;
 import exceptions.RegistrationException;
 import exceptions.messages.ExceptionMessages;
 import repository.entities.Registration;
-import repository.queries.INamedQueryData;
-import repository.repositories.registration.IRegistrationRepository;
+import repository.queries.NamedQueryData;
+import repository.repositories.registration.RegistrationRepository;
 
 @Stateless
-@Remote(IRegistrationRepository.class)
-public class RegistrationRepository implements IRegistrationRepository {
+@Remote(RegistrationRepository.class)
+public class RegistrationRepositoryImpl implements RegistrationRepository {
 
 	private EntityManager entityManager;
 
-	public RegistrationRepository() {
+	public RegistrationRepositoryImpl() {
 	}
 
 	@Override
@@ -56,7 +56,7 @@ public class RegistrationRepository implements IRegistrationRepository {
 	// TODO: add message to exception
 	@Override
 	public Collection<Registration> getCollection(
-			INamedQueryData namedQueryData, EntityManager entityManager)
+			NamedQueryData namedQueryData, EntityManager entityManager)
 			throws RegistrationException {
 
 		setEntityManager(entityManager);
@@ -70,7 +70,7 @@ public class RegistrationRepository implements IRegistrationRepository {
 
 	@Override
 	public Registration getSingleEntityByQueryData(
-			INamedQueryData namedQueryData, EntityManager entityManager)
+			NamedQueryData namedQueryData, EntityManager entityManager)
 			throws RegistrationException {
 
 		setEntityManager(entityManager);
@@ -103,7 +103,7 @@ public class RegistrationRepository implements IRegistrationRepository {
 		this.entityManager = entityManager;
 	}
 
-	private Query buildNamedQuery(final INamedQueryData namedQueryData) {
+	private Query buildNamedQuery(final NamedQueryData namedQueryData) {
 
 		final Query query = entityManager.createNamedQuery(namedQueryData
 				.getNamedQuery());

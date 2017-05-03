@@ -49,22 +49,6 @@ public class User implements Serializable {
 	@Column(name = "is_activated", nullable = false)
 	private Boolean isActivated;
 
-	public static final String ID_FIELD = "id";
-
-	public static final String FIRST_NAME_FIELD = "firstName";
-
-	public static final String LAST_NAME_FIELD = "lastName";
-
-	public static final String EMAIL_ADDRESS_FIELD = "emailAddress";
-
-	public static final String ACCOUNT_NAME_FIELD = "accountName";
-
-	public static final String PASSWORD_FIELD = "password";
-
-	public static final String ROLE_FIELD = "role";
-
-	public static final String IS_ACTIVATED_FIELD = "isActivated";
-
 	public User() {
 	}
 

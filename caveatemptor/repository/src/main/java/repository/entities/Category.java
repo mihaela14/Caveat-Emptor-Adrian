@@ -36,12 +36,6 @@ public class Category implements Serializable {
 	@Column
 	private String description;
 
-	public static final String ID_FIELD = "id";
-
-	public static final String NAME_FIELD = "name";
-
-	public static final String DESCRIPTION_FIELD = "description";
-
 	public Long getId() {
 		return id;
 	}

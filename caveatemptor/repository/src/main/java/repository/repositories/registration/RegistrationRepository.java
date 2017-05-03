@@ -7,18 +7,18 @@ import java.util.Collection;
 import javax.persistence.EntityManager;
 
 import exceptions.RegistrationException;
-import repository.queries.INamedQueryData;
+import repository.queries.NamedQueryData;
 
-public interface IRegistrationRepository {
+public interface RegistrationRepository {
 
 	void add(Registration registration, EntityManager entityManager);
 
 	void remove(Registration registration, EntityManager entityManager);
 
-	Collection<Registration> getCollection(INamedQueryData namedQueryData,
+	Collection<Registration> getCollection(NamedQueryData namedQueryData,
 			EntityManager entityManager) throws RegistrationException;
 
-	Registration getSingleEntityByQueryData(INamedQueryData namedQueryData,
+	Registration getSingleEntityByQueryData(NamedQueryData namedQueryData,
 			EntityManager entityManager) throws RegistrationException;
 
 	Registration getSingleEntityById(Long id, EntityManager entityManager)

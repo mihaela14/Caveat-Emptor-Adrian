@@ -10,24 +10,24 @@ import javax.persistence.PersistenceContext;
 
 import mapping.UserMapper;
 import repository.entities.User;
-import repository.queries.INamedQueryData;
-import repository.queries.impl.NamedQueryData;
+import repository.queries.NamedQueryData;
+import repository.queries.impl.NamedQueryDataImpl;
 import repository.queries.parameters.user.UserParameters;
-import repository.repositories.user.IUserRepository;
-import user.login.ILoginService;
+import repository.repositories.user.UserRepository;
+import user.login.LoginService;
 import dto.UserDTO;
 import exceptions.UserException;
 import exceptions.messages.ExceptionMessages;
 
 @Stateless
-@Remote(ILoginService.class)
-public class LoginService implements ILoginService {
+@Remote(LoginService.class)
+public class LoginServiceImpl implements LoginService {
 
 	@PersistenceContext(unitName = "caveatemptor_pu")
 	private EntityManager entityManager;
 
 	@EJB
-	private IUserRepository iUserRepository;
+	private UserRepository userRepository;
 
 	@Override
 	public boolean isValidUserLoginData(String accountName, String password)
@@ -40,9 +40,9 @@ public class LoginService implements ILoginService {
 
 	private UserDTO findUser(String accountName) throws UserException {
 
-		INamedQueryData queryData = getQueryData(accountName);
+		NamedQueryData queryData = getQueryData(accountName);
 
-		User user = iUserRepository.getSingleEntityByQueryData(queryData,
+		User user = userRepository.getSingleEntityByQueryData(queryData,
 				entityManager);
 
 		if (!user.isActivated()) {
@@ -58,14 +58,14 @@ public class LoginService implements ILoginService {
 		return userDTO.getPassword().equals(password);
 	}
 
-	private NamedQueryData getQueryData(String accountName) {
+	private NamedQueryDataImpl getQueryData(String accountName) {
 
 		UserParameters userParameters = new UserParameters.Builder()
 				.withAccountName(accountName).build();
 
 		Map<String, Object> parameters = userParameters.getParameters();
 
-		return new NamedQueryData(User.QUERY_FIND_USER_WITH_ACCOUNT_NAME,
+		return new NamedQueryDataImpl(User.QUERY_FIND_USER_WITH_ACCOUNT_NAME,
 				parameters);
 	}
 

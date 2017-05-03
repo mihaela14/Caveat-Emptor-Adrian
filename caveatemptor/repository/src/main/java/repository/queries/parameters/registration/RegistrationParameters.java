@@ -3,7 +3,7 @@ package repository.queries.parameters.registration;
 import java.util.HashMap;
 import java.util.Map;
 
-import repository.entities.Registration;
+import fields.RegistrationFields;
 
 public class RegistrationParameters {
 
@@ -18,24 +18,26 @@ public class RegistrationParameters {
 		}
 
 		public Builder withId(Long id) {
-			parameters.put(Registration.ID_FIELD, id);
+			parameters.put(RegistrationFields.ID.getValue(), id);
 			return this;
 		}
 
 		public Builder withUserId(Long userId) {
-			parameters.put(Registration.USER_ID_FIELD, userId);
+			parameters.put(RegistrationFields.USER_ID.getValue(), userId);
 			return this;
 		}
 
 		public Builder withAuthorizationKey(String authorizationKey) {
-			parameters.put(Registration.AUTHORIZATION_KEY_FIELD,
+			parameters.put(
+					fields.RegistrationFields.AUTHORIZATION_KEY.getValue(),
 					authorizationKey);
 			return this;
 		}
 
 		public Builder withAuthorizationKeyExpiration(
 				String authorizationKeyExpiration) {
-			parameters.put(Registration.AUTHORIZATION_KEY_EXPIRATION_FIELD,
+			parameters.put(
+					RegistrationFields.AUTHORIZATION_KEY_EXPIRATION.getValue(),
 					authorizationKeyExpiration);
 			return this;
 		}

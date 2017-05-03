@@ -134,7 +134,9 @@
 	
 				var selectedCategory = $('#tree').treeview('getSelected', null);
 				$('#tree').treeview('unselectNode', [ selectedCategory, { silent: true } ]);
-	
+
+				$('#tree').treeview('clearSearch');
+				
 				$('#breadcrumb').empty();
 				updateForms(null, null);
 			}
@@ -143,6 +145,8 @@
 				
 				var minimalTreeData = getMinimalTree(0, 'nodes');
 				var fullTreeData = getFullTree();
+
+				document.getElementById("categoryForm:categoryId").removeAttribute('value');
 	
 				$('#tree').treeview({data: minimalTreeData, onNodeSelected: function(event, data) {
 					createBreadcrumb(data);

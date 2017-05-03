@@ -3,7 +3,7 @@ package category;
 import dto.CategoryDTO;
 import exceptions.CategoryException;
 
-public interface ICategoryService {
+public interface CategoryService {
 
 	CategoryDTO getRootDTO() throws CategoryException;
 

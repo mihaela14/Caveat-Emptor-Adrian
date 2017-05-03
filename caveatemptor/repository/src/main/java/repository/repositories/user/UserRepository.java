@@ -6,18 +6,18 @@ import javax.persistence.EntityManager;
 
 import exceptions.UserException;
 import repository.entities.User;
-import repository.queries.INamedQueryData;
+import repository.queries.NamedQueryData;
 
-public interface IUserRepository {
+public interface UserRepository {
 
 	void add(User user, EntityManager entityManager);
 
 	void remove(User user, EntityManager entityManager);
 
-	Collection<User> getCollection(INamedQueryData namedQueryData,
+	Collection<User> getCollection(NamedQueryData namedQueryData,
 			EntityManager entityManager) throws UserException;
 
-	User getSingleEntityByQueryData(INamedQueryData namedQueryData,
+	User getSingleEntityByQueryData(NamedQueryData namedQueryData,
 			EntityManager entityManager) throws UserException;
 
 	User getSingleEntityById(Long id, EntityManager entityManager)

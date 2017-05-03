@@ -5,7 +5,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 
 import constants.Routes;
-import category.ICategoryService;
+import category.CategoryService;
 import dto.CategoryDTO;
 import exceptions.CategoryException;
 
@@ -20,7 +20,7 @@ public class CategoryOperationsBean {
 	private Long categoryId;
 
 	@EJB
-	private ICategoryService iCategoryService;
+	private CategoryService categoryService;
 
 	public String save() {
 
@@ -30,7 +30,7 @@ public class CategoryOperationsBean {
 		categoryDTO.setDescription(description);
 
 		try {
-			iCategoryService.addCategory(categoryDTO, categoryId);
+			categoryService.addCategory(categoryDTO, categoryId);
 			return Routes.CATEGORY_REDIRECT.getUrl();
 		} catch (CategoryException e) {
 		}
@@ -41,7 +41,7 @@ public class CategoryOperationsBean {
 	public String remove() {
 
 		try {
-			iCategoryService.removeCategory(categoryId);
+			categoryService.removeCategory(categoryId);
 			return Routes.CATEGORY_REDIRECT.getUrl();
 		} catch (CategoryException e) {
 		}

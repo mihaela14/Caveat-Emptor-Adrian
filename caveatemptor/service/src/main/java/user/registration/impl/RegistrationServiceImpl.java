@@ -19,27 +19,27 @@ import mapping.RegistrationMapper;
 import mapping.UserMapper;
 import repository.entities.Registration;
 import repository.entities.User;
-import repository.queries.INamedQueryData;
-import repository.queries.impl.NamedQueryData;
+import repository.queries.NamedQueryData;
+import repository.queries.impl.NamedQueryDataImpl;
 import repository.queries.parameters.user.UserParameters;
-import repository.repositories.registration.IRegistrationRepository;
-import repository.repositories.user.IUserRepository;
-import user.registration.IRegistrationService;
+import repository.repositories.registration.RegistrationRepository;
+import repository.repositories.user.UserRepository;
+import user.registration.RegistrationService;
 import user.registration.utils.AuthorizationData;
 import user.registration.utils.EmailSender;
 
 @Stateless
-@Remote(IRegistrationService.class)
-public class RegistrationService implements IRegistrationService {
+@Remote(RegistrationService.class)
+public class RegistrationServiceImpl implements RegistrationService {
 
 	@PersistenceContext(unitName = "caveatemptor_pu")
 	private EntityManager entityManager;
 
 	@EJB
-	private IUserRepository iUserRepository;
+	private UserRepository userRepository;
 
 	@EJB
-	private IRegistrationRepository iRegistrationRepository;
+	private RegistrationRepository registrationRepository;
 
 	@Override
 	public void registerUser(UserDTO userDTO) throws RegistrationException {
@@ -57,11 +57,11 @@ public class RegistrationService implements IRegistrationService {
 
 	private boolean isUserAlreadyRegistered(UserDTO userDTO) {
 
-		INamedQueryData queryData = getQueryData(userDTO.getAccountName(),
+		NamedQueryData queryData = getQueryData(userDTO.getAccountName(),
 				userDTO.getEmailAddress());
 
 		try {
-			iUserRepository
+			userRepository
 					.getSingleEntityByQueryData(queryData, entityManager);
 		} catch (UserException e) {
 			return false;
@@ -70,7 +70,7 @@ public class RegistrationService implements IRegistrationService {
 		return true;
 	}
 
-	private NamedQueryData getQueryData(String accountName, String emailAddress) {
+	private NamedQueryDataImpl getQueryData(String accountName, String emailAddress) {
 
 		UserParameters userParameters = new UserParameters.Builder()
 				.withAccountName(accountName).withEmailAddress(emailAddress)
@@ -78,7 +78,7 @@ public class RegistrationService implements IRegistrationService {
 
 		Map<String, Object> parameters = userParameters.getParameters();
 
-		return new NamedQueryData(
+		return new NamedQueryDataImpl(
 				User.QUERY_FIND_USER_WITH_ACCOUNT_NAME_OR_EMAIL_ADDRESS,
 				parameters);
 	}
@@ -107,7 +107,7 @@ public class RegistrationService implements IRegistrationService {
 				.getAuthorizationDate(System.currentTimeMillis());
 		registration.setAuthorizationKeyExpiration(authorizationKeyExpiration);
 
-		iRegistrationRepository.add(registration, entityManager);
+		registrationRepository.add(registration, entityManager);
 
 		RegistrationDTO registrationDTO = RegistrationMapper
 				.getRegistrationDTO(registration);
