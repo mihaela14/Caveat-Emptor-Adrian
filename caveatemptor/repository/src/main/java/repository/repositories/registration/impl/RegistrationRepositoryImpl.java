@@ -53,7 +53,6 @@ public class RegistrationRepositoryImpl implements RegistrationRepository {
 						: entityManager.merge(registration));
 	}
 
-	// TODO: add message to exception
 	@Override
 	public Collection<Registration> getCollection(
 			NamedQueryData namedQueryData, EntityManager entityManager)
