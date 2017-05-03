@@ -2,7 +2,7 @@ package constants;
 
 public enum Routes {
 
-	CATEGORY_REDIRECT("category.xhtml?faces-redirect=true"),
+	CATEGORY_REDIRECT("category?faces-redirect=true&amp;includeViewParams=true"),
 	INDEX_REDIRECT("index.xhtml?faces-redirect=true"),
 	LOGIN_REDIRECT("login.xhtml?faces-redirect=true"),
 	ACTIVATE_ABSOLUTE("http://localhost:8080/presentation/activate.xhtml");

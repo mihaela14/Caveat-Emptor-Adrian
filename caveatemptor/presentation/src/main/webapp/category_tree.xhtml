@@ -136,27 +136,38 @@
 				$('#tree').treeview('unselectNode', [ selectedCategory, { silent: true } ]);
 
 				$('#tree').treeview('clearSearch');
+
+				document.getElementById('categoryForm:removeButton').setAttribute('disabled', 'true');
+				document.getElementById('categoryForm:saveButton').removeAttribute('disabled');
 				
 				$('#breadcrumb').empty();
 				updateForms(null, null);
 			}
-			
-			jQuery(document).ready(function ($) {
-				
+
+			function loadTree(jQuery) {
+
 				var minimalTreeData = getMinimalTree(0, 'nodes');
 				var fullTreeData = getFullTree();
 
+				document.getElementById('categoryForm:saveButton').setAttribute('disabled', 'true');
+				document.getElementById('categoryForm:removeButton').setAttribute('disabled', 'true');
+				
 				document.getElementById("categoryForm:categoryId").removeAttribute('value');
 	
 				$('#tree').treeview({data: minimalTreeData, onNodeSelected: function(event, data) {
 					createBreadcrumb(data);
 					updateForms(data['text'], data['description']);
 
-					document.getElementById("categoryForm:categoryId").value = data['id'];
+					document.getElementById('categoryForm:categoryId').value = data['id'];
+
+					document.getElementById('categoryForm:saveButton').removeAttribute('disabled');
+					document.getElementById('categoryForm:removeButton').removeAttribute('disabled');
 				}});
 
 				$('#tree').treeview('expandAll', { silent: true });
-			});
+			}
+			
+			$(document).ready(loadTree);
 		</script>
 	</ui:composition>
 </h:body>

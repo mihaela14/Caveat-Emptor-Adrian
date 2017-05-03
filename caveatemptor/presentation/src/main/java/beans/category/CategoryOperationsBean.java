@@ -2,15 +2,15 @@ package beans.category;
 
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.SessionScoped;
 
-import constants.Routes;
 import category.CategoryService;
+import constants.Routes;
 import dto.CategoryDTO;
 import exceptions.CategoryException;
 
 @ManagedBean(name = "category_operations")
-@RequestScoped
+@SessionScoped
 public class CategoryOperationsBean {
 
 	private String name;
@@ -33,9 +33,9 @@ public class CategoryOperationsBean {
 			categoryService.addCategory(categoryDTO, categoryId);
 			return Routes.CATEGORY_REDIRECT.getUrl();
 		} catch (CategoryException e) {
+			return null;
 		}
 
-		return null;
 	}
 
 	public String remove() {
