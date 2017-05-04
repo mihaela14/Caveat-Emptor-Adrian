@@ -60,7 +60,6 @@ public class ActivationServiceImpl implements ActivationService {
 		return userRepository.getSingleEntityById(userId, entityManager);
 	}
 
-	// TODO: check if user is already activated
 	private void activateUser(User user) {
 
 		user.setActivated(true);

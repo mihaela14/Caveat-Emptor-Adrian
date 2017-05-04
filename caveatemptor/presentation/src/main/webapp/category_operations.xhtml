@@ -4,14 +4,15 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:ui="http://java.sun.com/jsf/facelets">
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
 
 <h:body>
 	<ui:composition>
 		<div class="row pt-2">
 			<div class="col-md-10">
 				<h:inputText id="searchCategoryName" class="form-control"
-					placeholder="Search categories by name" />
+					a:placeholder="Search categories by name" />
 			</div>
 			<div class="col-md-2">
 				<h:commandButton id="searchButton" value="Search"
@@ -42,14 +43,29 @@
 			<div class="row pt-2 justify-content-end">
 				<div class="btn-toolbar">
 					<div class="btn-group mr-2">
-						<h:commandButton id="saveButton" value="Save"
-							action="#{category_operations.save}" styleClass="btn btn-primary">
+						<h:commandButton id="addChildButton" value="Add child"
+							action="#{category_operations.addChildCategory}"
+							styleClass="btn btn-primary">
+						</h:commandButton>
+					</div>
+
+					<div class="btn-group mr-2">
+						<h:commandButton id="updateButton" value="Update"
+							action="#{category_operations.updateCategory}"
+							styleClass="btn btn-primary">
 						</h:commandButton>
 					</div>
 
 					<div class="btn-group mr-2">
 						<h:commandButton id="removeButton" value="Remove"
-							action="#{category_operations.remove}"
+							action="#{category_operations.removeCategory}"
+							styleClass="btn btn-primary">
+						</h:commandButton>
+					</div>
+
+					<div class="btn-group mr-2">
+						<h:commandButton id="saveButton" value="Save"
+							action="#{category_operations.addRootCategory}"
 							styleClass="btn btn-primary">
 						</h:commandButton>
 					</div>
@@ -62,7 +78,10 @@
 				</div>
 				<div class="col-md-10">
 					<h:inputText id="name" class="form-control"
-						value="#{category_operations.name}" placeholder="Category name" />
+						value="#{category_operations.name}"
+						validatorMessage="Expecting category name with length between 1 and 20 characters.">
+						<f:validateLength minimum="1" maximum="20" />
+					</h:inputText>
 				</div>
 			</div>
 
@@ -73,12 +92,17 @@
 				</div>
 				<div class="col-md-10">
 					<h:inputTextarea id="description" class="form-control"
-						value="#{category_operations.description}"
-						placeholder="Category description" rows="10" />
+						value="#{category_operations.description}" rows="10"
+						validatorMessage="Expecting category description with length between 1 and 1000 characters.">
+						<f:validateLength minimum="1" maximum="1000" />
+					</h:inputTextarea>
 				</div>
 			</div>
 
 		</h:form>
+		<div class="row pt-2">
+			<h:messages style="color:red" />
+		</div>
 	</ui:composition>
 </h:body>
 

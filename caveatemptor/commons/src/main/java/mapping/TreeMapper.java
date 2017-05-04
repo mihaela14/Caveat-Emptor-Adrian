@@ -19,10 +19,10 @@ public class TreeMapper {
 			tree.setDescription(categoryDTO.getDescription());
 			tree.setId(categoryDTO.getId());
 
-			if (categoryDTO.getCategories() != null) {
+			if (categoryDTO.getChildren() != null) {
 				List<Tree> nodes = new ArrayList<>();
 
-				for (CategoryDTO childDTO : categoryDTO.getCategories()) {
+				for (CategoryDTO childDTO : categoryDTO.getChildren()) {
 					Tree node = TreeMapper.getTree(childDTO);
 					nodes.add(node);
 				}

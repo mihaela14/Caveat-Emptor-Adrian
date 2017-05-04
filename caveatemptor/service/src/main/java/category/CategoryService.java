@@ -7,10 +7,15 @@ import exceptions.CategoryException;
 public interface CategoryService {
 
 	Category getRoot() throws CategoryException;
-	
+
 	CategoryDTO getRootDTO() throws CategoryException;
 
-	void addCategory(CategoryDTO categoryDTO, Long categoryId)
+	void addChildCategory(CategoryDTO categoryDTO, Long categoryId)
+			throws CategoryException;
+
+	void addRootCategory(CategoryDTO categoryDTO) throws CategoryException;
+
+	void updateCategory(CategoryDTO categoryDTO, Long id)
 			throws CategoryException;
 
 	void removeCategory(Long id) throws CategoryException;

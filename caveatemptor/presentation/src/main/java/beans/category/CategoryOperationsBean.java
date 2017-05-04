@@ -22,7 +22,7 @@ public class CategoryOperationsBean {
 	@EJB
 	private CategoryService categoryService;
 
-	public String save() {
+	public String addChildCategory() {
 
 		CategoryDTO categoryDTO = new CategoryDTO();
 
@@ -30,15 +30,29 @@ public class CategoryOperationsBean {
 		categoryDTO.setDescription(description);
 
 		try {
-			categoryService.addCategory(categoryDTO, categoryId);
+			categoryService.addChildCategory(categoryDTO, categoryId);
 			return Routes.CATEGORY_REDIRECT.getUrl();
 		} catch (CategoryException e) {
 			return null;
 		}
-
 	}
 
-	public String remove() {
+	public String addRootCategory() {
+
+		CategoryDTO categoryDTO = new CategoryDTO();
+
+		categoryDTO.setName(name);
+		categoryDTO.setDescription(description);
+
+		try {
+			categoryService.addRootCategory(categoryDTO);
+			return Routes.CATEGORY_REDIRECT.getUrl();
+		} catch (CategoryException e) {
+			return null;
+		}
+	}
+
+	public String removeCategory() {
 
 		try {
 			categoryService.removeCategory(categoryId);
@@ -46,7 +60,21 @@ public class CategoryOperationsBean {
 		} catch (CategoryException e) {
 			return null;
 		}
+	}
 
+	public String updateCategory() {
+
+		CategoryDTO categoryDTO = new CategoryDTO();
+
+		categoryDTO.setName(name);
+		categoryDTO.setDescription(description);
+
+		try {
+			categoryService.updateCategory(categoryDTO, categoryId);
+			return Routes.CATEGORY_REDIRECT.getUrl();
+		} catch (CategoryException e) {
+			return null;
+		}
 	}
 
 	public String getName() {

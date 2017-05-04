@@ -52,7 +52,6 @@ public class UserRepositoryImpl implements UserRepository {
 				: entityManager.merge(user));
 	}
 
-	// TODO: add message to exception
 	@Override
 	public Collection<User> getCollection(NamedQueryData namedQueryData,
 			EntityManager entityManager) throws UserException {

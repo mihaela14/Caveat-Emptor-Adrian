@@ -20,10 +20,10 @@ public class CategoryMapper {
 			category.setName(categoryDTO.getName());
 			category.setDescription(categoryDTO.getDescription());
 
-			if (categoryDTO.getCategories() != null) {
+			if (categoryDTO.getChildren() != null) {
 				List<Category> children = new ArrayList<>();
 
-				for (CategoryDTO childDTO : categoryDTO.getCategories()) {
+				for (CategoryDTO childDTO : categoryDTO.getChildren()) {
 					Category child = CategoryMapper.getCategory(childDTO);
 					children.add(child);
 				}

@@ -30,12 +30,20 @@ public class LoginServiceImpl implements LoginService {
 	private UserRepository userRepository;
 
 	@Override
-	public boolean isValidUserLoginData(String accountName, String password)
+	public void validateUserLoginData(String accountName, String password)
 			throws UserException {
 
 		UserDTO userDTO = findUser(accountName);
 
-		return hasValidPassword(userDTO, password);
+		if (!hasValidPassword(userDTO, password)) {
+			throw new UserException(
+					ExceptionMessages.INVALID_PASSWORD.getDetails());
+		}
+
+		if (!userDTO.isActivated()) {
+			throw new UserException(
+					ExceptionMessages.USER_NOT_ACTIVATED.getDetails());
+		}
 	}
 
 	private UserDTO findUser(String accountName) throws UserException {
@@ -44,11 +52,6 @@ public class LoginServiceImpl implements LoginService {
 
 		User user = userRepository.getSingleEntityByQueryData(queryData,
 				entityManager);
-
-		if (!user.isActivated()) {
-			throw new UserException(
-					ExceptionMessages.USER_NOT_ACTIVATED.getDetails());
-		}
 
 		return UserMapper.getUserDTO(user);
 	}

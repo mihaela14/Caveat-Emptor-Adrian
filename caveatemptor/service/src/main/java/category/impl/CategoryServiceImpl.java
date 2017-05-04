@@ -39,32 +39,30 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 
 	@Override
-	public void addCategory(CategoryDTO categoryDTO, Long categoryId)
+	public void addRootCategory(CategoryDTO categoryDTO)
 			throws CategoryException {
 
 		Category category = CategoryMapper.getCategory(categoryDTO);
-
-		if (categoryId == null) {
-			addCategoryToRoot(category);
-		} else {
-			Category selectedCategory = categoryRepository.getSingleEntityById(
-					categoryId, entityManager);
-
-			if (selectedCategory.getName().equals(categoryDTO.getName())) {
-				selectedCategory.setDescription(categoryDTO.getDescription());
-				categoryRepository.add(selectedCategory, entityManager);
-			} else {
-				category.setParent(selectedCategory);
-				categoryRepository.add(category, entityManager);
-			}
-		}
+		addCategoryToRoot(category);
 	}
 
 	private void addCategoryToRoot(Category category) throws CategoryException {
 
 		Category root = getRoot();
-
 		category.setParent(root);
+		categoryRepository.add(category, entityManager);
+	}
+
+	@Override
+	public void addChildCategory(CategoryDTO categoryDTO, Long categoryId)
+			throws CategoryException {
+
+		Category category = CategoryMapper.getCategory(categoryDTO);
+
+		Category selectedCategory = categoryRepository.getSingleEntityById(
+				categoryId, entityManager);
+
+		category.setParent(selectedCategory);
 		categoryRepository.add(category, entityManager);
 	}
 
@@ -80,6 +78,19 @@ public class CategoryServiceImpl implements CategoryService {
 		}
 
 		categoryRepository.remove(category, entityManager);
+	}
+
+	@Override
+	public void updateCategory(CategoryDTO categoryDTO, Long id)
+			throws CategoryException {
+
+		Category category = categoryRepository.getSingleEntityById(id,
+				entityManager);
+
+		category.setName(categoryDTO.getName());
+		category.setDescription(categoryDTO.getDescription());
+
+		categoryRepository.add(category, entityManager);
 	}
 
 }

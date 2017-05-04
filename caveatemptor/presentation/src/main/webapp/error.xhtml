@@ -6,13 +6,20 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 
+<h:head>
+	<ui:insert name="header">
+		<ui:include src="/head.xhtml" />
+	</ui:insert>
+</h:head>
 <h:body>
-	<ui:composition>
-		<div class="row pt-5 justify-content-center">
-			<div class="navbar navbar-light">
-				<div class="navbar-brand">Caveat Emptor</div>
-			</div>
-		</div>
-	</ui:composition>
+	<div class="container">
+		<ui:insert name="header">
+			<ui:include src="/header_navigation.xhtml" />
+		</ui:insert>
+	</div>
+
+	<div class="row pt-5 justify-content-center">
+		<h:outputText value="Something went terribly wrong." />
+	</div>
 </h:body>
 </html>

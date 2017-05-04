@@ -28,12 +28,12 @@ public class CategoryDTO implements Serializable {
 		this.id = id;
 	}
 
-	public List<CategoryDTO> getCategories() {
+	public List<CategoryDTO> getChildren() {
 		return children;
 	}
 
-	public void setCategories(List<CategoryDTO> categories) {
-		this.children = categories;
+	public void setCategories(List<CategoryDTO> children) {
+		this.children = children;
 	}
 
 	public String getName() {

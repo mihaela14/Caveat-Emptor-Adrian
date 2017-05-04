@@ -20,7 +20,7 @@ public class LoginBean {
 	private LoginService loginService;
 
 	private String accountName;
-	
+
 	private String password;
 
 	public LoginBean() {
@@ -31,16 +31,8 @@ public class LoginBean {
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 
 		try {
-			boolean isValidUserLoginData = loginService.isValidUserLoginData(
-					accountName, password);
-
-			if (isValidUserLoginData) {
-				return Routes.INDEX_REDIRECT.getUrl();
-			} else {
-				FacesContextMessage.addMessage(facesContext,
-						Forms.LOGIN.getName(),
-						ExceptionMessages.INVALID_PASSWORD.getDetails());
-			}
+			loginService.validateUserLoginData(accountName, password);
+			return Routes.INDEX_REDIRECT.getUrl();
 		} catch (UserException e) {
 			FacesContextMessage.addMessage(facesContext, Forms.LOGIN.getName(),
 					e.getMessage());
