@@ -3,8 +3,8 @@ package constants;
 public enum Routes {
 
 	CATEGORY_REDIRECT("category?faces-redirect=true&amp;includeViewParams=true"),
-	INDEX_REDIRECT("index.xhtml?faces-redirect=true"),
-	LOGIN_REDIRECT("login.xhtml?faces-redirect=true"),
+	INDEX_REDIRECT("index?faces-redirect=true"),
+	LOGIN_REDIRECT("login?faces-redirect=true"),
 	ACTIVATE_ABSOLUTE("http://localhost:8080/presentation/activate.xhtml");
 
 	private final String url;

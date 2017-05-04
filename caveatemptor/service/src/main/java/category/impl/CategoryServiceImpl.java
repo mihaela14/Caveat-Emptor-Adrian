@@ -25,12 +25,17 @@ public class CategoryServiceImpl implements CategoryService {
 	private CategoryRepository categoryRepository;
 
 	@Override
-	public CategoryDTO getRootDTO() throws CategoryException {
+	public Category getRoot() throws CategoryException {
 
 		Category root = categoryRepository.getSingleEntityById(
 				CategoryEntity.ROOT_ID.getValue(), entityManager);
+		return root;
+	}
 
-		return CategoryMapper.getCategoryDTO(root);
+	@Override
+	public CategoryDTO getRootDTO() throws CategoryException {
+
+		return CategoryMapper.getCategoryDTO(getRoot());
 	}
 
 	@Override
@@ -40,15 +45,10 @@ public class CategoryServiceImpl implements CategoryService {
 		Category category = CategoryMapper.getCategory(categoryDTO);
 
 		if (categoryId == null) {
-			Category root = categoryRepository.getSingleEntityById(
-					CategoryEntity.ROOT_ID.getValue(), entityManager);
-
-			category.setParent(root);
-			categoryRepository.add(category, entityManager);
+			addCategoryToRoot(category);
 		} else {
-
-			Category selectedCategory = categoryRepository
-					.getSingleEntityById(categoryId, entityManager);
+			Category selectedCategory = categoryRepository.getSingleEntityById(
+					categoryId, entityManager);
 
 			if (selectedCategory.getName().equals(categoryDTO.getName())) {
 				selectedCategory.setDescription(categoryDTO.getDescription());
@@ -58,6 +58,14 @@ public class CategoryServiceImpl implements CategoryService {
 				categoryRepository.add(category, entityManager);
 			}
 		}
+	}
+
+	private void addCategoryToRoot(Category category) throws CategoryException {
+
+		Category root = getRoot();
+
+		category.setParent(root);
+		categoryRepository.add(category, entityManager);
 	}
 
 	@Override
