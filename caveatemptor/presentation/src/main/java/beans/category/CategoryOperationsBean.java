@@ -52,10 +52,10 @@ public class CategoryOperationsBean {
 		}
 	}
 
-	public String removeCategory() {
+	public String deleteCategory() {
 
 		try {
-			categoryService.removeCategory(categoryId);
+			categoryService.deleteCategory(categoryId);
 			return Routes.CATEGORY_REDIRECT.getUrl();
 		} catch (CategoryException e) {
 			return null;

@@ -23,7 +23,7 @@
 					<h:outputText value="First name"
 						styleClass="control-label col-md-2" />
 					<div class="col-md-12">
-						<h:inputText id="firstName" value="#{register.firstName}"
+						<h:inputText id="firstName" value="#{register.userDTO.firstName}"
 							class="form-control" size="20"
 							validatorMessage="Expecting first name with length between 1 and 20 characters.">
 							<f:validateLength minimum="1" maximum="20" />
@@ -37,7 +37,7 @@
 				<div class="form-group">
 					<h:outputText value="Last name" styleClass="control-label col-md-2" />
 					<div class="col-md-12">
-						<h:inputText id="lastName" value="#{register.lastName}"
+						<h:inputText id="lastName" value="#{register.userDTO.lastName}"
 							class="form-control" size="20"
 							validatorMessage="Expecting last name with length between 1 and 20 characters.">
 							<f:validateLength minimum="1" maximum="20" />
@@ -51,10 +51,9 @@
 					<h:outputText value="Email address"
 						styleClass="control-label col-md-2" />
 					<div class="col-md-12">
-						<h:inputText id="emailAddress" value="#{register.emailAddress}"
-							class="form-control" size="20"
-							validatorMessage="Received invalid email address.">
-							<f:validateLength minimum="1" maximum="40" />
+						<h:inputText id="emailAddress"
+							value="#{register.userDTO.emailAddress}" class="form-control"
+							size="20" validatorMessage="Received invalid email address.">
 							<f:validateRegex pattern="[^@]+@[^@]+\.[a-zA-Z]{2,}" />
 						</h:inputText>
 					</div>
@@ -66,8 +65,9 @@
 					<h:outputText value="Account name"
 						styleClass="control-label col-md-2" />
 					<div class="col-md-12">
-						<h:inputText id="accountName" value="#{register.accountName}"
-							class="form-control" size="20"
+						<h:inputText id="accountName"
+							value="#{register.userDTO.accountName}" class="form-control"
+							size="20"
 							validatorMessage="Expecting account name with length between 1 and 20 characters.">
 							<f:validateLength minimum="1" maximum="20" />
 						</h:inputText>
@@ -79,7 +79,7 @@
 				<div class="form-group">
 					<h:outputText value="Password" styleClass="control-label col-md-2" />
 					<div class="col-md-12">
-						<h:inputSecret id="password" value="#{register.password}"
+						<h:inputSecret id="password" value="#{register.userDTO.password}"
 							class="form-control" size="20"
 							validatorMessage="Expecting password with length between 1 and 20 characters.">
 							<f:validateLength minimum="1" maximum="20" />
@@ -97,7 +97,6 @@
 					</div>
 				</div>
 			</div>
-
 		</h:form>
 
 		<div class="row pt-3 justify-content-center">
@@ -105,10 +104,8 @@
 				Already registered? Click here to login </a>
 		</div>
 	</div>
-
-	<div class="row pt-5 justify-content-center">
+	<div class="row pt-2 justify-content-center">
 		<h:messages style="color:red" />
 	</div>
-
 </h:body>
 </html>

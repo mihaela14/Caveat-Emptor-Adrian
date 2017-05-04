@@ -67,7 +67,7 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 
 	@Override
-	public void removeCategory(Long id) throws CategoryException {
+	public void deleteCategory(Long id) throws CategoryException {
 
 		Category category = categoryRepository.getSingleEntityById(id,
 				entityManager);
@@ -77,7 +77,7 @@ public class CategoryServiceImpl implements CategoryService {
 			categoryRepository.add(child, entityManager);
 		}
 
-		categoryRepository.remove(category, entityManager);
+		categoryRepository.delete(category, entityManager);
 	}
 
 	@Override

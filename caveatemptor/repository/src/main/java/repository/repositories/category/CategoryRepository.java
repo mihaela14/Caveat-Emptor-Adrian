@@ -12,7 +12,7 @@ public interface CategoryRepository {
 
 	void add(Category category, EntityManager entityManager);
 
-	void remove(Category category, EntityManager entityManager);
+	void delete(Category category, EntityManager entityManager);
 
 	Collection<Category> getCollection(NamedQueryData namedQueryData,
 			EntityManager entityManager) throws CategoryException;

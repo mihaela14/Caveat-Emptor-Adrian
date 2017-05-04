@@ -6,6 +6,7 @@ import javax.faces.bean.RequestScoped;
 
 import mapping.Tree;
 import mapping.TreeMapper;
+import beans.category.utils.TreeTypes;
 import category.CategoryService;
 
 import com.google.gson.Gson;
@@ -32,12 +33,11 @@ public class CategoryBean {
 			CategoryDTO rootDTO = categoryService.getRootDTO();
 			Tree tree = TreeMapper.getTree(rootDTO);
 
-			switch (type) {
-			case "minimal":
+			if (type.equalsIgnoreCase(TreeTypes.MINIMAL.toString())) {
 				return gson.toJson(tree);
-			case "full":
+			} else if (type.equalsIgnoreCase(TreeTypes.FULL.toString())) {
 				return gson.toJson(rootDTO);
-			default:
+			} else {
 				return null;
 			}
 
@@ -47,7 +47,7 @@ public class CategoryBean {
 	}
 
 	public String getMinimalTree() {
-		setMinimalTree(getInitializedTree("minimal"));
+		setMinimalTree(getInitializedTree(TreeTypes.MINIMAL.toString()));
 		return minimalTree;
 	}
 
@@ -56,7 +56,7 @@ public class CategoryBean {
 	}
 
 	public String getFullTree() {
-		setFullTree(getInitializedTree("full"));
+		setFullTree(getInitializedTree(TreeTypes.FULL.toString()));
 		return fullTree;
 	}
 

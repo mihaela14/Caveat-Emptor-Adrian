@@ -44,7 +44,7 @@ public class CategoryRepositoryImpl implements CategoryRepository {
 	}
 
 	@Override
-	public void remove(Category category, EntityManager entityManager) {
+	public void delete(Category category, EntityManager entityManager) {
 
 		setEntityManager(entityManager);
 		this.entityManager.remove(entityManager.contains(category) ? category
