@@ -128,6 +128,9 @@
 					selectNode(nodes[0]['nodeId']);
 					document.getElementById("categoryForm:categoryId").value = nodes[0]['id'];
 				}
+
+				enableCrud();
+				document.getElementById('categoryForm:saveButton').setAttribute('disabled', 'true');
 			}
 
 			function createNewCategory() {
