@@ -16,7 +16,7 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `categories`
+-- Current Database: `caveatemptor`
 --
 
 DROP TABLE IF EXISTS `categories`;
@@ -31,7 +31,7 @@ CREATE TABLE `categories` (
   UNIQUE KEY `id_UNIQUE` (`id`),
   KEY `parent_id_idx` (`parent_id`),
   CONSTRAINT `fk_categories_categories_parent_id` FOREIGN KEY (`parent_id`) REFERENCES `categories` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=177 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=188 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -40,8 +40,40 @@ CREATE TABLE `categories` (
 
 LOCK TABLES `categories` WRITE;
 /*!40000 ALTER TABLE `categories` DISABLE KEYS */;
-INSERT INTO `categories` VALUES (1,'root',NULL,NULL),(2,'Desktop PC','descriere desktop pc',1),(3,'PC components','descriere pc components',1),(4,'Laptops','descriere laptops',1),(5,'Laptop accessories','descriere laptop accessories',1),(7,'CPUs','descriere CPUs',3),(8,'Storage','descriere storage',3),(9,'RAM','descriere RAM',3),(21,'INTEL','descriere INTEL',7),(167,'AMD','descriere AMD',7),(168,'RYZEN','Ryzen is an AMD brand for microprocessors. The brand was introduced in 2017 with products implementing their Zen microarchitecture.',167);
+INSERT INTO `categories` VALUES (1,'root',NULL,NULL),(2,'Desktop PC','descriere desktop pc',1),(3,'PC components','descriere pc components',1),(4,'Laptops','descriere laptops',1),(5,'Laptop accessories','descriere laptop accessories',1),(7,'CPUs','descriere CPUs',3),(8,'Storage','descriere storage',3),(9,'RAM','descriere RAM',3),(21,'INTEL','descriere INTEL',7),(167,'AMD','descriere AMD',7),(168,'RYZEN','Ryzen is an AMD brand for microprocessors. The brand was introduced in 2017 with products implementing their Zen microarchitecture.',167),(186,'Stamps','description for stamps',1),(187,'Stamps child','description for stamps child',186);
 /*!40000 ALTER TABLE `categories` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `items`
+--
+
+DROP TABLE IF EXISTS `items`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `items` (
+  `id` bigint(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `user_id` bigint(11) NOT NULL,
+  `category_id` bigint(11) NOT NULL,
+  `bid_id` bigint(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`),
+  KEY `fk_items_categories_category_id_idx` (`category_id`),
+  KEY `fk_items_user_user_id_idx` (`user_id`),
+  CONSTRAINT `fk_items_categories_category_id` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_items_user_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `items`
+--
+
+LOCK TABLES `items` WRITE;
+/*!40000 ALTER TABLE `items` DISABLE KEYS */;
+INSERT INTO `items` VALUES (1,'i7 2400',23,7,NULL),(2,'i7 6700',23,7,NULL),(3,'i7 6700k',23,7,NULL),(4,'Civil war stamps',23,186,NULL),(5,'procesor i3',23,21,NULL),(6,'test stamp',23,186,NULL),(7,'test',23,186,NULL),(8,'i5',23,21,NULL),(9,'i5',23,21,NULL),(10,'i5',23,21,NULL),(11,'stamp test',23,186,NULL),(12,'test',23,2,NULL),(13,'stamp final',23,186,NULL),(14,'Lenovo IdeaCentre',23,2,NULL),(15,'for the lulz',23,187,NULL),(16,'shaorma',24,187,NULL),(17,'best cpu 2k17 buy 4 free',23,168,NULL);
+/*!40000 ALTER TABLE `items` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -93,7 +125,7 @@ CREATE TABLE `users` (
   UNIQUE KEY `id_UNIQUE` (`id`),
   UNIQUE KEY `email_address_UNIQUE` (`email_address`),
   UNIQUE KEY `account_name_UNIQUE` (`account_name`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -102,7 +134,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (3,'testian','testnaru','testnaru@test.com','testiantestnaru4','124wrtgwe43','REGULAR_USER',0),(4,'sdad','dffd','afdsf','fdasfas','fdasfdasfdsa','REGULAR_USER',0),(5,'adriann','butnaruuu','adrian@gmail.com','adrianbutnaru444','unhackable2014','REGULAR_USER',0),(18,'fdafdadfdas','fdafdafdaf','dafdafda','fdafafda','fdafdsaf','REGULAR_USER',0),(22,'neactivat','neactivescu','neactivat@mail.com','neactivat','parola','REGULAR_USER',0),(23,'adrian','butnaru','adrian.butnaru4@gmail.com','adrianbutnaru4','parola123','REGULAR_USER',1);
+INSERT INTO `users` VALUES (3,'testian','testnaru','testnaru@test.com','testiantestnaru4','124wrtgwe43','REGULAR_USER',0),(4,'sdad','dffd','afdsf','fdasfas','fdasfdasfdsa','REGULAR_USER',0),(5,'adriann','butnaruuu','adrian@gmail.com','adrianbutnaru444','unhackable2014','REGULAR_USER',0),(18,'fdafdadfdas','fdafdafdaf','dafdafda','fdafafda','fdafdsaf','REGULAR_USER',0),(22,'neactivat','neactivescu','neactivat@mail.com','neactivat','parola','REGULAR_USER',0),(23,'adrian','butnaru','adrian.butnaru4@gmail.com','adrianbutnaru4','parola123','REGULAR_USER',1),(24,'adrian','butnaru','mail@mail.com','adrianbutnaru3','parola123','REGULAR_USER',1);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -115,4 +147,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-05-05  9:37:06
+-- Dump completed on 2017-05-05 18:35:03
