@@ -14,7 +14,13 @@ public class CategoryParameters {
 		public Builder() {
 			this.parameters = new HashMap<>();
 		}
-		
-		
+	}
+	
+	public CategoryParameters(Builder builder) {
+		this.parameters = builder.parameters;
+	}
+
+	public Map<String, Object> getParameters() {
+		return parameters;
 	}
 }

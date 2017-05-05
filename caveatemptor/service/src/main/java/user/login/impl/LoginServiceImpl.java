@@ -30,7 +30,7 @@ public class LoginServiceImpl implements LoginService {
 	private UserRepository userRepository;
 
 	@Override
-	public void validateUserLoginData(String accountName, String password)
+	public Long validateUserLoginData(String accountName, String password)
 			throws UserException {
 
 		UserDTO userDTO = findUser(accountName);
@@ -44,6 +44,8 @@ public class LoginServiceImpl implements LoginService {
 			throw new UserException(
 					ExceptionMessages.USER_NOT_ACTIVATED.getDetails());
 		}
+		
+		return userDTO.getId();
 	}
 
 	private UserDTO findUser(String accountName) throws UserException {

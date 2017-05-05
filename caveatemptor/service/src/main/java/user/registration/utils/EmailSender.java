@@ -25,7 +25,7 @@ public class EmailSender {
 
 		private Properties properties;
 
-		private Session session;
+		private final Session session;
 
 		public CaveatEmail(Properties properties, Session session) {
 			this.properties = properties;

@@ -19,12 +19,6 @@
 				return minimalTree;
 			}
 
-			function getFullTree() {
-
-				var fullTree = [${category.fullTree}];
-				return fullTree;
-			}
-
 			function removeEmptyNodes(tree, property) {
 
 				for (i in tree) {
@@ -38,132 +32,10 @@
 				}
 			}
 
-			function getParent(child) {
+			function getFullTree() {
 
-				if (child !== undefined) {
-					return $('#tree').treeview('getParent', child);
-				}
-			}
-
-			function selectNode(nodeId) {
-
-				var node = $('#tree').treeview('getNode', nodeId);
-				$('#tree').treeview('selectNode', [node, {
-					silent: true
-				}]);
-				
-				createBreadcrumb(node);
-				updateForms(node['text'], node['description']);
-
-				document.getElementById('categoryForm:categoryId').value = node['id'];
-			}
-
-			function getBreadcrumb(node) {
-
-				var parent;
-				var breadcrumb = [];
-
-				breadcrumb.push(node);
-
-				do {
-					parent = getParent(node);
-					node = jQuery.extend(true, {}, parent);
-					breadcrumb.push(node);
-				} while (node['nodeId'] !== undefined);
-
-				breadcrumb.pop();
-				return breadcrumb;
-			}
-
-			function createBreadcrumb(data) {
-
-				$('#breadcrumb').empty();
-				var breadcrumb = getBreadcrumb(data);
-
-				for (var i = breadcrumb.length - 1; i >= 0; --i) {
-
-					var li = document.createElement('li');
-					li.setAttribute('class', 'breadcrumb-item');
-
-					var id = breadcrumb[i]['nodeId'];
-					li.setAttribute('id', id);
-
-					li.setAttribute('onclick', 'selectNode(id)');
-
-					var a = document.createElement('a');
-					a.setAttribute('href', '#');
-					a.setAttribute('id', 'id' + i);
-					li.appendChild(a);
-
-					document.getElementById('breadcrumb').appendChild(li);
-					document.getElementById('id' + i).innerHTML = breadcrumb[i]['text'];
-				}
-
-				var selectedId = breadcrumb[0]['nodeId'];
-
-				var list = document.getElementById(selectedId);
-				list.setAttribute('class', 'breadcrumb-item active');
-				list.removeChild(list.childNodes[0]);
-
-				document.getElementById(data["nodeId"]).innerHTML = breadcrumb[0]['text'];
-			}
-
-			function updateForms(name, description) {
-
-				document.getElementById('categoryForm:name').value = name;
-				document.getElementById('categoryForm:description').value = description;
-				document.getElementById('categoryForm:categoryId').value = null;
-			}
-
-			function selectOnSearch() {
-
-				var categoryName = document.getElementById('searchCategoryName').value;
-
-				var nodes = $('#tree')
-					.treeview('search', [categoryName, {
-						ignoreCase: true,
-						exactMatch: false
-					}]);
-
-				// selecting the first node found after searching
-				if (nodes.length !== 0) {
-					selectNode(nodes[0]['nodeId']);
-					document.getElementById("categoryForm:categoryId").value = nodes[0]['id'];
-				}
-
-				enableCrud();
-				document.getElementById('categoryForm:saveButton').setAttribute('disabled', 'true');
-			}
-
-			function createNewCategory() {
-
-				var selectedCategory = $('#tree').treeview('getSelected', null);
-				$('#tree').treeview('unselectNode', [selectedCategory, {
-					silent: true
-				}]);
-
-				$('#tree').treeview('clearSearch');
-
-				disableCrud();
-				
-				document.getElementById('categoryForm:saveButton').removeAttribute('disabled');
-
-				$('#breadcrumb').empty();
-				updateForms(null, null);
-			}
-
-			function disableCrud() {
-
-				document.getElementById('categoryForm:addChildButton').setAttribute('disabled', 'true');
-				document.getElementById('categoryForm:updateButton').setAttribute('disabled', 'true');
-				document.getElementById('categoryForm:removeButton').setAttribute('disabled', 'true');
-			}
-
-			function enableCrud() {
-
-				document.getElementById('categoryForm:addChildButton').removeAttribute('disabled');
-				document.getElementById('categoryForm:updateButton').removeAttribute('disabled');
-				document.getElementById('categoryForm:removeButton').removeAttribute('disabled');
+				var fullTree = [${category.fullTree}];
+				return fullTree;
 			}
 
 			function loadTree(jQuery) {
@@ -171,19 +43,12 @@
 				var minimalTreeData = getMinimalTree(0, 'nodes');
 				var fullTreeData = getFullTree();
 
-				disableCrud();
-				document.getElementById("categoryForm:categoryId").removeAttribute('value');
-
 				$('#tree').treeview({
 					data: minimalTreeData,
 					collapseIcon: 'typcn typcn-minus',
 					expandIcon: 'typcn typcn-plus',
 					onNodeSelected: function(event, data) {
-						createBreadcrumb(data);
-						updateForms(data['text'], data['description']);
-						document.getElementById('categoryForm:categoryId').value = data['id'];
-						enableCrud();
-						document.getElementById('categoryForm:saveButton').setAttribute('disabled', 'true');
+						document.getElementById('itemDefiningForm:categoryId').value = data['id'];
 					}
 				});
 			}

@@ -4,5 +4,5 @@ import exceptions.UserException;
 
 public interface LoginService {
 
-	void validateUserLoginData(String accountName, String password)throws UserException;
+	Long validateUserLoginData(String accountName, String password)throws UserException;
 }

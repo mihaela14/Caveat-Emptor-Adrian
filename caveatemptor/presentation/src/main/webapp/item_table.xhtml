@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:body>
+	<ui:composition>
+		<table id="itemTable" class="table">
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>Name</th>
+					<th>Category</th>
+					<th>Initial price</th>
+				</tr>
+			</thead>
+			<tbody id="itemTableBody">
+			</tbody>
+		</table>
+		<script>
+			var itemRows = [${itemBean.itemsJSON}][0];
+			var tableBody = document.getElementById('itemTableBody');
+
+			for(i in itemRows) {
+				
+				var tr = document.createElement('tr');
+
+				var tdId = document.createElement('td');
+				var id1 = 'tdId' + i;
+				tdId.setAttribute('id', id1);
+
+				var tdName = document.createElement('td');
+				var id2 = 'tdName' + i;
+				tdName.setAttribute('id', id2);
+
+				var tdCategoryName = document.createElement('td');
+				var id3 = 'tdCategoryName' + i;
+				tdCategoryName.setAttribute('id', id3);
+				
+				tr.appendChild(tdId);
+				tr.appendChild(tdName);
+				tr.appendChild(tdCategoryName);
+				
+				tableBody.appendChild(tr);
+
+				document.getElementById(id1).innerHTML = itemRows[i]['id'];
+				document.getElementById(id2).innerHTML = itemRows[i]['name'];
+				document.getElementById(id3).innerHTML = itemRows[i]['categoryName'];
+			}
+		</script>
+	</ui:composition>
+</h:body>
+</html>

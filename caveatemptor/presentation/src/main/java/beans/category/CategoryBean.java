@@ -2,7 +2,7 @@ package beans.category;
 
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.SessionScoped;
 
 import mapping.Tree;
 import mapping.TreeMapper;
@@ -15,7 +15,7 @@ import dto.CategoryDTO;
 import exceptions.CategoryException;
 
 @ManagedBean(name = "category")
-@RequestScoped
+@SessionScoped
 public class CategoryBean {
 
 	@EJB

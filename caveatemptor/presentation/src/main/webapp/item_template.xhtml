@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+	<ui:insert name="header">
+		<ui:include src="/head.xhtml" />
+	</ui:insert>
+</h:head>
+
+<h:body>
+	<div class="container">
+		<ui:insert name="header">
+			<ui:include src="/header_navigation.xhtml" />
+		</ui:insert>
+
+		<div class="row pt-5">
+			<div class="col-md-3">
+				<ui:insert name="item_operations">
+					<ui:include src="/item_operations.xhtml" />
+				</ui:insert>
+			</div>
+			<div class="col-md-4">
+				<h:outputText value="Select the category" />
+				<div class="row pt-2">
+					<div class="col md-12">
+						<ui:insert name="category_tree">
+							<ui:include src="/category_tree.xhtml" />
+						</ui:insert>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-5">
+				<ui:insert name="item_table">
+					<ui:include src="/item_table.xhtml" />
+				</ui:insert>
+			</div>
+		</div>
+	</div>
+
+</h:body>
+</html>

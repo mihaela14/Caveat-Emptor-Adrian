@@ -6,17 +6,8 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 
-<h:head>
-	<ui:insert name="header">
-		<ui:include src="/head.xhtml" />
-	</ui:insert>
-</h:head>
 <h:body>
-	<div class="container">
-		<ui:insert name="header">
-			<ui:include src="/header_navigation.xhtml" />
-		</ui:insert>
-	</div>
-
+	<ui:composition template="/item_template.xhtml" />
 </h:body>
+
 </html>
