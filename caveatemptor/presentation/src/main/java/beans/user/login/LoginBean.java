@@ -36,9 +36,9 @@ public class LoginBean {
 		} catch (UserException e) {
 			FacesContextMessage.addMessage(facesContext, Forms.LOGIN.getName(),
 					e.getMessage());
+			return null;
 		}
 
-		return null;
 	}
 
 	public String getAccountName() {

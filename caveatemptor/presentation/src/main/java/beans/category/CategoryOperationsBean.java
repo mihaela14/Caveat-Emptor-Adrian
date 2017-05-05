@@ -3,8 +3,11 @@ package beans.category;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.context.FacesContext;
 
+import utils.FacesContextMessage;
 import category.CategoryService;
+import constants.Forms;
 import constants.Routes;
 import dto.CategoryDTO;
 import exceptions.CategoryException;
@@ -24,6 +27,8 @@ public class CategoryOperationsBean {
 
 	public String addChildCategory() {
 
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+
 		CategoryDTO categoryDTO = new CategoryDTO();
 
 		categoryDTO.setName(name);
@@ -33,11 +38,15 @@ public class CategoryOperationsBean {
 			categoryService.addChildCategory(categoryDTO, categoryId);
 			return Routes.CATEGORY_REDIRECT.getUrl();
 		} catch (CategoryException e) {
+			FacesContextMessage.addMessage(facesContext,
+					Forms.CATEGORY.getName(), e.getMessage());
 			return null;
 		}
 	}
 
 	public String addRootCategory() {
+
+		FacesContext facesContext = FacesContext.getCurrentInstance();
 
 		CategoryDTO categoryDTO = new CategoryDTO();
 
@@ -48,21 +57,29 @@ public class CategoryOperationsBean {
 			categoryService.addRootCategory(categoryDTO);
 			return Routes.CATEGORY_REDIRECT.getUrl();
 		} catch (CategoryException e) {
+			FacesContextMessage.addMessage(facesContext,
+					Forms.CATEGORY.getName(), e.getMessage());
 			return null;
 		}
 	}
 
 	public String deleteCategory() {
 
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+
 		try {
 			categoryService.deleteCategory(categoryId);
 			return Routes.CATEGORY_REDIRECT.getUrl();
 		} catch (CategoryException e) {
+			FacesContextMessage.addMessage(facesContext,
+					Forms.CATEGORY.getName(), e.getMessage());
 			return null;
 		}
 	}
 
 	public String updateCategory() {
+
+		FacesContext facesContext = FacesContext.getCurrentInstance();
 
 		CategoryDTO categoryDTO = new CategoryDTO();
 
@@ -73,6 +90,8 @@ public class CategoryOperationsBean {
 			categoryService.updateCategory(categoryDTO, categoryId);
 			return Routes.CATEGORY_REDIRECT.getUrl();
 		} catch (CategoryException e) {
+			FacesContextMessage.addMessage(facesContext,
+					Forms.CATEGORY.getName(), e.getMessage());
 			return null;
 		}
 	}

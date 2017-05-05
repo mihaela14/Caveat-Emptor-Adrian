@@ -13,6 +13,7 @@ import repository.entities.Category;
 import repository.queries.NamedQueryData;
 import repository.repositories.category.CategoryRepository;
 import exceptions.CategoryException;
+import exceptions.messages.ExceptionMessages;
 
 @Stateless
 @Remote(CategoryRepository.class)
@@ -73,7 +74,8 @@ public class CategoryRepositoryImpl implements CategoryRepository {
 		try {
 			return (Category) buildNamedQuery(namedQueryData).getSingleResult();
 		} catch (PersistenceException e) {
-			throw new CategoryException();
+			throw new CategoryException(
+					ExceptionMessages.CATEGORY_NOT_FOUND.getDetails());
 		}
 	}
 
@@ -86,7 +88,8 @@ public class CategoryRepositoryImpl implements CategoryRepository {
 		try {
 			return this.entityManager.find(Category.class, id);
 		} catch (PersistenceException e) {
-			throw new CategoryException();
+			throw new CategoryException(
+					ExceptionMessages.CATEGORY_NOT_FOUND.getDetails());
 		}
 	}
 
