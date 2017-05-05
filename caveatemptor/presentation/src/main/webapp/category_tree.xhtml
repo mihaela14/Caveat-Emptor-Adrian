@@ -51,9 +51,11 @@
 				$('#tree').treeview('selectNode', [node, {
 					silent: true
 				}]);
-
+				
 				createBreadcrumb(node);
 				updateForms(node['text'], node['description']);
+
+				document.getElementById('categoryForm:categoryId').value = node['id'];
 			}
 
 			function getBreadcrumb(node) {
