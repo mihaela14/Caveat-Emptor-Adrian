@@ -32,7 +32,7 @@ public class RegisterBean {
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 
 		try {
-			registrationService.registerUser(getUserDTO());
+			registrationService.registerUser(userDTO);
 			FacesContextMessage.addMessage(facesContext,
 					Forms.REGISTER.getName(),
 					Email.ACTIVATE_ACCOUNT_MESSAGE.getValue());
