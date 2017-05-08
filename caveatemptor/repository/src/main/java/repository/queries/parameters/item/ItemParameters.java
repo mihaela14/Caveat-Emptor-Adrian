@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import repository.entities.User;
-import repository.queries.parameters.user.UserParameters;
 import fields.ItemFields;
 
 public class ItemParameters {

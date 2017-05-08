@@ -1,5 +1,6 @@
 package beans.category;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
@@ -16,23 +17,21 @@ import exceptions.CategoryException;
 @RequestScoped
 public class CategoryOperationsBean {
 
-	private String name;
-
-	private String description;
+	private CategoryDTO categoryDTO;
 
 	private Long categoryId;
 
 	@EJB
 	private CategoryService categoryService;
 
+	@PostConstruct
+	public void init() {
+		categoryDTO = new CategoryDTO();
+	}
+
 	public String addChildCategory() {
 
 		FacesContext facesContext = FacesContext.getCurrentInstance();
-
-		CategoryDTO categoryDTO = new CategoryDTO();
-
-		categoryDTO.setName(name);
-		categoryDTO.setDescription(description);
 
 		try {
 			categoryService.addChildCategory(categoryDTO, categoryId);
@@ -47,11 +46,6 @@ public class CategoryOperationsBean {
 	public String addRootCategory() {
 
 		FacesContext facesContext = FacesContext.getCurrentInstance();
-
-		CategoryDTO categoryDTO = new CategoryDTO();
-
-		categoryDTO.setName(name);
-		categoryDTO.setDescription(description);
 
 		try {
 			categoryService.addRootCategory(categoryDTO);
@@ -81,11 +75,6 @@ public class CategoryOperationsBean {
 
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 
-		CategoryDTO categoryDTO = new CategoryDTO();
-
-		categoryDTO.setName(name);
-		categoryDTO.setDescription(description);
-
 		try {
 			categoryService.updateCategory(categoryDTO, categoryId);
 			return Routes.CATEGORY_REDIRECT.getUrl();
@@ -96,28 +85,20 @@ public class CategoryOperationsBean {
 		}
 	}
 
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
 	public Long getCategoryId() {
 		return categoryId;
 	}
 
 	public void setCategoryId(Long categoryId) {
 		this.categoryId = categoryId;
+	}
+
+	public CategoryDTO getCategoryDTO() {
+		return categoryDTO;
+	}
+
+	public void setCategoryDTO(CategoryDTO categoryDTO) {
+		this.categoryDTO = categoryDTO;
 	}
 
 }

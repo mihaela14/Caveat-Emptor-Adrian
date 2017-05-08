@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dto.CategoryDTO;
+import dto.Tree;
 
 public class TreeMapper {
 

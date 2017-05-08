@@ -1,10 +1,10 @@
 package beans.category;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
-import mapping.Tree;
 import mapping.TreeMapper;
 import beans.category.utils.TreeTypes;
 import category.CategoryService;
@@ -12,6 +12,7 @@ import category.CategoryService;
 import com.google.gson.Gson;
 
 import dto.CategoryDTO;
+import dto.Tree;
 import exceptions.CategoryException;
 
 @ManagedBean(name = "category")
@@ -24,6 +25,12 @@ public class CategoryBean {
 	private String minimalTree;
 
 	private String fullTree;
+
+	@PostConstruct
+	public void init() {
+		minimalTree = getInitializedTree(TreeTypes.MINIMAL.toString());
+		fullTree = getInitializedTree(TreeTypes.FULL.toString());
+	}
 
 	public String getInitializedTree(String type) {
 
@@ -47,7 +54,6 @@ public class CategoryBean {
 	}
 
 	public String getMinimalTree() {
-		setMinimalTree(getInitializedTree(TreeTypes.MINIMAL.toString()));
 		return minimalTree;
 	}
 
@@ -56,7 +62,6 @@ public class CategoryBean {
 	}
 
 	public String getFullTree() {
-		setFullTree(getInitializedTree(TreeTypes.FULL.toString()));
 		return fullTree;
 	}
 

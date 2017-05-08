@@ -29,6 +29,15 @@ public class Item implements Serializable {
 	@Column(nullable = false)
 	private String name;
 
+	@Column
+	private String description;
+
+	@Column(name = "opening_date")
+	private Long openingDate;
+
+	@Column(name = "closing_date")
+	private Long closingDate;
+
 	@ManyToOne
 	@JoinColumn(name = "user_id", referencedColumnName = "id")
 	private User user;
@@ -78,6 +87,30 @@ public class Item implements Serializable {
 
 	public void setInitialPrice(Double initialPrice) {
 		this.initialPrice = initialPrice;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public Long getOpeningDate() {
+		return openingDate;
+	}
+
+	public void setOpeningDate(Long openingDate) {
+		this.openingDate = openingDate;
+	}
+
+	public Long getClosingDate() {
+		return closingDate;
+	}
+
+	public void setClosingDate(Long closingDate) {
+		this.closingDate = closingDate;
 	}
 
 }

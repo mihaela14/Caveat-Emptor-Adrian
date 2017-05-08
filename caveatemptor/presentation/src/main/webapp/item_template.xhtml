@@ -18,24 +18,42 @@
 			<ui:include src="/header_navigation.xhtml" />
 		</ui:insert>
 
-		<div class="row pt-5">
-			<div class="col-md-6">
-				<ui:insert name="item_operations">
-					<ui:include src="/item_operations.xhtml" />
-				</ui:insert>
+		<div class="row pt-5 justify-content-end">
+			<div class="dropdown">
+				<button class="btn btn-secondary dropdown-toggle" type="button"
+					id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+					aria-expanded="false">Items to</button>
+				<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+					<a class="dropdown-item" href="#">sell</a>
+				</div>
 			</div>
-			<div class="col-md-6">
-				<h:outputText value="Select the category" />
-				<div class="row pt-2">
-					<div class="col md-12">
-						<ui:insert name="category_tree">
-							<ui:include src="/category_tree.xhtml" />
-						</ui:insert>
+			<div class="col-md-2">
+				<button type="button" class="btn btn-primary" data-toggle="collapse"
+					data-target="#collapseExample" aria-expanded="false"
+					aria-controls="collapseExample">Define new item</button>
+			</div>
+		</div>
+
+		<div class="collapse" id="collapseExample">
+			<div class="row pt-4 justify-content-center">
+				<div class="col-md-4">
+					<ui:insert name="item_operations">
+						<ui:include src="/item_operations.xhtml" />
+					</ui:insert>
+				</div>
+				<div class="col-md-6">
+					<h:outputText value="Select the category" />
+					<div class="row pt-2">
+						<div class="col md-12">
+							<ui:insert name="category_tree">
+								<ui:include src="/category_tree.xhtml" />
+							</ui:insert>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		<div class="row pt-3 justify-content-center">
+		<div class="row pt-5 pb-5 justify-content-center">
 			<ui:insert name="item_table">
 				<ui:include src="/item_table.xhtml" />
 			</ui:insert>

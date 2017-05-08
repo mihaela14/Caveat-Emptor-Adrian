@@ -49,8 +49,14 @@
 					expandIcon: 'typcn typcn-plus',
 					onNodeSelected: function(event, data) {
 						document.getElementById('itemDefiningForm:categoryId').value = data['id'];
+						document.getElementById('itemDefiningForm:itemCategoryName').value = data['text'];
+					},
+					onNodeUnselected: function(event, node) {
+						document.getElementById('itemDefiningForm:itemCategoryName').value = null;
 					}
 				});
+
+				$('#tree').treeview('collapseAll', { silent: true });
 			}
 
 			$(document).ready(loadTree);

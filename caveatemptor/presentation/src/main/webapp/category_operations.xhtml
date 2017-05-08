@@ -23,7 +23,7 @@
 
 		<div class="row pt-2">
 			<div class="col-md-2">
-				<h:commandButton id="createNewButton" value="Create new"
+				<h:commandButton id="createNewButton" value="Reset"
 					styleClass="btn btn-default" onclick="createNewCategory()">
 				</h:commandButton>
 			</div>
@@ -78,7 +78,7 @@
 				</div>
 				<div class="col-md-10">
 					<h:inputText id="name" class="form-control"
-						value="#{category_operations.name}"
+						value="#{category_operations.categoryDTO.name}"
 						validatorMessage="Expecting category name with length between 1 and 20 characters.">
 						<f:validateLength minimum="1" maximum="20" />
 					</h:inputText>
@@ -92,7 +92,7 @@
 				</div>
 				<div class="col-md-10">
 					<h:inputTextarea id="description" class="form-control"
-						value="#{category_operations.description}" rows="10"
+						value="#{category_operations.categoryDTO.description}" rows="10"
 						validatorMessage="Expecting category description with length between 1 and 1000 characters.">
 						<f:validateLength minimum="1" maximum="1000" />
 					</h:inputTextarea>

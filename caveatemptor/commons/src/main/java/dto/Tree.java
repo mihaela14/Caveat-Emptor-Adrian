@@ -1,4 +1,4 @@
-package mapping;
+package dto;
 
 import java.util.List;
 

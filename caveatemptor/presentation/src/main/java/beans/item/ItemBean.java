@@ -11,7 +11,6 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.RequestScoped;
 
 import mapping.ItemMapper;
-import mapping.ItemRow;
 import repository.entities.Item;
 import beans.UserBean;
 
@@ -19,6 +18,7 @@ import com.google.gson.Gson;
 
 import constants.Routes;
 import dto.ItemDTO;
+import dto.ItemRow;
 import exceptions.CategoryException;
 import exceptions.ItemException;
 import exceptions.UserException;
@@ -62,6 +62,7 @@ public class ItemBean {
 		}
 	}
 
+	// TODO: handle exception
 	public String addItem() {
 
 		Long loggedUserId = userBean.getId();

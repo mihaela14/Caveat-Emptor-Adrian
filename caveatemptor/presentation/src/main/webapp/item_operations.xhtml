@@ -34,6 +34,29 @@
 			</div>
 
 			<div class="row justify-content-center">
+				<div class="form-group">
+					<h:outputText value="Description"
+						styleClass="control-label col-md-2" />
+					<div class="col-md-12">
+						<h:inputTextarea id="itemDescription"
+							value="#{itemBean.itemDTO.description}" class="form-control"
+							rows="2" />
+					</div>
+				</div>
+			</div>
+
+			<div class="row justify-content-center">
+				<div class="form-group">
+					<h:outputText value="Selected category"
+						styleClass="control-label col-md-2" />
+					<div class="col-md-12">
+						<h:inputText id="itemCategoryName" class="form-control" size="20"
+							disabled="true" />
+					</div>
+				</div>
+			</div>
+
+			<div class="row justify-content-center">
 				<h:commandButton id="addItemButton" action="#{itemBean.addItem()}"
 					value="Add item" styleClass="btn btn-primary">
 				</h:commandButton>

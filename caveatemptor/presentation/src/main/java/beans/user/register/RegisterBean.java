@@ -8,8 +8,8 @@ import javax.faces.context.FacesContext;
 
 import user.registration.RegistrationService;
 import utils.FacesContextMessage;
-import constants.Email;
 import constants.Forms;
+import constants.Routes;
 import dto.UserDTO;
 import exceptions.RegistrationException;
 
@@ -33,9 +33,7 @@ public class RegisterBean {
 
 		try {
 			registrationService.registerUser(userDTO);
-			FacesContextMessage.addMessage(facesContext,
-					Forms.REGISTER.getName(),
-					Email.ACTIVATE_ACCOUNT_MESSAGE.getValue());
+			return Routes.POST_REGISTER_REDIRECT.getUrl();
 		} catch (RegistrationException e) {
 			FacesContextMessage.addMessage(facesContext,
 					Forms.REGISTER.getName(), e.getMessage());

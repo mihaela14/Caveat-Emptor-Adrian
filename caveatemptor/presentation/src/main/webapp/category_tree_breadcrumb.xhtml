@@ -144,9 +144,12 @@
 
 				$('#tree').treeview('clearSearch');
 
+				$('#tree').treeview('collapseAll', { silent: true });
+
 				disableCrud();
 				
 				document.getElementById('categoryForm:saveButton').removeAttribute('disabled');
+				document.getElementById('searchCategoryName').value = null;
 
 				$('#breadcrumb').empty();
 				updateForms(null, null);
@@ -186,6 +189,8 @@
 						document.getElementById('categoryForm:saveButton').setAttribute('disabled', 'true');
 					}
 				});
+
+				$('#tree').treeview('collapseAll', { silent: true });
 			}
 
 			$(document).ready(loadTree);

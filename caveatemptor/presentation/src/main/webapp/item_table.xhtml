@@ -27,41 +27,60 @@
 			</tbody>
 		</table>
 		<script>
-			var itemRows = [${itemBean.itemsJSON}][0];
-			var tableBody = document.getElementById('itemTableBody');
+			function updateName(id) {
+				var rowCategoryName = document.getElementById(id);
 
-			for(i in itemRows) {
-				
-				var tr = document.createElement('tr');
+				if(rowCategoryName.children.length === 0) {
+					var inputRowCategoryName = document.createElement('input');
+					inputRowCategoryName.setAttribute('type', 'text');
+					inputRowCategoryName.setAttribute('placeholder', rowCategoryName.innerHTML);
 
-				var tdId = document.createElement('td');
-				var id1 = 'tdId' + i;
-				tdId.setAttribute('id', id1);
-
-				var tdName = document.createElement('td');
-				var id2 = 'tdName' + i;
-				tdName.setAttribute('id', id2);
-
-				var tdCategoryName = document.createElement('td');
-				var id3 = 'tdCategoryName' + i;
-				tdCategoryName.setAttribute('id', id3);
-
-				var tdInitialPrice = document.createElement('td');
-				var id4 = 'tdInitialPrice' + i;
-				tdInitialPrice.setAttribute('id', id4);
-				
-				tr.appendChild(tdId);
-				tr.appendChild(tdName);
-				tr.appendChild(tdCategoryName);
-				tr.appendChild(tdInitialPrice);
-				
-				tableBody.appendChild(tr);
-
-				document.getElementById(id1).innerHTML = itemRows[i]['id'];
-				document.getElementById(id2).innerHTML = itemRows[i]['name'];
-				document.getElementById(id3).innerHTML = itemRows[i]['categoryName'];
-				document.getElementById(id4).innerHTML = itemRows[i]['initialPrice'];
+					rowCategoryName.innerHTML = null;
+					rowCategoryName.appendChild(inputRowCategoryName);
+				}
 			}
+			
+			function buildTable() {
+				
+				var itemRows = [${itemBean.itemsJSON}][0];
+				var tableBody = document.getElementById('itemTableBody');
+	
+				for(i in itemRows) {
+					
+					var tr = document.createElement('tr');
+	
+					var tdId = document.createElement('td');
+					var id1 = 'tdId' + i;
+					tdId.setAttribute('id', id1);
+	
+					var tdName = document.createElement('td');
+					var id2 = 'tdName' + i;
+					tdName.setAttribute('id', id2);
+					tdName.setAttribute('onclick', 'updateName(id)')
+	
+					var tdCategoryName = document.createElement('td');
+					var id3 = 'tdCategoryName' + i;
+					tdCategoryName.setAttribute('id', id3);
+	
+					var tdInitialPrice = document.createElement('td');
+					var id4 = 'tdInitialPrice' + i;
+					tdInitialPrice.setAttribute('id', id4);
+					
+					tr.appendChild(tdId);
+					tr.appendChild(tdName);
+					tr.appendChild(tdCategoryName);
+					tr.appendChild(tdInitialPrice);
+					
+					tableBody.appendChild(tr);
+	
+					document.getElementById(id1).innerHTML = itemRows[i]['id'];
+					document.getElementById(id2).innerHTML = itemRows[i]['name'];
+					document.getElementById(id3).innerHTML = itemRows[i]['categoryName'];
+					document.getElementById(id4).innerHTML = itemRows[i]['initialPrice'];
+				}
+			}
+	
+			$(document).ready(buildTable);
 		</script>
 	</ui:composition>
 </h:body>

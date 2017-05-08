@@ -10,6 +10,12 @@ public class ItemDTO implements Serializable {
 
 	private String name;
 
+	private String description;
+
+	private Long openingDate;
+
+	private Long closingDate;
+
 	private CategoryDTO categoryDTO;
 
 	private UserDTO userDTO;
@@ -54,6 +60,30 @@ public class ItemDTO implements Serializable {
 
 	public void setInitialPrice(Double initialPrice) {
 		this.initialPrice = initialPrice;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public Long getOpeningDate() {
+		return openingDate;
+	}
+
+	public void setOpeningDate(Long openingDate) {
+		this.openingDate = openingDate;
+	}
+
+	public Long getClosingDate() {
+		return closingDate;
+	}
+
+	public void setClosingDate(Long closingDate) {
+		this.closingDate = closingDate;
 	}
 
 }
