@@ -63,13 +63,10 @@ public class ItemServiceImpl implements ItemService {
 	@Override
 	public List<Item> getItems(Long userId) throws ItemException, UserException {
 
-		List<Item> items = new ArrayList<>();
-
 		User user = userRepository.getSingleEntityById(userId, entityManager);
 		NamedQueryData queryData = getQueryData(user);
 
-		items = itemRepository.getCollection(queryData, entityManager);
-		return items;
+		return itemRepository.getCollection(queryData, entityManager);
 	}
 
 	private NamedQueryDataImpl getQueryData(User user) {

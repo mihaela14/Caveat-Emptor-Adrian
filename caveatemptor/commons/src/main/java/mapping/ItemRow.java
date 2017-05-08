@@ -8,6 +8,8 @@ public class ItemRow {
 
 	private String categoryName;
 
+	private Double initialPrice;
+
 	public Long getId() {
 		return id;
 	}
@@ -30,6 +32,14 @@ public class ItemRow {
 
 	public void setCategoryName(String categoryName) {
 		this.categoryName = categoryName;
+	}
+
+	public Double getInitialPrice() {
+		return initialPrice;
+	}
+
+	public void setInitialPrice(Double initialPrice) {
+		this.initialPrice = initialPrice;
 	}
 
 }

@@ -18,13 +18,25 @@
 						<h:inputText id="itemName" value="#{itemBean.itemDTO.name}"
 							class="form-control" size="20" />
 					</div>
+				</div>
+			</div>
 
-					<div class="row pt-3 justify-content-center">
-						<h:commandButton id="addItemButton" action="#{itemBean.addItem()}"
-							value="Add item" styleClass="btn btn-primary">
-						</h:commandButton>
+			<div class="row justify-content-center">
+				<div class="form-group">
+					<h:outputText value="Initial price"
+						styleClass="control-label col-md-2" />
+					<div class="col-md-12">
+						<h:inputText id="itemInitialPrice"
+							value="#{itemBean.itemDTO.initialPrice}" class="form-control"
+							size="20" />
 					</div>
 				</div>
+			</div>
+
+			<div class="row justify-content-center">
+				<h:commandButton id="addItemButton" action="#{itemBean.addItem()}"
+					value="Add item" styleClass="btn btn-primary">
+				</h:commandButton>
 			</div>
 		</h:form>
 	</ui:composition>

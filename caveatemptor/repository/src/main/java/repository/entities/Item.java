@@ -37,6 +37,9 @@ public class Item implements Serializable {
 	@JoinColumn(name = "category_id", referencedColumnName = "id")
 	private Category category;
 
+	@Column(name = "initial_price")
+	private Double initialPrice;
+
 	public Long getId() {
 		return id;
 	}
@@ -67,6 +70,14 @@ public class Item implements Serializable {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public Double getInitialPrice() {
+		return initialPrice;
+	}
+
+	public void setInitialPrice(Double initialPrice) {
+		this.initialPrice = initialPrice;
 	}
 
 }

@@ -2,7 +2,6 @@ package beans.item;
 
 import item.ItemService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -52,15 +51,11 @@ public class ItemBean {
 		itemDTO = new ItemDTO();
 
 		try {
-			items = itemService.getItems(userBean.getId());
-			List<ItemDTO> itemsDTO = new ArrayList<>();
+			Long loggedUserId = userBean.getId();
+			items = itemService.getItems(loggedUserId);
 
-			for (Item item : items) {
-				ItemDTO itemDTO = ItemMapper.getItemDTO(item);
-				itemsDTO.add(itemDTO);
-			}
-
-			List<ItemRow> itemRows = ItemMapper.getItemRows(itemsDTO);
+			List<ItemDTO> itemDTOs = ItemMapper.getItemDTOs(items);
+			List<ItemRow> itemRows = ItemMapper.getItemRows(itemDTOs);
 
 			itemsJSON = gson.toJson(itemRows);
 		} catch (UserException | ItemException e) {
@@ -69,10 +64,10 @@ public class ItemBean {
 
 	public String addItem() {
 
-		Long userId = userBean.getId();
+		Long loggedUserId = userBean.getId();
 
 		try {
-			itemService.addItem(itemDTO, userId, categoryId);
+			itemService.addItem(itemDTO, loggedUserId, categoryId);
 			return Routes.ITEM_REDIRECT.getUrl();
 		} catch (UserException | CategoryException e) {
 			return null;

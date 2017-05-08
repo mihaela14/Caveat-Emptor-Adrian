@@ -14,6 +14,8 @@ public class ItemDTO implements Serializable {
 
 	private UserDTO userDTO;
 
+	private Double initialPrice;
+
 	public Long getId() {
 		return id;
 	}
@@ -44,6 +46,14 @@ public class ItemDTO implements Serializable {
 
 	public void setCategoryDTO(CategoryDTO categoryDTO) {
 		this.categoryDTO = categoryDTO;
+	}
+
+	public Double getInitialPrice() {
+		return initialPrice;
+	}
+
+	public void setInitialPrice(Double initialPrice) {
+		this.initialPrice = initialPrice;
 	}
 
 }

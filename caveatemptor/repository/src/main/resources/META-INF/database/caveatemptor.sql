@@ -16,7 +16,7 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Current Database: `caveatemptor`
+-- Table structure for table `categories`
 --
 
 DROP TABLE IF EXISTS `categories`;
@@ -57,13 +57,14 @@ CREATE TABLE `items` (
   `user_id` bigint(11) NOT NULL,
   `category_id` bigint(11) NOT NULL,
   `bid_id` bigint(11) DEFAULT NULL,
+  `initial_price` double DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   KEY `fk_items_categories_category_id_idx` (`category_id`),
   KEY `fk_items_user_user_id_idx` (`user_id`),
   CONSTRAINT `fk_items_categories_category_id` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_items_user_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -72,7 +73,7 @@ CREATE TABLE `items` (
 
 LOCK TABLES `items` WRITE;
 /*!40000 ALTER TABLE `items` DISABLE KEYS */;
-INSERT INTO `items` VALUES (1,'i7 2400',23,7,NULL),(2,'i7 6700',23,7,NULL),(3,'i7 6700k',23,7,NULL),(4,'Civil war stamps',23,186,NULL),(5,'procesor i3',23,21,NULL),(6,'test stamp',23,186,NULL),(7,'test',23,186,NULL),(8,'i5',23,21,NULL),(9,'i5',23,21,NULL),(10,'i5',23,21,NULL),(11,'stamp test',23,186,NULL),(12,'test',23,2,NULL),(13,'stamp final',23,186,NULL),(14,'Lenovo IdeaCentre',23,2,NULL),(15,'for the lulz',23,187,NULL),(16,'shaorma',24,187,NULL),(17,'best cpu 2k17 buy 4 free',23,168,NULL);
+INSERT INTO `items` VALUES (1,'i7 2400',23,7,NULL,NULL),(2,'i7 6700',23,7,NULL,NULL),(3,'i7 6700k',23,7,NULL,NULL),(4,'Civil war stamps',23,186,NULL,NULL),(5,'procesor i3',23,21,NULL,NULL),(6,'test stamp',23,186,NULL,NULL),(7,'test',23,186,NULL,NULL),(8,'i5',23,21,NULL,NULL),(9,'i5',23,21,NULL,NULL),(10,'i5',23,21,NULL,NULL),(11,'stamp test',23,186,NULL,NULL),(12,'test',23,2,NULL,NULL),(13,'stamp final',23,186,NULL,NULL),(14,'Lenovo IdeaCentre',23,2,NULL,NULL),(15,'for the lulz',23,187,NULL,NULL),(16,'shaorma',24,187,NULL,NULL),(17,'best cpu 2k17 buy 4 free',23,168,NULL,NULL),(18,'i7 6700k nou noutz',23,21,NULL,NULL),(19,'gfdgfdgfd',23,168,NULL,NULL),(20,'test',23,2,NULL,4323.34);
 /*!40000 ALTER TABLE `items` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -147,4 +148,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2017-05-05 18:35:03
+-- Dump completed on 2017-05-08 10:22:26

@@ -15,6 +15,12 @@
 					<th>Name</th>
 					<th>Category</th>
 					<th>Initial price</th>
+					<th>Best bid</th>
+					<th># bids</th>
+					<th>Opening date</th>
+					<th>Closing date</th>
+					<th>Status</th>
+					<th>Winner</th>
 				</tr>
 			</thead>
 			<tbody id="itemTableBody">
@@ -39,16 +45,22 @@
 				var tdCategoryName = document.createElement('td');
 				var id3 = 'tdCategoryName' + i;
 				tdCategoryName.setAttribute('id', id3);
+
+				var tdInitialPrice = document.createElement('td');
+				var id4 = 'tdInitialPrice' + i;
+				tdInitialPrice.setAttribute('id', id4);
 				
 				tr.appendChild(tdId);
 				tr.appendChild(tdName);
 				tr.appendChild(tdCategoryName);
+				tr.appendChild(tdInitialPrice);
 				
 				tableBody.appendChild(tr);
 
 				document.getElementById(id1).innerHTML = itemRows[i]['id'];
 				document.getElementById(id2).innerHTML = itemRows[i]['name'];
 				document.getElementById(id3).innerHTML = itemRows[i]['categoryName'];
+				document.getElementById(id4).innerHTML = itemRows[i]['initialPrice'];
 			}
 		</script>
 	</ui:composition>
