@@ -1,28 +1,30 @@
 package dto;
 
-public class ItemRow {
+import java.io.Serializable;
+
+public class ItemRow implements Serializable {
+
+	private static final long serialVersionUID = 9164147655560698679L;
+
+	private Long rowId;
 
 	private Long id;
+
+	private Long categoryId;
 
 	private String name;
 
 	private String description;
 
-	private Long openingDate;
+	private String openingDate;
 
-	private Long closingDate;
+	private String closingDate;
 
 	private String categoryName;
 
 	private Double initialPrice;
 
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
+	private boolean canEdit;
 
 	public String getName() {
 		return name;
@@ -56,19 +58,55 @@ public class ItemRow {
 		this.description = description;
 	}
 
-	public Long getOpeningDate() {
+	public boolean isCanEdit() {
+		return canEdit;
+	}
+
+	public boolean canEdit() {
+		return canEdit;
+	}
+
+	public void setCanEdit(boolean canEdit) {
+		this.canEdit = canEdit;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Long getRowId() {
+		return rowId;
+	}
+
+	public void setRowId(Long rowId) {
+		this.rowId = rowId;
+	}
+
+	public Long getCategoryId() {
+		return categoryId;
+	}
+
+	public void setCategoryId(Long categoryId) {
+		this.categoryId = categoryId;
+	}
+
+	public String getOpeningDate() {
 		return openingDate;
 	}
 
-	public void setOpeningDate(Long openingDate) {
+	public void setOpeningDate(String openingDate) {
 		this.openingDate = openingDate;
 	}
 
-	public Long getClosingDate() {
+	public String getClosingDate() {
 		return closingDate;
 	}
 
-	public void setClosingDate(Long closingDate) {
+	public void setClosingDate(String closingDate) {
 		this.closingDate = closingDate;
 	}
 

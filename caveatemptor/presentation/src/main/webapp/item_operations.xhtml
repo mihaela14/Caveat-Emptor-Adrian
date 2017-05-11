@@ -10,58 +10,142 @@
 	<ui:composition>
 		<h:form id="itemDefiningForm" styleClass="form-horizontal">
 			<h:inputHidden id="categoryId" value="#{itemBean.categoryId}" />
+			<h:inputHidden id="hiddenOpeningDate"
+				value="#{itemBean.itemDTO.openingDate}" />
+			<h:inputHidden id="hiddenClosingDate"
+				value="#{itemBean.itemDTO.closingDate}" />
 
 			<div class="row justify-content-center">
-				<div class="form-group">
-					<h:outputText value="Name" styleClass="control-label col-md-2" />
-					<div class="col-md-12">
-						<h:inputText id="itemName" value="#{itemBean.itemDTO.name}"
-							class="form-control" size="20" />
+				<div class="col-md-12">
+					<div class="form-group">
+						<h:outputText value="Name" styleClass="control-label col-md-2" />
+						<div class="col-md-12">
+							<h:inputText id="itemName" value="#{itemBean.itemDTO.name}"
+								class="form-control" size="20">
+								<f:ajax execute="@this" />
+							</h:inputText>
+						</div>
 					</div>
 				</div>
 			</div>
 
 			<div class="row justify-content-center">
-				<div class="form-group">
-					<h:outputText value="Initial price"
-						styleClass="control-label col-md-2" />
-					<div class="col-md-12">
-						<h:inputText id="itemInitialPrice"
-							value="#{itemBean.itemDTO.initialPrice}" class="form-control"
-							size="20" />
+				<div class="col-md-12">
+					<div class="form-group">
+						<h:outputText value="Description"
+							styleClass="control-label col-md-2" />
+						<div class="col-md-12">
+							<h:inputTextarea id="itemDescription"
+								value="#{itemBean.itemDTO.description}" class="form-control"
+								rows="4">
+								<f:ajax execute="@this" />
+							</h:inputTextarea>
+						</div>
 					</div>
 				</div>
 			</div>
 
 			<div class="row justify-content-center">
-				<div class="form-group">
-					<h:outputText value="Description"
-						styleClass="control-label col-md-2" />
-					<div class="col-md-12">
-						<h:inputTextarea id="itemDescription"
-							value="#{itemBean.itemDTO.description}" class="form-control"
-							rows="2" />
+				<div class="col-md-12">
+					<div class="form-group">
+						<h:outputText value="Initial price"
+							styleClass="control-label col-md-2" />
+						<div class="col-md-12">
+							<h:inputText id="itemInitialPrice"
+								value="#{itemBean.itemDTO.initialPrice}" class="form-control"
+								size="20">
+								<f:ajax execute="@this" />
+							</h:inputText>
+						</div>
 					</div>
 				</div>
 			</div>
 
 			<div class="row justify-content-center">
-				<div class="form-group">
-					<h:outputText value="Selected category"
-						styleClass="control-label col-md-2" />
-					<div class="col-md-12">
-						<h:inputText id="itemCategoryName" class="form-control" size="20"
-							disabled="true" />
+				<div class="col-md-12">
+					<div class="form-group">
+						<h:outputText value="Selected category"
+							styleClass="control-label col-md-2" />
+						<div class="col-md-12">
+							<h:inputText id="itemCategoryName" class="form-control" size="20"
+								disabled="true" />
+						</div>
 					</div>
 				</div>
 			</div>
 
 			<div class="row justify-content-center">
-				<h:commandButton id="addItemButton" action="#{itemBean.addItem()}"
-					value="Add item" styleClass="btn btn-primary">
+				<div class="col-md-12">
+					<div class="form-group">
+						<h:outputText value="Opening date"
+							styleClass="control-label col-md-2" />
+						<div class="col-md-12">
+							<div class="input-group date">
+								<h:inputText class="form-control" id="openingDatePicker">
+									<f:ajax execute="@this" />
+								</h:inputText>
+								<div class="input-group-addon">
+									<span class="typcn typcn-calendar" />
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="row justify-content-center">
+				<div class="col-md-12">
+					<div class="form-group">
+						<h:outputText value="Closing date"
+							styleClass="control-label col-md-2" />
+						<div class="col-md-12">
+							<div class="input-group date">
+								<h:inputText data-provide="datepicker-inline"
+									class="form-control" id="closingDatePicker">
+									<f:ajax execute="@this" />
+								</h:inputText>
+								<div class="input-group-addon">
+									<span class="typcn typcn-calendar" />
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="row justify-content-center">
+				<h:commandButton id="addItemButton" onclick="scrollToBottom()"
+					action="#{itemBean.addItem()}" value="Add item"
+					styleClass="btn btn-primary">
+					<f:ajax
+						execute="categoryId hiddenOpeningDate hiddenClosingDate @this"
+						render="tableForm:itemTable" />
 				</h:commandButton>
 			</div>
 		</h:form>
+		<script>
+				$("#itemDefiningForm\\:openingDatePicker").datepicker({
+					format: 'dd/mm/yyyy'
+				});
+				$("#itemDefiningForm\\:openingDatePicker").on('changeDate', function() {
+				    $('#itemDefiningForm\\:hiddenOpeningDate').val(
+				            $('#itemDefiningForm\\:openingDatePicker').datepicker('getFormattedDate')
+				        );
+				});
+				
+				$("#itemDefiningForm\\:closingDatePicker").datepicker({
+					format: 'dd/mm/yyyy'
+				});
+				$("#itemDefiningForm\\:closingDatePicker").on('changeDate', function() {
+				    $('#itemDefiningForm\\:hiddenClosingDate').val(
+				            $('#itemDefiningForm\\:closingDatePicker').datepicker('getFormattedDate')
+				        );
+				});
+
+				function scrollToBottom() {
+					$("html, body").animate({ scrollTop: $(document).height() }, "slow");
+				}
+		</script>
 	</ui:composition>
 </h:body>
 </html>

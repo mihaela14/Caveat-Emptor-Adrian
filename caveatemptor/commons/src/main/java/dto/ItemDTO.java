@@ -12,9 +12,9 @@ public class ItemDTO implements Serializable {
 
 	private String description;
 
-	private Long openingDate;
+	private String openingDate;
 
-	private Long closingDate;
+	private String closingDate;
 
 	private CategoryDTO categoryDTO;
 
@@ -70,19 +70,19 @@ public class ItemDTO implements Serializable {
 		this.description = description;
 	}
 
-	public Long getOpeningDate() {
+	public String getOpeningDate() {
 		return openingDate;
 	}
 
-	public void setOpeningDate(Long openingDate) {
+	public void setOpeningDate(String openingDate) {
 		this.openingDate = openingDate;
 	}
 
-	public Long getClosingDate() {
+	public String getClosingDate() {
 		return closingDate;
 	}
 
-	public void setClosingDate(Long closingDate) {
+	public void setClosingDate(String closingDate) {
 		this.closingDate = closingDate;
 	}
 

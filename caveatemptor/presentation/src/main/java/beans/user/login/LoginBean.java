@@ -1,5 +1,7 @@
 package beans.user.login;
 
+import item.ItemService;
+
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -8,7 +10,7 @@ import javax.faces.context.FacesContext;
 
 import user.login.LoginService;
 import utils.FacesContextMessage;
-import beans.UserBean;
+import beans.user.UserBean;
 import constants.Forms;
 import constants.Routes;
 import exceptions.UserException;
@@ -20,23 +22,27 @@ public class LoginBean {
 	@EJB
 	private LoginService loginService;
 
+	@EJB
+	private ItemService itemService;
+
 	@ManagedProperty(value = "#{userBean}")
 	private UserBean userBean;
 
 	private String accountName;
-	private String password;
 
-	public LoginBean() {
-	}
+	private String password;
 
 	public String login() {
 
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 
 		try {
+
 			Long userId = loginService.validateUserLoginData(accountName,
 					password);
+
 			userBean.setId(userId);
+
 			return Routes.INDEX_REDIRECT.getUrl();
 		} catch (UserException e) {
 			FacesContextMessage.addMessage(facesContext, Forms.LOGIN.getName(),

@@ -8,80 +8,91 @@
 
 <h:body>
 	<ui:composition>
-		<table id="itemTable" class="table">
-			<thead>
-				<tr>
-					<th>#</th>
-					<th>Name</th>
-					<th>Category</th>
-					<th>Initial price</th>
-					<th>Best bid</th>
-					<th># bids</th>
-					<th>Opening date</th>
-					<th>Closing date</th>
-					<th>Status</th>
-					<th>Winner</th>
-				</tr>
-			</thead>
-			<tbody id="itemTableBody">
-			</tbody>
-		</table>
-		<script>
-			function updateName(id) {
-				var rowCategoryName = document.getElementById(id);
+		<h:form id="tableForm" style="width:100%">
+			<h:dataTable id="itemTable"
+				styleClass="table table-striped table-bordered"
+				value="#{itemBean.itemRows}" var="itemRow"
+				headerClass="table-8 align-middle">
 
-				if(rowCategoryName.children.length === 0) {
-					var inputRowCategoryName = document.createElement('input');
-					inputRowCategoryName.setAttribute('type', 'text');
-					inputRowCategoryName.setAttribute('placeholder', rowCategoryName.innerHTML);
+				<h:column>
+					<f:facet name="header">Id</f:facet>
+					#{itemRow.rowId}
+				</h:column>
 
-					rowCategoryName.innerHTML = null;
-					rowCategoryName.appendChild(inputRowCategoryName);
-				}
-			}
-			
-			function buildTable() {
-				
-				var itemRows = [${itemBean.itemsJSON}][0];
-				var tableBody = document.getElementById('itemTableBody');
-	
-				for(i in itemRows) {
-					
-					var tr = document.createElement('tr');
-	
-					var tdId = document.createElement('td');
-					var id1 = 'tdId' + i;
-					tdId.setAttribute('id', id1);
-	
-					var tdName = document.createElement('td');
-					var id2 = 'tdName' + i;
-					tdName.setAttribute('id', id2);
-					tdName.setAttribute('onclick', 'updateName(id)')
-	
-					var tdCategoryName = document.createElement('td');
-					var id3 = 'tdCategoryName' + i;
-					tdCategoryName.setAttribute('id', id3);
-	
-					var tdInitialPrice = document.createElement('td');
-					var id4 = 'tdInitialPrice' + i;
-					tdInitialPrice.setAttribute('id', id4);
-					
-					tr.appendChild(tdId);
-					tr.appendChild(tdName);
-					tr.appendChild(tdCategoryName);
-					tr.appendChild(tdInitialPrice);
-					
-					tableBody.appendChild(tr);
-	
-					document.getElementById(id1).innerHTML = itemRows[i]['id'];
-					document.getElementById(id2).innerHTML = itemRows[i]['name'];
-					document.getElementById(id3).innerHTML = itemRows[i]['categoryName'];
-					document.getElementById(id4).innerHTML = itemRows[i]['initialPrice'];
-				}
-			}
-	
-			$(document).ready(buildTable);
-		</script>
+				<h:column>
+					<f:facet name="header">Name</f:facet>
+					<h:inputText value="#{itemRow.name}"
+						rendered="#{itemBean.canEdit(itemRow.rowId)}"
+						styleClass="form-control">
+						<f:ajax execute="@this" />
+					</h:inputText>
+					<h:outputText value="#{itemRow.name}"
+						rendered="#{not itemBean.canEdit(itemRow.rowId)}" />
+				</h:column>
+
+				<h:column>
+					<f:facet name="header">Description</f:facet>
+					<h:inputText value="#{itemRow.description}"
+						rendered="#{itemBean.canEdit(itemRow.rowId)}"
+						styleClass="form-control">
+						<f:ajax execute="@this" />
+					</h:inputText>
+					<h:outputText value="#{itemRow.description}"
+						rendered="#{not itemBean.canEdit(itemRow.rowId)}" />
+				</h:column>
+
+				<h:column>
+					<f:facet name="header">Category name</f:facet>
+			#{itemRow.categoryName}
+			</h:column>
+
+				<h:column>
+					<f:facet name="header">Initial price</f:facet>
+					<h:inputText value="#{itemRow.initialPrice}"
+						rendered="#{itemBean.canEdit(itemRow.rowId)}"
+						styleClass="form-control">
+						<f:ajax execute="@this" />
+					</h:inputText>
+					<h:outputText value="#{itemRow.initialPrice}"
+						rendered="#{not itemBean.canEdit(itemRow.rowId)}" />
+				</h:column>
+
+				<h:column>
+					<f:facet name="header">Best bid</f:facet>
+				</h:column>
+
+				<h:column>
+					<f:facet name="header"># bids</f:facet>
+				</h:column>
+
+				<h:column>
+					<f:facet name="header">Opening date</f:facet>
+			#{itemRow.openingDate}
+			</h:column>
+
+				<h:column>
+					<f:facet name="header">Closing date</f:facet>
+			#{itemRow.closingDate}
+			</h:column>
+
+				<h:column>
+					<f:facet name="header">Status</f:facet>
+				</h:column>
+
+				<h:column>
+					<f:facet name="header">Winner</f:facet>
+				</h:column>
+
+				<h:column>
+					<h:commandButton id="editButton"
+						value="#{itemBean.getButtonValue(itemRow.rowId)}"
+						styleClass="btn btn-primary"
+						action="#{itemBean.edit(itemRow.rowId)}">
+						<f:ajax execute="editButton" render="tableForm:itemTable" />
+					</h:commandButton>
+				</h:column>
+			</h:dataTable>
+		</h:form>
 	</ui:composition>
 </h:body>
 </html>

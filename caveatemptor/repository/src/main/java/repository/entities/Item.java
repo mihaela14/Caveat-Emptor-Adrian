@@ -1,7 +1,9 @@
 package repository.entities;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -33,16 +35,16 @@ public class Item implements Serializable {
 	private String description;
 
 	@Column(name = "opening_date")
-	private Long openingDate;
+	private Timestamp openingDate;
 
 	@Column(name = "closing_date")
-	private Long closingDate;
+	private Timestamp closingDate;
 
 	@ManyToOne
 	@JoinColumn(name = "user_id", referencedColumnName = "id")
 	private User user;
 
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "category_id", referencedColumnName = "id")
 	private Category category;
 
@@ -97,19 +99,19 @@ public class Item implements Serializable {
 		this.description = description;
 	}
 
-	public Long getOpeningDate() {
+	public Timestamp getOpeningDate() {
 		return openingDate;
 	}
 
-	public void setOpeningDate(Long openingDate) {
+	public void setOpeningDate(Timestamp openingDate) {
 		this.openingDate = openingDate;
 	}
 
-	public Long getClosingDate() {
+	public Timestamp getClosingDate() {
 		return closingDate;
 	}
 
-	public void setClosingDate(Long closingDate) {
+	public void setClosingDate(Timestamp closingDate) {
 		this.closingDate = closingDate;
 	}
 

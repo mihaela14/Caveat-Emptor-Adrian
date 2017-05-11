@@ -2,7 +2,6 @@ package item.impl;
 
 import item.ItemService;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -25,6 +24,7 @@ import repository.repositories.category.CategoryRepository;
 import repository.repositories.item.ItemRepository;
 import repository.repositories.user.UserRepository;
 import dto.ItemDTO;
+import dto.ItemRow;
 import exceptions.CategoryException;
 import exceptions.ItemException;
 import exceptions.UserException;
@@ -61,12 +61,39 @@ public class ItemServiceImpl implements ItemService {
 	}
 
 	@Override
+	public void updateItem(ItemDTO itemDTO, Long userId, Long categoryId)
+			throws ItemException, UserException, CategoryException {
+
+		Item item = ItemMapper.getItem(itemDTO);
+
+		User user = userRepository.getSingleEntityById(userId, entityManager);
+		Category category = categoryRepository.getSingleEntityById(categoryId,
+				entityManager);
+
+		item.setUser(user);
+		item.setCategory(category);
+
+		itemRepository.add(item, entityManager);
+	}
+
+	@Override
 	public List<Item> getItems(Long userId) throws ItemException, UserException {
 
 		User user = userRepository.getSingleEntityById(userId, entityManager);
 		NamedQueryData queryData = getQueryData(user);
 
 		return itemRepository.getCollection(queryData, entityManager);
+	}
+
+	@Override
+	public List<ItemRow> getItemRows(Long userId) throws ItemException,
+			UserException {
+
+		List<Item> items = getItems(userId);
+
+		List<ItemDTO> itemDTOs = ItemMapper.getItemDTOs(items);
+
+		return ItemMapper.getItemRows(itemDTOs);
 	}
 
 	private NamedQueryDataImpl getQueryData(User user) {
@@ -78,4 +105,5 @@ public class ItemServiceImpl implements ItemService {
 
 		return new NamedQueryDataImpl(Item.QUERY_FIND_ITEMS_BY_USER, parameters);
 	}
+
 }

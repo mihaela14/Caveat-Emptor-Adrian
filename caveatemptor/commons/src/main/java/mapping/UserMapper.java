@@ -12,14 +12,16 @@ public class UserMapper {
 
 		User user = new User();
 
-		user.setId(userDTO.getId());
-		user.setFirstName(userDTO.getFirstName());
-		user.setLastName(userDTO.getLastName());
-		user.setEmailAddress(userDTO.getEmailAddress());
-		user.setAccountName(userDTO.getAccountName());
-		user.setPassword(userDTO.getPassword());
-		user.setRole(userDTO.getRole());
-		user.setActivated(userDTO.isActivated());
+		if (userDTO != null) {
+			user.setId(userDTO.getId());
+			user.setFirstName(userDTO.getFirstName());
+			user.setLastName(userDTO.getLastName());
+			user.setEmailAddress(userDTO.getEmailAddress());
+			user.setAccountName(userDTO.getAccountName());
+			user.setPassword(userDTO.getPassword());
+			user.setRole(userDTO.getRole());
+			user.setActivated(userDTO.isActivated());
+		}
 
 		return user;
 	}
@@ -28,14 +30,16 @@ public class UserMapper {
 
 		UserDTO userDTO = new UserDTO();
 
-		userDTO.setId(user.getId());
-		userDTO.setFirstName(user.getFirstName());
-		userDTO.setLastName(user.getLastName());
-		userDTO.setEmailAddress(user.getEmailAddress());
-		userDTO.setAccountName(user.getAccountName());
-		userDTO.setPassword(user.getPassword());
-		userDTO.setRole(user.getRole());
-		userDTO.setActivated(user.isActivated());
+		if (user != null) {
+			userDTO.setId(user.getId());
+			userDTO.setFirstName(user.getFirstName());
+			userDTO.setLastName(user.getLastName());
+			userDTO.setEmailAddress(user.getEmailAddress());
+			userDTO.setAccountName(user.getAccountName());
+			userDTO.setPassword(user.getPassword());
+			userDTO.setRole(user.getRole());
+			userDTO.setActivated(user.isActivated());
+		}
 
 		return userDTO;
 	}

@@ -50,6 +50,7 @@ public class CategoryServiceImpl implements CategoryService {
 
 		Category root = getRoot();
 		category.setParent(root);
+
 		categoryRepository.add(category, entityManager);
 	}
 
