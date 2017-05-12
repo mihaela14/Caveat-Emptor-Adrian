@@ -4,26 +4,31 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:ui="http://java.sun.com/jsf/facelets">
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
 
 <h:body>
 	<ui:composition>
 		<h:form id="itemDefiningForm" styleClass="form-horizontal">
-			<h:inputHidden id="categoryId" value="#{itemBean.categoryId}" />
+			<h:inputHidden id="categoryId" value="#{itemBean.categoryId}"
+				validator="#{itemBean.validateNumber}" />
 			<h:inputHidden id="hiddenOpeningDate"
-				value="#{itemBean.itemDTO.openingDate}" />
+				value="#{itemBean.itemDTO.openingDate}"
+				validator="#{itemBean.validateString}" />
 			<h:inputHidden id="hiddenClosingDate"
-				value="#{itemBean.itemDTO.closingDate}" />
+				value="#{itemBean.itemDTO.closingDate}"
+				validator="#{itemBean.validateString}" />
 
 			<div class="row justify-content-center">
 				<div class="col-md-12">
-					<div class="form-group">
+					<div id="itemNameFormGroup" class="form-group">
 						<h:outputText value="Name" styleClass="control-label col-md-2" />
 						<div class="col-md-12">
-							<h:inputText id="itemName" value="#{itemBean.itemDTO.name}"
-								class="form-control" size="20">
-								<f:ajax execute="@this" />
-							</h:inputText>
+							<h:inputText a:data-toggle="popover" a:data-placement="left"
+								a:data-content="Invalid item name." id="itemName"
+								value="#{itemBean.itemDTO.name}" class="form-control"
+								validator="#{itemBean.validateString}" />
+							<h:message id="itemNameMessage" for="itemName" />
 						</div>
 					</div>
 				</div>
@@ -37,9 +42,8 @@
 						<div class="col-md-12">
 							<h:inputTextarea id="itemDescription"
 								value="#{itemBean.itemDTO.description}" class="form-control"
-								rows="4">
-								<f:ajax execute="@this" />
-							</h:inputTextarea>
+								rows="4" validator="#{itemBean.validateString}" />
+							<h:message for="itemDescription" />
 						</div>
 					</div>
 				</div>
@@ -53,9 +57,8 @@
 						<div class="col-md-12">
 							<h:inputText id="itemInitialPrice"
 								value="#{itemBean.itemDTO.initialPrice}" class="form-control"
-								size="20">
-								<f:ajax execute="@this" />
-							</h:inputText>
+								size="20" validator="#{itemBean.validateNumber}" />
+							<h:message for="itemInitialPrice" />
 						</div>
 					</div>
 				</div>
@@ -68,7 +71,8 @@
 							styleClass="control-label col-md-2" />
 						<div class="col-md-12">
 							<h:inputText id="itemCategoryName" class="form-control" size="20"
-								disabled="true" />
+								disabled="true" validator="#{itemBean.validateString}" />
+							<h:message for="categoryId" />
 						</div>
 					</div>
 				</div>
@@ -81,13 +85,12 @@
 							styleClass="control-label col-md-2" />
 						<div class="col-md-12">
 							<div class="input-group date">
-								<h:inputText class="form-control" id="openingDatePicker">
-									<f:ajax execute="@this" />
-								</h:inputText>
+								<h:inputText class="form-control" id="openingDatePicker" />
 								<div class="input-group-addon">
 									<span class="typcn typcn-calendar" />
 								</div>
 							</div>
+							<h:message for="hiddenOpeningDate" />
 						</div>
 					</div>
 				</div>
@@ -101,25 +104,21 @@
 						<div class="col-md-12">
 							<div class="input-group date">
 								<h:inputText data-provide="datepicker-inline"
-									class="form-control" id="closingDatePicker">
-									<f:ajax execute="@this" />
-								</h:inputText>
+									class="form-control" id="closingDatePicker" />
 								<div class="input-group-addon">
 									<span class="typcn typcn-calendar" />
 								</div>
 							</div>
+							<h:message for="hiddenClosingDate" />
 						</div>
 					</div>
 				</div>
 			</div>
 
 			<div class="row justify-content-center">
-				<h:commandButton id="addItemButton" onclick="scrollToBottom()"
-					action="#{itemBean.addItem()}" value="Add item"
-					styleClass="btn btn-primary">
-					<f:ajax
-						execute="categoryId hiddenOpeningDate hiddenClosingDate @this"
-						render="tableForm:itemTable" />
+				<h:commandButton id="addItemButton" action="#{itemBean.addItem}"
+					value="Add item" styleClass="btn btn-primary">
+					<f:ajax execute="@form" render="tableForm:itemTable @form" />
 				</h:commandButton>
 			</div>
 		</h:form>
@@ -142,9 +141,20 @@
 				        );
 				});
 
-				function scrollToBottom() {
-					$("html, body").animate({ scrollTop: $(document).height() }, "slow");
-				}
+				$(document).ready(function(){
+					var target = document.getElementById('itemDefiningForm:itemNameMessage');
+					console.log(target);
+
+					var observer = new MutationObserver(function(mutations) {
+						  mutations.forEach(function(mutation) {
+						    console.log(mutation.type);
+						  });    
+						});
+
+					var config = { characterData: false, attributes: false, childList: true, subtree: true };
+					 
+					observer.observe(target, config);
+				});
 		</script>
 	</ui:composition>
 </h:body>

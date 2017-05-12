@@ -6,9 +6,13 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.component.UIComponent;
+import javax.faces.context.FacesContext;
+import javax.faces.validator.ValidatorException;
 
 import mapping.ItemMapper;
 import beans.item.utils.EditStatus;
@@ -62,12 +66,11 @@ public class ItemBean {
 	}
 
 	// TODO: handle exception
-	public void edit(int id) {
+	public void editRow(int id) {
 
-		boolean canEdit = canEdit(id);
+		boolean canEditRow = canEditRow(id);
 
-		if (canEdit) {
-
+		if (canEditRow) {
 			ItemRow itemRow = itemRows.get(id - 1);
 			ItemDTO itemDTO = ItemMapper.getItemDTO(itemRow);
 
@@ -75,24 +78,45 @@ public class ItemBean {
 				Long loggedUserId = userBean.getId();
 				Long categoryId = itemRow.getCategoryId();
 
-				itemService.updateItem(itemDTO, loggedUserId, categoryId);
-			} catch (ItemException | UserException | CategoryException e) {
+				itemService.addItem(itemDTO, loggedUserId, categoryId);
+			} catch (UserException | CategoryException e) {
 			}
 		}
 
-		itemRows.get(id - 1).setCanEdit(!canEdit);
+		itemRows.get(id - 1).setCanEdit(!canEditRow);
 	}
 
-	public boolean canEdit(int id) {
+	public boolean canEditRow(int id) {
 		return itemRows.get(id - 1).canEdit();
 	}
 
 	public String getButtonValue(int id) {
 
-		if (canEdit(id)) {
+		if (canEditRow(id)) {
 			return EditStatus.UPDATE.getValue();
 		} else {
 			return EditStatus.EDIT.getValue();
+		}
+	}
+
+	// TODO: validate else
+	public void validateNumber(FacesContext context, UIComponent component,
+			Object value) {
+
+		if (value == null) {
+			throw new ValidatorException(new FacesMessage("Null value."));
+		} else {
+		}
+	}
+
+	// TODO: validate else
+	public void validateString(FacesContext context, UIComponent component,
+			Object value) {
+
+		String fieldValue = (String) value;
+		if (fieldValue.isEmpty()) {
+			throw new ValidatorException(new FacesMessage("Empty field."));
+		} else {
 		}
 	}
 

@@ -22,23 +22,23 @@
 				<h:column>
 					<f:facet name="header">Name</f:facet>
 					<h:inputText value="#{itemRow.name}"
-						rendered="#{itemBean.canEdit(itemRow.rowId)}"
+						rendered="#{itemBean.canEditRow(itemRow.rowId)}"
 						styleClass="form-control">
 						<f:ajax execute="@this" />
 					</h:inputText>
 					<h:outputText value="#{itemRow.name}"
-						rendered="#{not itemBean.canEdit(itemRow.rowId)}" />
+						rendered="#{not itemBean.canEditRow(itemRow.rowId)}" />
 				</h:column>
 
 				<h:column>
 					<f:facet name="header">Description</f:facet>
 					<h:inputText value="#{itemRow.description}"
-						rendered="#{itemBean.canEdit(itemRow.rowId)}"
+						rendered="#{itemBean.canEditRow(itemRow.rowId)}"
 						styleClass="form-control">
 						<f:ajax execute="@this" />
 					</h:inputText>
 					<h:outputText value="#{itemRow.description}"
-						rendered="#{not itemBean.canEdit(itemRow.rowId)}" />
+						rendered="#{not itemBean.canEditRow(itemRow.rowId)}" />
 				</h:column>
 
 				<h:column>
@@ -49,12 +49,12 @@
 				<h:column>
 					<f:facet name="header">Initial price</f:facet>
 					<h:inputText value="#{itemRow.initialPrice}"
-						rendered="#{itemBean.canEdit(itemRow.rowId)}"
+						rendered="#{itemBean.canEditRow(itemRow.rowId)}"
 						styleClass="form-control">
 						<f:ajax execute="@this" />
 					</h:inputText>
 					<h:outputText value="#{itemRow.initialPrice}"
-						rendered="#{not itemBean.canEdit(itemRow.rowId)}" />
+						rendered="#{not itemBean.canEditRow(itemRow.rowId)}" />
 				</h:column>
 
 				<h:column>
@@ -87,7 +87,7 @@
 					<h:commandButton id="editButton"
 						value="#{itemBean.getButtonValue(itemRow.rowId)}"
 						styleClass="btn btn-primary"
-						action="#{itemBean.edit(itemRow.rowId)}">
+						action="#{itemBean.editRow(itemRow.rowId)}">
 						<f:ajax execute="editButton" render="tableForm:itemTable" />
 					</h:commandButton>
 				</h:column>

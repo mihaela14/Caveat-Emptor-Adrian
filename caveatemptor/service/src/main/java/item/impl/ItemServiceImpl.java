@@ -11,9 +11,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import mapping.CategoryMapper;
 import mapping.ItemMapper;
-import mapping.UserMapper;
 import repository.entities.Category;
 import repository.entities.Item;
 import repository.entities.User;
@@ -48,21 +46,6 @@ public class ItemServiceImpl implements ItemService {
 	@Override
 	public void addItem(ItemDTO itemDTO, Long userId, Long categoryId)
 			throws CategoryException, UserException {
-
-		User user = userRepository.getSingleEntityById(userId, entityManager);
-		Category category = categoryRepository.getSingleEntityById(categoryId,
-				entityManager);
-
-		itemDTO.setUserDTO(UserMapper.getUserDTO(user));
-		itemDTO.setCategoryDTO(CategoryMapper.getCategoryDTO(category));
-
-		Item item = ItemMapper.getItem(itemDTO);
-		itemRepository.add(item, entityManager);
-	}
-
-	@Override
-	public void updateItem(ItemDTO itemDTO, Long userId, Long categoryId)
-			throws ItemException, UserException, CategoryException {
 
 		Item item = ItemMapper.getItem(itemDTO);
 
