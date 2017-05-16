@@ -2,8 +2,8 @@ package item;
 
 import java.util.List;
 
-import repository.entities.Item;
 import dto.ItemDTO;
+import dto.ItemPagination;
 import dto.ItemRow;
 import exceptions.CategoryException;
 import exceptions.ItemException;
@@ -14,7 +14,8 @@ public interface ItemService {
 	void addItem(ItemDTO itemDTO, Long userId, Long categoryId)
 			throws CategoryException, UserException;
 
-	List<Item> getItems(Long userId) throws ItemException, UserException;
+	List<ItemRow> getItemRows(Long userId, ItemPagination viewConfig)
+			throws UserException, ItemException;
 
-	List<ItemRow> getItemRows(Long userId) throws ItemException, UserException;
+	long getRowCount(Long userId) throws UserException;
 }

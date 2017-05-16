@@ -22,6 +22,8 @@ public interface ItemRepository {
 
 	Item getSingleEntityById(Long id, EntityManager entityManager)
 			throws ItemException;
+	
+	long getEntityCount(NamedQueryData namedQueryData, EntityManager entityManager);
 
 	void setEntityManager(EntityManager entityManager);
 }

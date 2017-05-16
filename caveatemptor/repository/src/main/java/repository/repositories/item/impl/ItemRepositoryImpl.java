@@ -1,7 +1,6 @@
 package repository.repositories.item.impl;
 
 import java.util.List;
-import java.util.Map.Entry;
 
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
@@ -11,6 +10,7 @@ import javax.persistence.Query;
 
 import repository.entities.Item;
 import repository.queries.NamedQueryData;
+import repository.queries.QueryBuilder;
 import repository.repositories.item.ItemRepository;
 import exceptions.ItemException;
 import exceptions.messages.ExceptionMessages;
@@ -56,10 +56,9 @@ public class ItemRepositoryImpl implements ItemRepository {
 	public List<Item> getCollection(NamedQueryData namedQueryData,
 			EntityManager entityManager) throws ItemException {
 
-		setEntityManager(entityManager);
-
 		try {
-			return buildNamedQuery(namedQueryData).getResultList();
+			return QueryBuilder.buildNamedQueryWithPagination(namedQueryData,
+					entityManager).getResultList();
 		} catch (PersistenceException e) {
 			throw new ItemException();
 		}
@@ -69,10 +68,9 @@ public class ItemRepositoryImpl implements ItemRepository {
 	public Item getSingleEntityByQueryData(NamedQueryData namedQueryData,
 			EntityManager entityManager) throws ItemException {
 
-		setEntityManager(entityManager);
-
 		try {
-			return (Item) buildNamedQuery(namedQueryData).getSingleResult();
+			return (Item) QueryBuilder.buildNamedQuery(namedQueryData,
+					entityManager).getSingleResult();
 		} catch (PersistenceException e) {
 			throw new ItemException(
 					ExceptionMessages.ITEM_NOT_FOUND.getDetails());
@@ -94,20 +92,20 @@ public class ItemRepositoryImpl implements ItemRepository {
 	}
 
 	@Override
+	public long getEntityCount(NamedQueryData namedQueryData,
+			EntityManager entityManager) {
+
+		setEntityManager(entityManager);
+
+		Query query = QueryBuilder.buildNamedQueryWithPagination(
+				namedQueryData, entityManager);
+
+		return ((Number) query.getSingleResult()).intValue();
+	}
+
+	@Override
 	public void setEntityManager(EntityManager entityManager) {
 		this.entityManager = entityManager;
 	}
 
-	private Query buildNamedQuery(final NamedQueryData namedQueryData) {
-
-		final Query query = entityManager.createNamedQuery(namedQueryData
-				.getNamedQuery());
-
-		for (Entry<String, Object> entry : namedQueryData.getParameters()
-				.entrySet()) {
-			query.setParameter(entry.getKey(), entry.getValue());
-		}
-
-		return query;
-	}
 }

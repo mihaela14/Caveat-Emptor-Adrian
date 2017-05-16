@@ -14,6 +14,10 @@ public class NamedQueryDataImpl implements NamedQueryData, Serializable {
 
 	private final Map<String, Object> parameters;
 
+	private long maxResults;
+
+	private long firstResult;
+
 	public NamedQueryDataImpl(String namedQuery, Map<String, Object> parameters) {
 		this.namedQuery = namedQuery;
 		this.parameters = parameters;
@@ -27,6 +31,22 @@ public class NamedQueryDataImpl implements NamedQueryData, Serializable {
 	@Override
 	public String getNamedQuery() {
 		return namedQuery;
+	}
+
+	public long getMaxResults() {
+		return maxResults;
+	}
+
+	public void setMaxResults(long maxResults) {
+		this.maxResults = maxResults;
+	}
+
+	public long getFirstResult() {
+		return firstResult;
+	}
+
+	public void setFirstResult(long firstResult) {
+		this.firstResult = firstResult;
 	}
 
 }

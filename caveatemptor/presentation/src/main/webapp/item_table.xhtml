@@ -4,11 +4,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:ui="http://java.sun.com/jsf/facelets">
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
 
 <h:body>
 	<ui:composition>
 		<h:form id="tableForm" style="width:100%">
+			<h:inputHidden id="hiddenOpeningDate"
+				value="#{itemBean.itemDTO.openingDate}" />
+			<h:inputHidden id="hiddenClosingDate"
+				value="#{itemBean.itemDTO.closingDate}" />
 			<h:dataTable id="itemTable"
 				styleClass="table table-striped table-bordered"
 				value="#{itemBean.itemRows}" var="itemRow"
@@ -67,13 +72,27 @@
 
 				<h:column>
 					<f:facet name="header">Opening date</f:facet>
-			#{itemRow.openingDate}
-			</h:column>
+					<h:inputText id="openingDatePickerTable"
+						value="#{itemRow.openingDate}"
+						rendered="#{itemBean.canEditRow(itemRow.rowId)}"
+						styleClass="form-control">
+						<f:ajax execute="@this" />
+					</h:inputText>
+					<h:outputText value="#{itemRow.openingDate}"
+						rendered="#{not itemBean.canEditRow(itemRow.rowId)}" />
+				</h:column>
 
 				<h:column>
 					<f:facet name="header">Closing date</f:facet>
-			#{itemRow.closingDate}
-			</h:column>
+					<h:inputText id="closingDatePickerTable"
+						value="#{itemRow.closingDate}"
+						rendered="#{itemBean.canEditRow(itemRow.rowId)}"
+						styleClass="form-control">
+						<f:ajax execute="@this" />
+					</h:inputText>
+					<h:outputText value="#{itemRow.closingDate}"
+						rendered="#{not itemBean.canEditRow(itemRow.rowId)}" />
+				</h:column>
 
 				<h:column>
 					<f:facet name="header">Status</f:facet>
@@ -87,12 +106,28 @@
 					<h:commandButton id="editButton"
 						value="#{itemBean.getButtonValue(itemRow.rowId)}"
 						styleClass="btn btn-primary"
-						action="#{itemBean.editRow(itemRow.rowId)}">
+						action="#{itemBean.editRow(itemRow.rowId)}" a:style="width:100%">
 						<f:ajax execute="editButton" render="tableForm:itemTable" />
 					</h:commandButton>
 				</h:column>
 			</h:dataTable>
 		</h:form>
+
+		<script>
+			$(document).ready(function(){
+				
+				$("#tableForm\\:itemTable\\:0\\:openingDatePickerTable").datepicker({
+					format: 'dd/mm/yyyy'
+				});
+				
+// 				$("#tableForm\\:itemTable\\:0\\:openingDatePickerTable").on('changeDate', function() {
+// 				    $('#itemDefiningForm\\:openingOpeningDate').val(
+// 				            $('#itemDefiningForm\\:openingDatePicker').datepicker('getFormattedDate')
+// 				        );
+// 				});
+
+			});
+		</script>
 	</ui:composition>
 </h:body>
 </html>

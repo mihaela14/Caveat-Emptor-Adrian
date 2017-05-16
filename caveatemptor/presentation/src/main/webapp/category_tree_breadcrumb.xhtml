@@ -30,7 +30,7 @@
 				for (i in tree) {
 					if (tree[i][property] !== undefined) {
 						var children = tree[i][property];
-						if (children.length == 0) {
+						if (children.length === 0) {
 							delete tree[i][property];
 						}
 						removeEmptyNodes(tree[i][property], property);

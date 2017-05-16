@@ -71,7 +71,7 @@
 							styleClass="control-label col-md-2" />
 						<div class="col-md-12">
 							<h:inputText id="itemCategoryName" class="form-control" size="20"
-								disabled="true" validator="#{itemBean.validateString}" />
+								disabled="true" />
 							<h:message for="categoryId" />
 						</div>
 					</div>
@@ -118,14 +118,17 @@
 			<div class="row justify-content-center">
 				<h:commandButton id="addItemButton" action="#{itemBean.addItem}"
 					value="Add item" styleClass="btn btn-primary">
-					<f:ajax execute="@form" render="tableForm:itemTable @form" />
+					<f:ajax execute="@form pagination"
+						render="@form pagination tableForm:itemTable" />
 				</h:commandButton>
 			</div>
 		</h:form>
 		<script>
+			$(document).ready(function(){
 				$("#itemDefiningForm\\:openingDatePicker").datepicker({
 					format: 'dd/mm/yyyy'
 				});
+				
 				$("#itemDefiningForm\\:openingDatePicker").on('changeDate', function() {
 				    $('#itemDefiningForm\\:hiddenOpeningDate').val(
 				            $('#itemDefiningForm\\:openingDatePicker').datepicker('getFormattedDate')
@@ -135,26 +138,14 @@
 				$("#itemDefiningForm\\:closingDatePicker").datepicker({
 					format: 'dd/mm/yyyy'
 				});
+				
 				$("#itemDefiningForm\\:closingDatePicker").on('changeDate', function() {
 				    $('#itemDefiningForm\\:hiddenClosingDate').val(
 				            $('#itemDefiningForm\\:closingDatePicker').datepicker('getFormattedDate')
 				        );
 				});
 
-				$(document).ready(function(){
-					var target = document.getElementById('itemDefiningForm:itemNameMessage');
-					console.log(target);
-
-					var observer = new MutationObserver(function(mutations) {
-						  mutations.forEach(function(mutation) {
-						    console.log(mutation.type);
-						  });    
-						});
-
-					var config = { characterData: false, attributes: false, childList: true, subtree: true };
-					 
-					observer.observe(target, config);
-				});
+			});
 		</script>
 	</ui:composition>
 </h:body>

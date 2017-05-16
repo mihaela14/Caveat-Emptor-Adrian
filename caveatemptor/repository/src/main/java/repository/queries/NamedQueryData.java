@@ -7,4 +7,8 @@ public interface NamedQueryData {
 	Map<String, Object> getParameters();
 
 	String getNamedQuery();
+
+	long getFirstResult();
+
+	long getMaxResults();
 }

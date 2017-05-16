@@ -13,7 +13,7 @@
 </h:head>
 
 <h:body>
-	<div class="container">
+	<div class="container-fluid">
 		<ui:insert name="header">
 			<ui:include src="/header_navigation.xhtml" />
 		</ui:insert>
@@ -36,12 +36,12 @@
 
 		<div class="collapse" id="collapseExample">
 			<div class="row pt-4 justify-content-center">
-				<div class="col-md-4">
+				<div class="col-md-3">
 					<ui:insert name="item_operations">
 						<ui:include src="/item_operations.xhtml" />
 					</ui:insert>
 				</div>
-				<div class="col-md-6">
+				<div class="col-md-4">
 					<h:outputText value="Select the category" />
 					<div class="row pt-2">
 						<div class="col md-12">
@@ -54,11 +54,118 @@
 			</div>
 		</div>
 
-		<div class="row pt-5 pb-5 justify-content-center">
+		<h:form id="pagination">
+			<h:inputHidden id="hiddenPrevious"
+				value="#{itemBean.paginator.previousPageStyle}" />
+			<h:inputHidden id="hiddenNext"
+				value="#{itemBean.paginator.nextPageStyle}" />
+			<h:inputHidden id="currentPage"
+				value="#{itemBean.paginator.currentPageId}" />
+
+			<div class="row pt-5 mr-4 justify-content-end">
+
+				<div class="dropdown mr-4">
+					<button class="btn btn-secondary dropdown-toggle" type="button"
+						id="dropdownMenuButton" data-toggle="dropdown"
+						aria-haspopup="true" aria-expanded="false">Page size</button>
+					<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+						<h:commandLink styleClass="dropdown-item"
+							action="#{itemBean.updateItemsPerPageCount(1)}">
+							<h:outputText value="1" />
+							<f:ajax execute="@form" render="tableForm:itemTable pagination"
+								onevent="setOnStatusChange" />
+						</h:commandLink>
+						<h:commandLink styleClass="dropdown-item"
+							action="#{itemBean.updateItemsPerPageCount(2)}">
+							<h:outputText value="2" />
+							<f:ajax execute="@form" render="tableForm:itemTable pagination"
+								onevent="setOnStatusChange" />
+						</h:commandLink>
+						<h:commandLink styleClass="dropdown-item"
+							action="#{itemBean.updateItemsPerPageCount(5)}">
+							<h:outputText value="5" />
+							<f:ajax execute="@form" render="tableForm:itemTable pagination"
+								onevent="setOnStatusChange" />
+						</h:commandLink>
+						<h:commandLink styleClass="dropdown-item"
+							action="#{itemBean.updateItemsPerPageCount(10)}">
+							<h:outputText value="10" />
+							<f:ajax execute="@form" render="tableForm:itemTable pagination"
+								onevent="setOnStatusChange" />
+						</h:commandLink>
+						<h:commandLink styleClass="dropdown-item"
+							action="#{itemBean.updateItemsPerPageCount(20)}">
+							<h:outputText value="20" />
+							<f:ajax execute="@form" render="tableForm:itemTable pagination"
+								onevent="setOnStatusChange" />
+						</h:commandLink>
+					</div>
+				</div>
+
+				<nav aria-label="...">
+				<ul id="paginationList" class="pagination pagination-md">
+					<li class="page-item" id="previousPage"><h:commandLink
+							styleClass="page-link" value="Previous"
+							action="#{itemBean.getPreviousPage}">
+							<f:ajax execute="@form" render="@form tableForm:itemTable"
+								onevent="setOnStatusChange" />
+						</h:commandLink></li>
+					<ui:repeat value="#{itemBean.paginator.pages}" var="page">
+						<li class="page-item"><h:commandLink styleClass="page-link"
+								value="#{page.id}" action="#{itemBean.getPage(page)}">
+								<f:ajax execute="@form" render="@form tableForm:itemTable"
+									onevent="setOnStatusChange" />
+							</h:commandLink></li>
+					</ui:repeat>
+					<li class="page-item" id="nextPage"><h:commandLink
+							styleClass="page-link" value="Next"
+							action="#{itemBean.getNextPage}">
+							<f:ajax execute="@form" render="@form tableForm:itemTable"
+								onevent="setOnStatusChange" />
+						</h:commandLink></li>
+				</ul>
+				</nav>
+			</div>
+		</h:form>
+
+		<div class="row pt-2 pb-5 justify-content-center">
 			<ui:insert name="item_table">
 				<ui:include src="/item_table.xhtml" />
 			</ui:insert>
 		</div>
+
+		<script>
+			function setOnStatusChange(data) {
+
+				if(data.status === 'success') {
+					
+					var previousPageStyle = document.getElementById('pagination:hiddenPrevious').getAttribute('value');
+					var nextPageStyle = document.getElementById('pagination:hiddenNext').getAttribute('value');
+					
+					document.getElementById('previousPage').setAttribute('class', previousPageStyle);
+					document.getElementById('nextPage').setAttribute('class', nextPageStyle);
+
+					toggleCurrentPage();
+				}
+			}
+
+			function toggleCurrentPage() {
+
+				var currentPageId = document.getElementById('pagination:currentPage').value;
+				var children = $('#paginationList').children();
+
+				$(children[currentPageId]).addClass('page-item active');
+			}
+		
+			$(document).ready(function(){
+				
+				toggleCurrentPage();
+								
+				document.getElementById('previousPage').setAttribute('class', '#{itemBean.paginator.previousPageStyle}');
+				document.getElementById('nextPage').setAttribute('class', '#{itemBean.paginator.nextPageStyle}');
+			});
+		</script>
+
 	</div>
 
 </h:body>

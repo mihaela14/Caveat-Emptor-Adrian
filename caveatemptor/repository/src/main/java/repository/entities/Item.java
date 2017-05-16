@@ -11,17 +11,21 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
-@NamedQuery(name = "findItemsByUser", query = "SELECT i FROM Item i WHERE i.user = :user")
+@NamedQueries(value = {
+		@NamedQuery(name = "findItemsByUser", query = "SELECT i FROM Item i WHERE i.user = :user"),
+		@NamedQuery(name = "getItemCountByUser", query = "SELECT COUNT(i) FROM Item i WHERE i.user =:user") })
 @Table(name = "items")
 public class Item implements Serializable {
 
 	private static final long serialVersionUID = -7601072572981272676L;
 
 	public static final String QUERY_FIND_ITEMS_BY_USER = "findItemsByUser";
+	public static final String QUERY_GET_ITEM_COUNT_BY_USER = "getItemCountByUser";
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -52,6 +52,7 @@
 						document.getElementById('itemDefiningForm:itemCategoryName').value = data['text'];
 					},
 					onNodeUnselected: function(event, node) {
+						document.getElementById('itemDefiningForm:categoryId').value = null;
 						document.getElementById('itemDefiningForm:itemCategoryName').value = null;
 					}
 				});

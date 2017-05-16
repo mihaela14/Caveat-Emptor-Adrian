@@ -22,6 +22,7 @@ import repository.repositories.category.CategoryRepository;
 import repository.repositories.item.ItemRepository;
 import repository.repositories.user.UserRepository;
 import dto.ItemDTO;
+import dto.ItemPagination;
 import dto.ItemRow;
 import exceptions.CategoryException;
 import exceptions.ItemException;
@@ -60,33 +61,61 @@ public class ItemServiceImpl implements ItemService {
 	}
 
 	@Override
-	public List<Item> getItems(Long userId) throws ItemException, UserException {
+	public List<ItemRow> getItemRows(Long userId, ItemPagination itemPagination)
+			throws UserException, ItemException {
 
 		User user = userRepository.getSingleEntityById(userId, entityManager);
-		NamedQueryData queryData = getQueryData(user);
 
-		return itemRepository.getCollection(queryData, entityManager);
+		NamedQueryData namedQueryData = getItemRowsQueryData(user, itemPagination);
+		
+		List<Item> items = itemRepository.getCollection(namedQueryData,
+				entityManager);
+		
+		List<ItemDTO> itemDTOs = ItemMapper.getItemDTOs(items);
+		List<ItemRow> itemRows = ItemMapper.getItemRows(itemDTOs);
+
+		return itemRows;
 	}
 
 	@Override
-	public List<ItemRow> getItemRows(Long userId) throws ItemException,
-			UserException {
+	public long getRowCount(Long userId) throws UserException {
 
-		List<Item> items = getItems(userId);
+		User user = userRepository.getSingleEntityById(userId, entityManager);
 
-		List<ItemDTO> itemDTOs = ItemMapper.getItemDTOs(items);
+		NamedQueryData namedQueryData = getRowCountQueryData(user);
 
-		return ItemMapper.getItemRows(itemDTOs);
+		return itemRepository.getEntityCount(namedQueryData, entityManager);
 	}
 
-	private NamedQueryDataImpl getQueryData(User user) {
+	private NamedQueryData getItemRowsQueryData(User user,
+			ItemPagination itemPagination) {
 
 		ItemParameters itemParameters = new ItemParameters.Builder().withUser(
 				user).build();
 
 		Map<String, Object> parameters = itemParameters.getParameters();
 
-		return new NamedQueryDataImpl(Item.QUERY_FIND_ITEMS_BY_USER, parameters);
+		NamedQueryDataImpl namedQueryData = new NamedQueryDataImpl(
+				Item.QUERY_FIND_ITEMS_BY_USER, parameters);
+
+		namedQueryData.setFirstResult(itemPagination.getFirstResult());
+
+		namedQueryData.setMaxResults(itemPagination.getMaxResults());
+
+		return namedQueryData;
+	}
+
+	private NamedQueryData getRowCountQueryData(User user) {
+
+		ItemParameters itemParameters = new ItemParameters.Builder().withUser(
+				user).build();
+
+		Map<String, Object> parameters = itemParameters.getParameters();
+
+		NamedQueryDataImpl namedQueryData = new NamedQueryDataImpl(
+				Item.QUERY_GET_ITEM_COUNT_BY_USER, parameters);
+
+		return namedQueryData;
 	}
 
 }
