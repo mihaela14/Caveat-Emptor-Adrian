@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import constants.Pagination;
+import dto.ItemPagination;
 import dto.Page;
 
 public class Paginator {
@@ -23,10 +24,11 @@ public class Paginator {
 	private String nextPageStyle;
 
 	public Paginator() {
-		currentMaxResults = Pagination.MAX_RESULTS_DEFAULT.getValue();
+		this.currentMaxResults = Pagination.MAX_RESULTS_DEFAULT.getValue();
 	}
 
-	public void run(long itemCount, long currentMaxResults) {
+	public void run(long itemCount, long currentMaxResults,
+			boolean isItemBeingAdded) {
 
 		setItemCount(itemCount);
 		setCurrentMaxResults(currentMaxResults);
@@ -37,10 +39,13 @@ public class Paginator {
 		List<Page> pages = getPages(pageCount);
 		setPages(pages);
 
-		setCurrentPageId(1L);
+		Long currentPageId = isItemBeingAdded ? pageCount : 1L;
+		setCurrentPageId(currentPageId);
 
-		if (currentPageId != null) {
-			setPaginationStyle(pages.get(0));
+		if (isItemBeingAdded) {
+			setPaginationStyleClass(pages.get(currentPageId.intValue() - 1));
+		} else {
+			setPaginationStyleClass(pages.get(0));
 		}
 	}
 
@@ -52,10 +57,10 @@ public class Paginator {
 		this.currentPageId--;
 	}
 
-	public long getPageCount(long itemCount, long currentMaxResults) {
+	public static long getPageCount(long itemCount, long maxResults) {
 
-		return (long) Math
-				.ceil((double) itemCount / (double) currentMaxResults);
+		return (itemCount % maxResults == 0) ? (itemCount / maxResults)
+				: (itemCount / maxResults + 1);
 	}
 
 	public List<Page> getPages(long pageCount) {
@@ -80,7 +85,7 @@ public class Paginator {
 		} else if (page.getId() == pageCount) {
 			page.setCanPrevious(true);
 			page.setCanNext(false);
-		} else if (page.getId() < pageCount && page.getId() == 1) {
+		} else if (page.getId() == 1 && page.getId() < pageCount) {
 			page.setCanPrevious(false);
 			page.setCanNext(true);
 		} else {
@@ -89,19 +94,17 @@ public class Paginator {
 		}
 	}
 
-	public void setPaginationStyle(Page page) {
+	public void setPaginationStyleClass(Page page) {
 
-		if (page.canNext()) {
-			nextPageStyle = "page-item";
-		} else {
-			nextPageStyle = "page-item disabled";
-		}
+		nextPageStyle = page.canNext() ? "page-item" : "page-item disabled";
+		previousPageStyle = page.canPrevious() ? "page-item"
+				: "page-item disabled";
+	}
 
-		if (page.canPrevious()) {
-			previousPageStyle = "page-item";
-		} else {
-			previousPageStyle = "page-item disabled";
-		}
+	public static ItemPagination getDefaultItemPagination() {
+
+		return new ItemPagination(Pagination.FIRST_RESULT_DEFAULT.getValue(),
+				Pagination.MAX_RESULTS_DEFAULT.getValue());
 	}
 
 	public List<Page> getPages() {

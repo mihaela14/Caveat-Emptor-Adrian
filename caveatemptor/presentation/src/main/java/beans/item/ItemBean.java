@@ -2,6 +2,8 @@ package beans.item;
 
 import item.ItemService;
 
+import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -9,14 +11,17 @@ import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.SessionScoped;
+import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
 
 import mapping.ItemMapper;
+import mapping.utils.DateParser;
 import beans.item.utils.EditStatus;
 import beans.user.UserBean;
+import constants.DatePatterns;
+import constants.ItemStatus;
 import constants.Pagination;
 import dto.ItemDTO;
 import dto.ItemPagination;
@@ -27,7 +32,7 @@ import exceptions.ItemException;
 import exceptions.UserException;
 
 @ManagedBean(name = "itemBean")
-@SessionScoped
+@ViewScoped
 public class ItemBean {
 
 	@EJB
@@ -55,15 +60,22 @@ public class ItemBean {
 		paginator = new Paginator();
 
 		try {
-			long maxResultsDefault = Pagination.MAX_RESULTS_DEFAULT.getValue();
-			ItemPagination itemPagination = new ItemPagination(0,
-					maxResultsDefault);
-
-			itemRows = itemService.getItemRows(loggedUserId, itemPagination);
-
 			long itemCount = itemService.getRowCount(loggedUserId);
 
-			paginator.run(itemCount, maxResultsDefault);
+			if (itemCount > 0) {
+				paginator.run(itemCount,
+						Pagination.MAX_RESULTS_DEFAULT.getValue(), false);
+
+				ItemPagination itemPagination = Paginator
+						.getDefaultItemPagination();
+
+				itemPagination.setPageId(1L);
+				itemPagination.setPageCount(paginator.getPageCount());
+				itemPagination.setUsed(true);
+
+				itemRows = itemService
+						.getItemRows(loggedUserId, itemPagination);
+			}
 		} catch (UserException | ItemException e) {
 		}
 	}
@@ -74,56 +86,91 @@ public class ItemBean {
 		Long loggedUserId = userBean.getId();
 
 		try {
+			itemDTO.setStatus(getStatus(itemDTO));
 			itemService.addItem(itemDTO, loggedUserId, categoryId);
 
 			long rowCount = itemService.getRowCount(loggedUserId);
-			long maxResultsDefault = Pagination.MAX_RESULTS_DEFAULT.getValue();
+			long maxResultsDefault = paginator.getCurrentMaxResults();
 
-			long firstResult = maxResultsDefault
-					* (rowCount / maxResultsDefault);
+			long firstResult = (rowCount % maxResultsDefault == 0) ? (rowCount - maxResultsDefault)
+					: maxResultsDefault * (rowCount / maxResultsDefault);
 
 			ItemPagination itemPagination = new ItemPagination(firstResult,
 					maxResultsDefault);
+			itemPagination.setPageId(Paginator.getPageCount(rowCount,
+					maxResultsDefault));
+			itemPagination.setUsed(true);
 
 			itemRows = itemService.getItemRows(loggedUserId, itemPagination);
 
-			paginator.run(rowCount, maxResultsDefault);
+			paginator.run(rowCount, maxResultsDefault, true);
 		} catch (ItemException | UserException | CategoryException e) {
+		}
+	}
+
+	private String getStatus(ItemDTO itemDTO) {
+
+		Timestamp openingDate = DateParser.getTimestamp(
+				itemDTO.getOpeningDate(), itemDTO.getOpeningTime(),
+				DatePatterns.FULL.getValue());
+
+		Timestamp closingDate = DateParser.getTimestamp(
+				itemDTO.getClosingDate(), itemDTO.getClosingTime(),
+				DatePatterns.FULL.getValue());
+
+		Date date = new Date(System.currentTimeMillis());
+		Timestamp currentDate = new Timestamp(date.getTime());
+
+		if (currentDate.before(openingDate)) {
+			return ItemStatus.NOT_YET_OPEN.toString();
+		} else if (currentDate.before(closingDate)
+				&& currentDate.after(openingDate)) {
+			return ItemStatus.OPEN.toString();
+		} else if (currentDate.after(closingDate)) {
+			return ItemStatus.CLOSED.toString();
+		} else {
+			return null;
 		}
 	}
 
 	// TODO: handle exception
 	public void editRow(int id) {
 
+		int rowId = getRowId(id);
 		boolean canEditRow = canEditRow(id);
 
 		if (canEditRow) {
-			ItemRow itemRow = itemRows.get(id - 1);
+
+			ItemRow itemRow = itemRows.get(rowId - 1);
 			ItemDTO itemDTO = ItemMapper.getItemDTO(itemRow);
 
-			try {
-				Long loggedUserId = userBean.getId();
-				Long categoryId = itemRow.getCategoryId();
+			Long loggedUserId = userBean.getId();
+			Long categoryId = itemRow.getCategoryId();
 
+			try {
 				itemService.addItem(itemDTO, loggedUserId, categoryId);
 			} catch (UserException | CategoryException e) {
 			}
 		}
 
-		itemRows.get(id - 1).setCanEdit(!canEditRow);
+		itemRows.get(rowId - 1).setCanEdit(!canEditRow);
 	}
 
-	public boolean canEditRow(int id) {
-		return itemRows.get(id - 1).canEdit();
+	private int getRowId(long id) {
+
+		return (int) (id - paginator.getCurrentMaxResults()
+				* (paginator.getCurrentPageId() - 1));
+	}
+
+	public boolean canEditRow(long id) {
+
+		return itemRows.get(getRowId(id) - 1).canEdit();
 	}
 
 	public String getButtonValue(int id) {
 
-		if (canEditRow(id)) {
-			return EditStatus.UPDATE.getValue();
-		} else {
-			return EditStatus.EDIT.getValue();
-		}
+		return canEditRow(id) ? EditStatus.UPDATE.getValue() : EditStatus.EDIT
+				.getValue();
 	}
 
 	public void updateItemsPerPageCount(int count) throws UserException,
@@ -132,7 +179,7 @@ public class ItemBean {
 		paginator.setCurrentPageId(1L);
 		paginator.setCurrentMaxResults(count);
 
-		Long pageCount = paginator
+		Long pageCount = Paginator
 				.getPageCount(paginator.getItemCount(), count);
 
 		paginator.setPageCount(pageCount);
@@ -143,11 +190,14 @@ public class ItemBean {
 
 		Page firstPage = new Page(paginator.getCurrentPageId());
 		paginator.setPagination(firstPage, pageCount);
-		paginator.setPaginationStyle(firstPage);
+		paginator.setPaginationStyleClass(firstPage);
 
-		ItemPagination itemPagination = new ItemPagination(0, count);
+		ItemPagination itemPagination = new ItemPagination(
+				Pagination.FIRST_RESULT_DEFAULT.getValue(), count);
 
-		List<ItemRow> itemRows = itemService.getItemRows(getUserBean().getId(),
+		itemPagination.setUsed(false);
+
+		List<ItemRow> itemRows = itemService.getItemRows(userBean.getId(),
 				itemPagination);
 		setItemRows(itemRows);
 	}
@@ -158,6 +208,10 @@ public class ItemBean {
 		ItemPagination itemPagination = new ItemPagination((pageId - 1)
 				* currentMaxResults, currentMaxResults);
 
+		itemPagination.setPageId(paginator.getCurrentPageId());
+		itemPagination.setPageCount(paginator.getPageCount());
+		itemPagination.setUsed(true);
+
 		List<ItemRow> itemRows = itemService.getItemRows(userBean.getId(),
 				itemPagination);
 		setItemRows(itemRows);
@@ -165,7 +219,7 @@ public class ItemBean {
 		Page page = paginator.getPages().get((int) (pageId - 1));
 
 		paginator.setPagination(page, paginator.getPageCount());
-		paginator.setPaginationStyle(page);
+		paginator.setPaginationStyleClass(page);
 	}
 
 	public void getPage(Page page) throws UserException, ItemException {
@@ -184,12 +238,6 @@ public class ItemBean {
 
 		paginator.decrementPageId();
 		paginate(paginator.getCurrentPageId());
-	}
-
-	public static ItemPagination getDefaultItemPagination() {
-
-		return new ItemPagination(Pagination.FIRST_RESULT_DEFAULT.getValue(),
-				Pagination.MAX_RESULTS_DEFAULT.getValue());
 	}
 
 	// TODO: validate else

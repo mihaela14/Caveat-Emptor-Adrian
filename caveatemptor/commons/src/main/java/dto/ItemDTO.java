@@ -14,13 +14,19 @@ public class ItemDTO implements Serializable {
 
 	private String openingDate;
 
+	private String openingTime;
+
 	private String closingDate;
+
+	private String closingTime;
 
 	private CategoryDTO categoryDTO;
 
 	private UserDTO userDTO;
 
 	private Double initialPrice;
+
+	private String status;
 
 	public Long getId() {
 		return id;
@@ -84,6 +90,30 @@ public class ItemDTO implements Serializable {
 
 	public void setClosingDate(String closingDate) {
 		this.closingDate = closingDate;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public String getOpeningTime() {
+		return openingTime;
+	}
+
+	public void setOpeningTime(String openingTime) {
+		this.openingTime = openingTime;
+	}
+
+	public String getClosingTime() {
+		return closingTime;
+	}
+
+	public void setClosingTime(String closingTime) {
+		this.closingTime = closingTime;
 	}
 
 }

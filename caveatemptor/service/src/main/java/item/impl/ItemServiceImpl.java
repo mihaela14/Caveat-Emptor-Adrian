@@ -66,13 +66,14 @@ public class ItemServiceImpl implements ItemService {
 
 		User user = userRepository.getSingleEntityById(userId, entityManager);
 
-		NamedQueryData namedQueryData = getItemRowsQueryData(user, itemPagination);
-		
+		NamedQueryData namedQueryData = getItemRowsQueryData(user,
+				itemPagination);
+
 		List<Item> items = itemRepository.getCollection(namedQueryData,
 				entityManager);
-		
+
 		List<ItemDTO> itemDTOs = ItemMapper.getItemDTOs(items);
-		List<ItemRow> itemRows = ItemMapper.getItemRows(itemDTOs);
+		List<ItemRow> itemRows = ItemMapper.getItemRows(itemDTOs, itemPagination);
 
 		return itemRows;
 	}

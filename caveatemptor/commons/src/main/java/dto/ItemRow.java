@@ -24,6 +24,8 @@ public class ItemRow implements Serializable {
 
 	private Double initialPrice;
 
+	private String status;
+
 	private boolean canEdit;
 
 	public String getName() {
@@ -108,6 +110,14 @@ public class ItemRow implements Serializable {
 
 	public void setClosingDate(String closingDate) {
 		this.closingDate = closingDate;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 }

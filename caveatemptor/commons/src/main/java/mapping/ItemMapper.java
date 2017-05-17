@@ -6,6 +6,7 @@ import java.util.List;
 import mapping.utils.DateParser;
 import repository.entities.Item;
 import dto.ItemDTO;
+import dto.ItemPagination;
 import dto.ItemRow;
 
 public class ItemMapper {
@@ -20,13 +21,23 @@ public class ItemMapper {
 		itemDTO.setId(item.getId());
 		itemDTO.setName(item.getName());
 		itemDTO.setDescription(item.getDescription());
-		itemDTO.setOpeningDate(DateParser.getTime(item.getOpeningDate(),
-				"dd/mm/yyyy"));
-		itemDTO.setClosingDate(DateParser.getTime(item.getClosingDate(),
-				"dd/mm/yyyy"));
+
+		String openingDates[] = DateParser.getTime(item.getOpeningDate(),
+				"dd/MM/yyyy", "hh:mm a");
+
+		itemDTO.setOpeningDate(openingDates[0]);
+		itemDTO.setOpeningTime(openingDates[1]);
+
+		String closingDates[] = DateParser.getTime(item.getClosingDate(),
+				"dd/MM/yyyy", "hh:mm a");
+
+		itemDTO.setClosingDate(closingDates[0]);
+		itemDTO.setClosingTime(closingDates[1]);
+
 		itemDTO.setUserDTO(UserMapper.getUserDTO(item.getUser()));
 		itemDTO.setCategoryDTO(CategoryMapper.getCategoryDTO(item.getCategory()));
 		itemDTO.setInitialPrice(item.getInitialPrice());
+		itemDTO.setStatus(item.getStatus());
 
 		return itemDTO;
 	}
@@ -38,22 +49,29 @@ public class ItemMapper {
 		item.setId(itemDTO.getId());
 		item.setName(itemDTO.getName());
 		item.setDescription(itemDTO.getDescription());
+
 		item.setOpeningDate(DateParser.getTimestamp(itemDTO.getOpeningDate(),
-				"dd/mm/yyyy"));
+				itemDTO.getOpeningTime(), "dd/MM/yyyy hh:mm a"));
+
 		item.setClosingDate(DateParser.getTimestamp(itemDTO.getClosingDate(),
-				"dd/mm/yyyy"));
+				itemDTO.getClosingTime(), "dd/MM/yyyy hh:mm a"));
+
 		item.setUser(UserMapper.getUser(itemDTO.getUserDTO()));
 		item.setCategory(CategoryMapper.getCategory(itemDTO.getCategoryDTO()));
 		item.setInitialPrice(itemDTO.getInitialPrice());
+		item.setStatus(itemDTO.getStatus());
 
 		return item;
 	}
 
-	public static List<ItemRow> getItemRows(List<ItemDTO> itemsDTO) {
+	public static List<ItemRow> getItemRows(List<ItemDTO> itemsDTO,
+			ItemPagination itemPagination) {
 
 		List<ItemRow> itemRows = new ArrayList<>();
 
-		Long index = 1L;
+		Long index = itemPagination.isUsed() ? ((itemPagination.getPageId() - 1)
+				* itemPagination.getMaxResults() + 1)
+				: 1L;
 
 		for (ItemDTO itemDTO : itemsDTO) {
 			ItemRow row = new ItemRow();
@@ -65,8 +83,16 @@ public class ItemMapper {
 			row.setDescription(itemDTO.getDescription());
 			row.setCategoryName(itemDTO.getCategoryDTO().getName());
 			row.setInitialPrice(itemDTO.getInitialPrice());
-			row.setOpeningDate(itemDTO.getOpeningDate());
-			row.setClosingDate(itemDTO.getClosingDate());
+
+			String openingDate = String.format("%s %s",
+					itemDTO.getOpeningDate(), itemDTO.getOpeningTime());
+			String closingDate = String.format("%s %s",
+					itemDTO.getClosingDate(), itemDTO.getClosingTime());
+
+			row.setOpeningDate(openingDate);
+			row.setClosingDate(closingDate);
+
+			row.setStatus(itemDTO.getStatus());
 
 			itemRows.add(row);
 		}
@@ -82,8 +108,19 @@ public class ItemMapper {
 		itemDTO.setName(itemRow.getName());
 		itemDTO.setDescription(itemRow.getDescription());
 		itemDTO.setInitialPrice(itemRow.getInitialPrice());
-		itemDTO.setOpeningDate(itemRow.getOpeningDate());
-		itemDTO.setClosingDate(itemRow.getClosingDate());
+
+		String[] openingDates = itemRow.getOpeningDate().split(" ");
+		String[] closingDates = itemRow.getClosingDate().split(" ");
+
+		itemDTO.setOpeningDate(openingDates[0]);
+		itemDTO.setOpeningTime(String.format("%s %s", openingDates[1],
+				openingDates[2]));
+
+		itemDTO.setClosingDate(closingDates[0]);
+		itemDTO.setClosingTime(String.format("%s %s", closingDates[1],
+				closingDates[2]));
+
+		itemDTO.setStatus(itemRow.getStatus());
 
 		return itemDTO;
 	}

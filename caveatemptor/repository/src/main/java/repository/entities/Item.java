@@ -55,6 +55,9 @@ public class Item implements Serializable {
 	@Column(name = "initial_price")
 	private Double initialPrice;
 
+	@Column
+	private String status;
+
 	public Long getId() {
 		return id;
 	}
@@ -117,6 +120,14 @@ public class Item implements Serializable {
 
 	public void setClosingDate(Timestamp closingDate) {
 		this.closingDate = closingDate;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 }

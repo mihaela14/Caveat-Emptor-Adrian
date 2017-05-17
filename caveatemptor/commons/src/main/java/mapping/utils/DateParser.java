@@ -13,19 +13,30 @@ public class DateParser {
 	private DateParser() {
 	}
 
-	public static Timestamp getTimestamp(String date, String pattern) {
+	public static Timestamp getTimestamp(String date, String time,
+			String pattern) {
 
 		DateTimeFormatter formatter = DateTimeFormat.forPattern(pattern);
-		DateTime dateTime = formatter.parseDateTime(date);
+		DateTime dateTime = formatter.parseDateTime(String.format("%s %s",
+				date, time));
 
 		return new Timestamp(dateTime.getMillis());
 	}
 
-	public static String getTime(Timestamp timestamp, String pattern) {
+	public static String[] getTime(Timestamp timestamp, String datePattern,
+			String timePattern) {
 
 		Date date = new Date(timestamp.getTime());
-		String formattedDate = new SimpleDateFormat(pattern).format(date);
 
-		return formattedDate;
+		String dates[] = new String[2];
+
+		String formattedDate = new SimpleDateFormat(datePattern).format(date);
+		String formattedTime = new SimpleDateFormat(timePattern).format(date);
+
+		dates[0] = formattedDate;
+		dates[1] = formattedTime;
+
+		return dates;
 	}
+	
 }
