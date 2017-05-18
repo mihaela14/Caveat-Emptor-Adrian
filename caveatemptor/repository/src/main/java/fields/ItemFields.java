@@ -4,7 +4,8 @@ public enum ItemFields {
 
 	ID("id"),
 	NAME("name"),
-	USER("user");
+	USER("user"),
+	CATEGORY("category");
 
 	private final String value;
 

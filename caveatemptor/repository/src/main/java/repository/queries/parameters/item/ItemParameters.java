@@ -3,6 +3,7 @@ package repository.queries.parameters.item;
 import java.util.HashMap;
 import java.util.Map;
 
+import repository.entities.Category;
 import repository.entities.User;
 import fields.ItemFields;
 
@@ -30,6 +31,11 @@ public class ItemParameters {
 
 		public Builder withUser(User user) {
 			parameters.put(ItemFields.USER.getValue(), user);
+			return this;
+		}
+
+		public Builder withCategory(Category category) {
+			parameters.put(ItemFields.CATEGORY.getValue(), category);
 			return this;
 		}
 

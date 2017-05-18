@@ -36,6 +36,9 @@ public class Category implements Serializable {
 	@Column
 	private String description;
 
+	public Category() {
+	}
+
 	public Long getId() {
 		return id;
 	}

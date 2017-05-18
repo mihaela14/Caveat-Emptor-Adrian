@@ -1,5 +1,7 @@
 package category;
 
+import java.util.List;
+
 import repository.entities.Category;
 import dto.CategoryDTO;
 import exceptions.CategoryException;
@@ -19,4 +21,7 @@ public interface CategoryService {
 			throws CategoryException;
 
 	void deleteCategory(Long id) throws CategoryException;
+
+	List<Category> getCategories(CategoryDTO categoryDTO)
+			throws CategoryException;
 }

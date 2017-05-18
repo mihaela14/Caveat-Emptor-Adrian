@@ -2,8 +2,8 @@ package beans.item;
 
 import item.ItemService;
 
-import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -55,9 +55,9 @@ public class ItemBean {
 
 		itemDTO = new ItemDTO();
 
-		Long loggedUserId = userBean.getId();
-
 		paginator = new Paginator();
+
+		Long loggedUserId = userBean.getId();
 
 		try {
 			long itemCount = itemService.getRowCount(loggedUserId);
@@ -73,8 +73,8 @@ public class ItemBean {
 				itemPagination.setPageCount(paginator.getPageCount());
 				itemPagination.setUsed(true);
 
-				itemRows = itemService
-						.getItemRows(loggedUserId, itemPagination);
+				itemRows = itemService.getItemRowsByUser(loggedUserId,
+						itemPagination);
 			}
 		} catch (UserException | ItemException e) {
 		}
@@ -85,15 +85,16 @@ public class ItemBean {
 
 		Long loggedUserId = userBean.getId();
 
+		itemDTO.setStatus(getInitialStatus(itemDTO));
+
 		try {
-			itemDTO.setStatus(getStatus(itemDTO));
 			itemService.addItem(itemDTO, loggedUserId, categoryId);
 
 			long rowCount = itemService.getRowCount(loggedUserId);
 			long maxResultsDefault = paginator.getCurrentMaxResults();
 
 			long firstResult = (rowCount % maxResultsDefault == 0) ? (rowCount - maxResultsDefault)
-					: maxResultsDefault * (rowCount / maxResultsDefault);
+					: (maxResultsDefault * (rowCount / maxResultsDefault));
 
 			ItemPagination itemPagination = new ItemPagination(firstResult,
 					maxResultsDefault);
@@ -101,14 +102,15 @@ public class ItemBean {
 					maxResultsDefault));
 			itemPagination.setUsed(true);
 
-			itemRows = itemService.getItemRows(loggedUserId, itemPagination);
+			itemRows = itemService.getItemRowsByUser(loggedUserId,
+					itemPagination);
 
 			paginator.run(rowCount, maxResultsDefault, true);
-		} catch (ItemException | UserException | CategoryException e) {
+		} catch (UserException | CategoryException | ItemException e) {
 		}
 	}
 
-	private String getStatus(ItemDTO itemDTO) {
+	private String getInitialStatus(ItemDTO itemDTO) {
 
 		Timestamp openingDate = DateParser.getTimestamp(
 				itemDTO.getOpeningDate(), itemDTO.getOpeningTime(),
@@ -140,7 +142,6 @@ public class ItemBean {
 		boolean canEditRow = canEditRow(id);
 
 		if (canEditRow) {
-
 			ItemRow itemRow = itemRows.get(rowId - 1);
 			ItemDTO itemDTO = ItemMapper.getItemDTO(itemRow);
 
@@ -181,11 +182,9 @@ public class ItemBean {
 
 		Long pageCount = Paginator
 				.getPageCount(paginator.getItemCount(), count);
-
 		paginator.setPageCount(pageCount);
 
 		List<Page> pages = paginator.getPages(pageCount);
-
 		paginator.setPages(pages);
 
 		Page firstPage = new Page(paginator.getCurrentPageId());
@@ -194,17 +193,17 @@ public class ItemBean {
 
 		ItemPagination itemPagination = new ItemPagination(
 				Pagination.FIRST_RESULT_DEFAULT.getValue(), count);
-
 		itemPagination.setUsed(false);
 
-		List<ItemRow> itemRows = itemService.getItemRows(userBean.getId(),
-				itemPagination);
+		List<ItemRow> itemRows = itemService.getItemRowsByUser(
+				userBean.getId(), itemPagination);
 		setItemRows(itemRows);
 	}
 
 	private void paginate(Long pageId) throws UserException, ItemException {
 
 		Long currentMaxResults = paginator.getCurrentMaxResults();
+
 		ItemPagination itemPagination = new ItemPagination((pageId - 1)
 				* currentMaxResults, currentMaxResults);
 
@@ -212,12 +211,11 @@ public class ItemBean {
 		itemPagination.setPageCount(paginator.getPageCount());
 		itemPagination.setUsed(true);
 
-		List<ItemRow> itemRows = itemService.getItemRows(userBean.getId(),
-				itemPagination);
+		List<ItemRow> itemRows = itemService.getItemRowsByUser(
+				userBean.getId(), itemPagination);
 		setItemRows(itemRows);
 
 		Page page = paginator.getPages().get((int) (pageId - 1));
-
 		paginator.setPagination(page, paginator.getPageCount());
 		paginator.setPaginationStyleClass(page);
 	}

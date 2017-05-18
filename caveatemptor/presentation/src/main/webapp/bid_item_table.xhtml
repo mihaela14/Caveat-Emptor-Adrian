@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough">
+
+<h:body>
+	<ui:composition>
+		<h:form id="tableForm" style="width:100%">
+
+			<h:dataTable id="itemTable"
+				styleClass="table table-striped table-bordered"
+				value="#{bidBean.itemRows}" var="itemRow"
+				headerClass="table-8 align-middle">
+
+				<h:column>
+					<f:facet name="header">Id</f:facet>
+					#{itemRow.rowId}
+				</h:column>
+
+				<h:column>
+					<f:facet name="header">Name</f:facet>
+					<h:outputText value="#{itemRow.name}" />
+				</h:column>
+
+				<h:column>
+					<f:facet name="header">Description</f:facet>
+					<h:outputText value="#{itemRow.description}" />
+				</h:column>
+
+				<h:column>
+					<f:facet name="header">Category name</f:facet>
+			#{itemRow.categoryName}
+			</h:column>
+
+				<h:column>
+					<f:facet name="header">Initial price</f:facet>
+					<h:outputText value="#{itemRow.initialPrice}" />
+				</h:column>
+
+				<h:column>
+					<f:facet name="header">Best bid</f:facet>
+				</h:column>
+
+				<h:column>
+					<f:facet name="header"># bids</f:facet>
+				</h:column>
+
+				<h:column>
+					<f:facet name="header">Opening date</f:facet>
+					<h:outputText value="#{itemRow.openingDate}" />
+				</h:column>
+
+				<h:column>
+					<f:facet name="header">Closing date</f:facet>
+					<h:outputText value="#{itemRow.closingDate}" />
+				</h:column>
+
+				<h:column>
+					<f:facet name="header">Status</f:facet>
+					#{itemRow.status}
+				</h:column>
+
+				<h:column>
+					<f:facet name="header">Winner</f:facet>
+				</h:column>
+
+				<h:column>
+					<h:commandButton id="bidButton" value="Bid"
+						styleClass="btn btn-primary" a:style="width:100%">
+						<!-- 						<f:ajax execute="editButton" render="tableForm:itemTable" /> -->
+					</h:commandButton>
+				</h:column>
+			</h:dataTable>
+		</h:form>
+
+	</ui:composition>
+</h:body>
+</html>

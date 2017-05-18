@@ -17,13 +17,17 @@ public interface ItemRepository {
 	List<Item> getCollection(NamedQueryData namedQueryData,
 			EntityManager entityManager) throws ItemException;
 
+	List<Item> getPaginatedCollection(NamedQueryData namedQueryData,
+			EntityManager entityManager) throws ItemException;
+
 	Item getSingleEntityByQueryData(NamedQueryData namedQueryData,
 			EntityManager entityManager) throws ItemException;
 
 	Item getSingleEntityById(Long id, EntityManager entityManager)
 			throws ItemException;
-	
-	long getEntityCount(NamedQueryData namedQueryData, EntityManager entityManager);
+
+	long getEntityCount(NamedQueryData namedQueryData,
+			EntityManager entityManager);
 
 	void setEntityManager(EntityManager entityManager);
 }

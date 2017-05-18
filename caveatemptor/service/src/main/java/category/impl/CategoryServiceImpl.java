@@ -1,5 +1,8 @@
 package category.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.ejb.EJB;
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
@@ -92,6 +95,29 @@ public class CategoryServiceImpl implements CategoryService {
 		category.setDescription(categoryDTO.getDescription());
 
 		categoryRepository.add(category, entityManager);
+	}
+
+	@Override
+	public List<Category> getCategories(CategoryDTO categoryDTO)
+			throws CategoryException {
+
+		Category category = categoryRepository.getSingleEntityById(
+				categoryDTO.getId(), entityManager);
+
+		List<Category> children = new ArrayList<>();
+		children.add(category);
+
+		getChildren(category, children);
+
+		return children;
+	}
+
+	private void getChildren(Category category, List<Category> children) {
+
+		for (Category child : category.getCategories()) {
+			children.add(child);
+			getChildren(child, children);
+		}
 	}
 
 }

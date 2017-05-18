@@ -57,6 +57,18 @@ public class ItemRepositoryImpl implements ItemRepository {
 			EntityManager entityManager) throws ItemException {
 
 		try {
+			return QueryBuilder.buildNamedQuery(namedQueryData, entityManager)
+					.getResultList();
+		} catch (PersistenceException e) {
+			throw new ItemException();
+		}
+	}
+
+	@Override
+	public List<Item> getPaginatedCollection(NamedQueryData namedQueryData,
+			EntityManager entityManager) throws ItemException {
+
+		try {
 			return QueryBuilder.buildNamedQueryWithPagination(namedQueryData,
 					entityManager).getResultList();
 		} catch (PersistenceException e) {

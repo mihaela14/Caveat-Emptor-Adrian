@@ -9,6 +9,16 @@
 <h:body>
 	<ui:composition>
 
+		<h:outputScript library="js" name="breadcrumb_v0.js" />
+
+		<h:form id="categoryTreeForm">
+			<h:inputHidden id="categoryId" value="#{bidBean.categoryDTO.id}" />
+			<h:commandButton id="hiddenButton"
+				action="#{bidBean.getItemRowsByCategory}" style="display: none;">
+				<f:ajax execute="@form" render="tableForm:itemTable" />
+			</h:commandButton>
+		</h:form>
+
 		<div id="tree" />
 
 		<script>
@@ -48,12 +58,9 @@
 					collapseIcon: 'typcn typcn-minus',
 					expandIcon: 'typcn typcn-plus',
 					onNodeSelected: function(event, data) {
-						document.getElementById('itemDefiningForm:categoryId').value = data['id'];
-						document.getElementById('itemDefiningForm:itemCategoryName').value = data['text'];
-					},
-					onNodeUnselected: function(event, node) {
-						document.getElementById('itemDefiningForm:categoryId').value = null;
-						document.getElementById('itemDefiningForm:itemCategoryName').value = null;
+						createBreadcrumb(data, $('#breadcrumb'));
+						$('#categoryTreeForm\\:categoryId').val(data['id']);
+						$('#categoryTreeForm\\:hiddenButton').click();
 					}
 				});
 

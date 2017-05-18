@@ -52,8 +52,11 @@ public class User implements Serializable {
 	@Column(name = "is_activated", nullable = false)
 	private Boolean isActivated;
 
-	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
 	private List<Item> items;
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "buyer")
+	private List<Bid> bids;
 
 	public User() {
 	}
@@ -120,6 +123,30 @@ public class User implements Serializable {
 
 	public void setActivated(Boolean isActivated) {
 		this.isActivated = isActivated;
+	}
+
+	public Boolean getIsActivated() {
+		return isActivated;
+	}
+
+	public void setIsActivated(Boolean isActivated) {
+		this.isActivated = isActivated;
+	}
+
+	public List<Item> getItems() {
+		return items;
+	}
+
+	public void setItems(List<Item> items) {
+		this.items = items;
+	}
+
+	public List<Bid> getBids() {
+		return bids;
+	}
+
+	public void setBids(List<Bid> bids) {
+		this.bids = bids;
 	}
 
 }

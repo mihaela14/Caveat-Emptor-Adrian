@@ -16,6 +16,9 @@ public class ItemPagination implements Serializable {
 
 	private boolean isUsed;
 
+	public ItemPagination() {
+	}
+
 	public ItemPagination(long firstResult, long maxResults) {
 		this.maxResults = maxResults;
 		this.firstResult = firstResult;

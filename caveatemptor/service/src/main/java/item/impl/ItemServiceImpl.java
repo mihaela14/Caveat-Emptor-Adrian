@@ -21,6 +21,7 @@ import repository.queries.parameters.item.ItemParameters;
 import repository.repositories.category.CategoryRepository;
 import repository.repositories.item.ItemRepository;
 import repository.repositories.user.UserRepository;
+import dto.CategoryDTO;
 import dto.ItemDTO;
 import dto.ItemPagination;
 import dto.ItemRow;
@@ -61,19 +62,37 @@ public class ItemServiceImpl implements ItemService {
 	}
 
 	@Override
-	public List<ItemRow> getItemRows(Long userId, ItemPagination itemPagination)
-			throws UserException, ItemException {
+	public List<ItemRow> getItemRowsByCategory(Category category,
+			ItemPagination itemPagination) throws CategoryException,
+			ItemException {
 
-		User user = userRepository.getSingleEntityById(userId, entityManager);
+		NamedQueryData queryData = getItemRowsByCategoryQueryData(category);
 
-		NamedQueryData namedQueryData = getItemRowsQueryData(user,
-				itemPagination);
-
-		List<Item> items = itemRepository.getCollection(namedQueryData,
+		List<Item> items = itemRepository.getCollection(queryData,
 				entityManager);
 
 		List<ItemDTO> itemDTOs = ItemMapper.getItemDTOs(items);
-		List<ItemRow> itemRows = ItemMapper.getItemRows(itemDTOs, itemPagination);
+		List<ItemRow> itemRows = ItemMapper.getItemRows(itemDTOs,
+				itemPagination);
+
+		return itemRows;
+	}
+
+	@Override
+	public List<ItemRow> getItemRowsByUser(Long userId,
+			ItemPagination itemPagination) throws UserException, ItemException {
+
+		User user = userRepository.getSingleEntityById(userId, entityManager);
+
+		NamedQueryData queryData = getItemRowsByUserQueryData(user,
+				itemPagination);
+
+		List<Item> items = itemRepository.getPaginatedCollection(queryData,
+				entityManager);
+
+		List<ItemDTO> itemDTOs = ItemMapper.getItemDTOs(items);
+		List<ItemRow> itemRows = ItemMapper.getItemRows(itemDTOs,
+				itemPagination);
 
 		return itemRows;
 	}
@@ -88,7 +107,20 @@ public class ItemServiceImpl implements ItemService {
 		return itemRepository.getEntityCount(namedQueryData, entityManager);
 	}
 
-	private NamedQueryData getItemRowsQueryData(User user,
+	private NamedQueryData getItemRowsByCategoryQueryData(Category category) {
+
+		ItemParameters itemParameters = new ItemParameters.Builder()
+				.withCategory(category).build();
+
+		Map<String, Object> parameters = itemParameters.getParameters();
+
+		NamedQueryDataImpl namedQueryData = new NamedQueryDataImpl(
+				Item.QUERY_FIND_ITEMS_BY_CATEGORY, parameters);
+
+		return namedQueryData;
+	}
+
+	private NamedQueryData getItemRowsByUserQueryData(User user,
 			ItemPagination itemPagination) {
 
 		ItemParameters itemParameters = new ItemParameters.Builder().withUser(

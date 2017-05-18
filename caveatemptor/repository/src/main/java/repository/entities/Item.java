@@ -2,10 +2,11 @@ package repository.entities;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -13,11 +14,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
 @NamedQueries(value = {
 		@NamedQuery(name = "findItemsByUser", query = "SELECT i FROM Item i WHERE i.user = :user"),
+		@NamedQuery(name = "findItemsByCategory", query = "SELECT i FROM Item i WHERE i.category = :category"),
 		@NamedQuery(name = "getItemCountByUser", query = "SELECT COUNT(i) FROM Item i WHERE i.user =:user") })
 @Table(name = "items")
 public class Item implements Serializable {
@@ -25,6 +28,8 @@ public class Item implements Serializable {
 	private static final long serialVersionUID = -7601072572981272676L;
 
 	public static final String QUERY_FIND_ITEMS_BY_USER = "findItemsByUser";
+	public static final String QUERY_FIND_ITEMS_BY_CATEGORY = "findItemsByCategory";
+
 	public static final String QUERY_GET_ITEM_COUNT_BY_USER = "getItemCountByUser";
 
 	@Id
@@ -45,18 +50,24 @@ public class Item implements Serializable {
 	private Timestamp closingDate;
 
 	@ManyToOne
-	@JoinColumn(name = "user_id", referencedColumnName = "id")
+	@JoinColumn(name = "seller_id")
 	private User user;
 
-	@ManyToOne(cascade = CascadeType.MERGE)
-	@JoinColumn(name = "category_id", referencedColumnName = "id")
+	@ManyToOne
+	@JoinColumn(name = "category_id")
 	private Category category;
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "item")
+	private List<Bid> bids;
 
 	@Column(name = "initial_price")
 	private Double initialPrice;
 
 	@Column
 	private String status;
+
+	public Item() {
+	}
 
 	public Long getId() {
 		return id;
@@ -128,6 +139,14 @@ public class Item implements Serializable {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public List<Bid> getBids() {
+		return bids;
+	}
+
+	public void setBids(List<Bid> bids) {
+		this.bids = bids;
 	}
 
 }
